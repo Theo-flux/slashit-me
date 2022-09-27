@@ -72,8 +72,22 @@ export const footerItem = [
   },
 ];
 
-const socialItem = [
+export const socialItem = [
   'fa-brands fa-tiktok',
   'fa-brands fa-twitter',
   'fa-brands fa-square-instagram',
+];
+
+export const appItem = [
+  {
+    icon: 'fa-brands fa-google-play',
+    tag: 'Get it on',
+    title: 'Google Play',
+  },
+
+  {
+    icon: 'fa-brands fa-apple',
+    tag: 'Download on the',
+    title: 'App Store',
+  },
 ];

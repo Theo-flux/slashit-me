@@ -18,6 +18,7 @@ function Layout({ children }) {
           content="Slashit is an online ecommerce site"
         />
         <link rel="icon" href="/images/slashit.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
       </Head>
 
       <main>

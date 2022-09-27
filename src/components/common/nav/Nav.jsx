@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Section, Div, Logo } from '../../../shared';
+import { Section, NavWrapper, Logo } from '../../../shared';
 import { Nav, UlDesktop, Lidesktop, Ul, ChildLi } from './navStyle';
 import { navItems } from './nav_items';
 
@@ -59,7 +59,7 @@ function Navbar() {
 
   return (
     <Section ref={ref}>
-      <Div>
+      <NavWrapper>
         <Nav>
           <div style={{ width: '100%' }}>
             <Logo />
@@ -83,10 +83,8 @@ function Navbar() {
               );
             })}
           </UlDesktop>
-
-          
         </Nav>
-      </Div>
+      </NavWrapper>
     </Section>
   );
 }

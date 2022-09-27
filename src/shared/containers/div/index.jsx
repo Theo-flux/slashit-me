@@ -1,8 +1,10 @@
 import React from 'react';
-import { DivContainer } from './div';
+import { DivContainer, NavContainer } from './div';
 
-function Div({ children }) {
+export function Div({ children }) {
   return <DivContainer>{children}</DivContainer>;
 }
 
-export default Div;
+export function NavWrapper({ children }) {
+  return <NavContainer>{children}</NavContainer>;
+}

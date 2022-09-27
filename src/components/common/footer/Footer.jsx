@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { Section, Div } from '../../../shared';
+import { Section, Div, GetAppButton } from '../../../shared';
 import {
   FooterContainer,
   FooterItem,
@@ -9,8 +9,9 @@ import {
   List,
   StyledLink,
   FooterAboutContainer,
+  Wrapper,
 } from './footerStyle';
-import { footerItem } from './footer_item';
+import { footerItem, appItem, socialItem } from './footer_item';
 
 const FooterChunk = ({ parentItem }) => {
   const { children, parent } = parentItem;
@@ -36,7 +37,6 @@ const FooterChunk = ({ parentItem }) => {
   );
 };
 
-
 function Footer() {
   return (
     <Section>
@@ -45,6 +45,18 @@ function Footer() {
           {footerItem.map((data, index) => {
             return <FooterChunk key={index} parentItem={data} />;
           })}
+
+          <Wrapper>
+            <div>
+              {appItem.map((item, index) => {
+                return <GetAppButton key={index} data={item} />;
+              })}
+            </div>
+
+            <div>
+              <p>connect with us</p>
+            </div>
+          </Wrapper>
         </FooterContainer>
 
         <FooterAboutContainer>

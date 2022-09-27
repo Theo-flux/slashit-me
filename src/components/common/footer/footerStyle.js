@@ -57,7 +57,7 @@ export const FooterAboutContainer = styled.div`
   margin: 2rem 0;
 
   & > p {
-    font-size: .9rem;
+    font-size: 0.9rem;
     line-height: 1.75rem;
     font-weight: 300;
     margin-bottom: 0.8rem;
@@ -65,5 +65,14 @@ export const FooterAboutContainer = styled.div`
 
   & > p:last-of-type {
     margin-bottom: 0px;
+  }
+`;
+
+export const Wrapper = styled.div`
+  width: fit-content;
+  justify-items: end;
+
+  & > div {
+    margin-bottom: 1.5rem;
   }
 `;

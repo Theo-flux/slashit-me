@@ -1,2 +1,2 @@
-export { default as Div } from './div';
+export { Div, NavWrapper } from './div';
 export { default as Section } from './section';
