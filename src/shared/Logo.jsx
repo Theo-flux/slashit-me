@@ -7,7 +7,7 @@ const Img = styled.img`
   height: 20px;
 
   @media ${device.md} {
-    height: 30px;
+    height: 20px;
   }
 `;
 

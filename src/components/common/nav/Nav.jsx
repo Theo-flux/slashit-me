@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Section, Div, Logo } from '../../../shared';
-import { Nav, UlDesktop, Lidesktop, Ul, ChildLi } from './nav_style';
+import { Nav, UlDesktop, Lidesktop, Ul, ChildLi } from './navStyle';
 import { navItems } from './nav_items';
 
 function Navbar() {
@@ -58,7 +58,7 @@ function Navbar() {
   }, [dropDownId, handleDropdownId]);
 
   return (
-    <Section>
+    <Section ref={ref}>
       <Div>
         <Nav>
           <div style={{ width: '100%' }}>
@@ -83,6 +83,8 @@ function Navbar() {
               );
             })}
           </UlDesktop>
+
+          
         </Nav>
       </Div>
     </Section>

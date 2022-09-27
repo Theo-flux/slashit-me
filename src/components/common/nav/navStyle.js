@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { device } from '../../../utils';
+import { device, transition } from '../../../utils';
 
 export const Nav = styled.nav`
   width: 100%;
@@ -7,10 +7,6 @@ export const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-
-  @media ${device.md} {
-    padding: 0;
-  }
 `;
 
 export const UlDesktop = styled.ul`
@@ -38,6 +34,10 @@ export const Lidesktop = styled.li`
     display: flex;
     align-items: center;
   }
+
+  & > div > p {
+    font-weight: 600;
+  }
 `;
 
 export const Ul = styled.ul`
@@ -51,7 +51,7 @@ export const Ul = styled.ul`
   width: 145px;
   opacity: ${(props) => (props.dropDownId === props.id ? '1' : '0')};
   transform: ${(props) =>
-    props.dropDownId === props.id ? 'translateY(3rem)' : 'translateY(0)'};
+    props.dropDownId === props.id ? 'translateY(2rem)' : 'translateY(0)'};
   border-radius: 0.5rem;
   filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
     drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
@@ -76,9 +76,16 @@ export const ChildLi = styled.li`
   margin-bottom: 0.5rem;
   padding: 0.25rem 0.75rem;
   border-radius: 0.5rem;
+  background-color: var(--link);
   transition: all 0.3ms ease-in-out;
 
   &:last-child {
     margin-bottom: 0px;
+  }
+
+  &:hover {
+    color: white;
+    background-color: var(--violet);
+    ${transition}
   }
 `;
