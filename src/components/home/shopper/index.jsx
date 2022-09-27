@@ -1,5 +1,5 @@
 import React from 'react';
-import { Section, Div } from '../../../shared';
+import { Section, Div, Button } from '../../../shared';
 import {
   ShopperContainer,
   Tag,
@@ -35,7 +35,7 @@ const steps = [
 
 function Shopper() {
   return (
-    <Section>
+    <Section bg={`var(--link)`}>
       <Div>
         <ShopperContainer>
           <Tag>Shopper</Tag>
@@ -74,6 +74,8 @@ function Shopper() {
               })}
             </Bottom>
           </Wrapper>
+
+          <Button>Learn more</Button>
         </ShopperContainer>
       </Div>
     </Section>

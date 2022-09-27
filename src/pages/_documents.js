@@ -1,39 +1,42 @@
 /* eslint-disable @next/next/no-sync-scripts */
 // pages/_document.js
-import { Html, Head, Main, NextScript } from 'next/document';
-import Script from 'next/script';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-export default function Document() {
-  return (
-    <Html>
-      <Head>
-        <link rel="icon" href="/images/slashit.svg" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"
-          rel="stylesheet"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-          integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-          rel="stylesheet"
-        ></link>
-      </Head>
-      <body>
-        <Main />
-        <NextScript />
-        <Script
-          src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.1.2/anime.min.js"
-          strategy="beforeInteractive"
-        />
-      </body>
-    </Html>
-  );
+export default class MyDocument extends Document {
+  render() {
+    return (
+      <Html>
+        <Head>
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+          <link rel="icon" href="/images/slashit.svg" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"
+            rel="stylesheet"
+          ></link>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+          />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+          ></link>
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+          <script> </script>
+        </body>
+      </Html>
+    );
+  }
 }

@@ -30,3 +30,14 @@ export const H3 = styled.h3`
     font-size: 1.125rem;
     font-weight: 600;
 `;
+
+export const AnchorButton = styled.button`
+    background-color: var(--gray);
+    padding: 1rem 3rem;
+    border-radius: .375rem;
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 600;
+    outline: 0;
+    border: none;
+`

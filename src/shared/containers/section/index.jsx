@@ -1,8 +1,8 @@
 import React from 'react';
 import { SectionContainer } from './section';
 
-function Section({ children }) {
-  return <SectionContainer>{children}</SectionContainer>;
+function Section({ children, bg }) {
+  return <SectionContainer bg={bg}>{children}</SectionContainer>;
 }
 
 export default Section;

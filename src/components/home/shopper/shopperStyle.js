@@ -56,6 +56,7 @@ export const Text = styled.p`
 `;
 
 export const Wrapper = styled.div`
+  margin-bottom: 4rem;
   display: flex;
   max-width: 952px;
   width: 100%;
@@ -118,7 +119,7 @@ export const NumberWrapper = styled.div`
 `;
 
 export const Num = styled.div`
-  background-color: white;
+  background-color: var(--link);
   /* width: 50px;
   height: 50px; */
   border-radius: 50%;

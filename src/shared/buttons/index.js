@@ -1,4 +1,11 @@
-import { ButtonContainer, InnerContainer, Icon, P, H3 } from './button';
+import {
+  ButtonContainer,
+  InnerContainer,
+  Icon,
+  P,
+  H3,
+  AnchorButton,
+} from './button';
 
 export const GetAppButton = ({ data }) => {
   const { icon, tag, title } = data;
@@ -12,4 +19,8 @@ export const GetAppButton = ({ data }) => {
       </InnerContainer>
     </ButtonContainer>
   );
+};
+
+export const Button = ({ children }) => {
+  return <AnchorButton>{children}</AnchorButton>;
 };
