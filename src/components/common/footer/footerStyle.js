@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import { device, transition } from '../../../utils';
 
@@ -69,5 +70,22 @@ export const Wrapper = styled.div`
 
   & > div {
     margin-bottom: 1.5rem;
+  }
+`;
+
+export const Row = styled.div`
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100px;
+`;
+
+export const Img = styled(Image)`
+  transform: scale(0.7);
+  ${transition}
+
+  &:hover {
+    transform: scale(0.8);
   }
 `;

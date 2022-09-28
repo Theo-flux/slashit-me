@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import React from 'react';
 import { Section, Div, GetAppButton } from '../../../shared';
 import {
@@ -10,6 +11,8 @@ import {
   StyledLink,
   FooterAboutContainer,
   Wrapper,
+  Row,
+  Img,
 } from './footerStyle';
 import { footerItem, appItem, socialItem } from './footer_item';
 
@@ -54,6 +57,12 @@ function Footer({ children }) {
             </div>
 
             <p>connect with us</p>
+
+            <Row>
+              <Img src="/images/tiktok-icon.svg" width={32} height={32} alt="instagram" />
+              <Img src="/images/twitter-icon.svg" width={32} height={32} alt="instagram" />
+              <Img src="/images/instagram-icon.svg" width={32} height={32} alt="instagram" />
+            </Row>
           </Wrapper>
         </FooterContainer>
 
