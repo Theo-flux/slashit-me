@@ -20,6 +20,10 @@ export const GetAppButton = ({ data }) => {
   );
 };
 
-export const Button = ({ type, children }) => {
-  return <AnchorButton type={type}>{children}</AnchorButton>;
+export const Button = ({ bg, type, children }) => {
+  return (
+    <AnchorButton bg={bg} type={type}>
+      {children}
+    </AnchorButton>
+  );
 };

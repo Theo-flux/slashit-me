@@ -1,9 +1,9 @@
 import React from 'react';
 import { SectionContainer } from './section';
 
-function Section({ children, bg, type }) {
+function Section({ children, bg, type, ref }) {
   return (
-    <SectionContainer type={type} bg={bg}>
+    <SectionContainer ref={ref} type={type} bg={bg}>
       {children}
     </SectionContainer>
   );

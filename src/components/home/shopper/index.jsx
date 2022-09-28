@@ -1,8 +1,9 @@
 import React from 'react';
-import { Section, Div, Title, Button } from '../../../shared';
+import { Section, Div, Button } from '../../../shared';
 import {
   ShopperContainer,
   Tag,
+  Title,
   Text,
   Wrapper,
   Top,

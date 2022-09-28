@@ -6,7 +6,7 @@ export const HeroContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 
   @media ${device.md} {
     flex-direction: row;
@@ -22,10 +22,14 @@ export const InfoWrapper = styled.div`
   }
 
   @media ${device.md} {
-    width: 40%;
+    width: 45%;
 
     &:first-of-type {
       margin-bottom: 0rem;
+    }
+
+    &:last-of-type {
+      width: 35%;
     }
   }
 `;

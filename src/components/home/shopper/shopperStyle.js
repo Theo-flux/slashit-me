@@ -29,6 +29,24 @@ export const Tag = styled.div`
   }
 `;
 
+export const Title = styled.h1`
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+
+  @media ${device.md} {
+    font-size: 3rem;
+    max-width: 800px;
+  }
+
+  @media ${device.lg} {
+    font-size: 4rem;
+  }
+`;
+
 export const Text = styled.p`
   width: 100%;
   max-width: 600px;
@@ -56,7 +74,6 @@ export const Wrapper = styled.div`
   max-width: 952px;
   width: 100%;
   /* border: 1px solid magenta; */
-
 
   @media ${device.md} {
     width: 100%;
