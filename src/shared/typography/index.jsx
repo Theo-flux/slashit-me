@@ -1,7 +1,7 @@
-import { H1, H2, H3, H4, H5, H6, P, Small } from './typeStyled';
+import { Titlecontainer, H2, H3, H4, H5, H6, P, Small } from './typeStyled';
 
 export const Title = ({ children }) => {
-  return <H1>{children}</H1>;
+  return <Titlecontainer>{children}</Titlecontainer>;
 };
 
 export const Header2 = ({ children }) => {

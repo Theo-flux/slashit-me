@@ -29,22 +29,6 @@ export const Tag = styled.div`
   }
 `;
 
-export const Title = styled.h1`
-  font-weight: 600;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-
-  @media ${device.md} {
-    font-size: 3rem;
-    /* margin-bottom: 4rem; */
-  }
-
-  @media ${device.lg} {
-    font-size: 4rem;
-    /* margin-bottom: 4rem; */
-  }
-`;
-
 export const Text = styled.p`
   width: 100%;
   max-width: 600px;

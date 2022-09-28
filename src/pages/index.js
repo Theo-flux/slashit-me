@@ -1,11 +1,10 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import Layout from '../containers/Layout';
-import { Business, Shopper } from '../components';
+import { Business, Hero, Shopper } from '../components';
 
 export default function Home() {
   return (
     <Layout>
+      <Hero />
       <Shopper />
       <Business />
     </Layout>

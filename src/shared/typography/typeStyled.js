@@ -1,7 +1,20 @@
 import styled from 'styled-components';
 import { device } from '../../utils';
 
-export const H1 = styled.h1``;
+export const Titlecontainer = styled.h1`
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+
+  @media ${device.md} {
+    font-size: 3rem;
+  }
+
+  @media ${device.lg} {
+    font-size: 4rem;
+  }
+`;
 
 export const H2 = styled.h2``;
 
