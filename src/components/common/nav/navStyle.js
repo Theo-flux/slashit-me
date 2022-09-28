@@ -78,6 +78,8 @@ export const ChildLi = styled.li`
   border-radius: 0.5rem;
   background-color: var(--link);
   transition: all 0.3ms ease-in-out;
+  background-color: ${(props) => props.path === props.link && `var(--violet)`};
+  color: ${(props) => props.path === props.link && `white`};
 
   &:last-child {
     margin-bottom: 0px;

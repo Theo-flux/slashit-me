@@ -7,13 +7,13 @@ export const navItems = [
       {
         id: '1',
         item: 'Clique',
-        link: '/',
+        link: '/clique',
       },
 
       {
         id: '2',
         item: 'Card',
-        link: '/',
+        link: '/card',
       },
     ],
   },

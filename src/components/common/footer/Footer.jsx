@@ -37,7 +37,7 @@ const FooterChunk = ({ parentItem }) => {
   );
 };
 
-function Footer() {
+function Footer({ children }) {
   return (
     <Section>
       <Div>
@@ -64,13 +64,7 @@ function Footer() {
             Nigeria. The Slashit card is powered by Flutterwave and can be used
             to make local and international payments.
           </p>
-
-          <p>
-            <sup>1</sup> When you pay anyone on Slashit they need a Slashit business account
-            to claim the funds, they can sign up for a Slashit business account
-            free of charge.
-          </p>
-
+          {children}
           <p>© 2022, Slashit. All rights reserved</p>
         </FooterAboutContainer>
       </Div>

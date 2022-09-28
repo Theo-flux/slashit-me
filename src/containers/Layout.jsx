@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
-import { Navbar, Footer } from '../components';
+import { Navbar } from '../components';
 
 function Layout({ children }) {
   return (
@@ -24,7 +24,6 @@ function Layout({ children }) {
       <main>
         <Navbar />
         {children}
-        <Footer />
       </main>
     </div>
   );

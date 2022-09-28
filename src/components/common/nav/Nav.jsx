@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Section, NavWrapper, Logo } from '../../../shared';
 import { Nav, UlDesktop, Lidesktop, Ul, ChildLi } from './navStyle';
 import { navItems } from './nav_items';
 
 function Navbar() {
-  const ref = useRef();
+  const router = useRouter();
   const [openMobileNav, setMobileNav] = useState(false);
   const [mobileNavItem, setMobileNavItem] = useState(null);
   const [dropDownId, setDropdownId] = useState(null);
@@ -18,6 +20,8 @@ function Navbar() {
     },
     [dropDownId],
   );
+
+  console.log(router.pathname);
 
   function handleMobileNavItem(ref) {
     if (mobileNavItem === ref) {
@@ -43,8 +47,9 @@ function Navbar() {
   }, [openMobileNav]);
 
   useEffect(() => {
+    const ref = document.getElementById('ref');
     const outsideClicks = (e) => {
-      if (dropDownId && ref.current && !ref.current.contains(e.target)) {
+      if (dropDownId && ref && !ref.contains(e.target)) {
         handleDropdownId(null);
       }
     };
@@ -58,13 +63,13 @@ function Navbar() {
   }, [dropDownId, handleDropdownId]);
 
   return (
-    <Section type={'fixed'} ref={ref}>
+    <Section type={'fixed'}>
       <NavWrapper>
         <Nav>
           <div style={{ width: '100%' }}>
             <Logo />
           </div>
-          <UlDesktop>
+          <UlDesktop id="ref">
             {navItems.map((navItem, index) => {
               const { id, item, children, icon } = navItem;
               return (
@@ -76,7 +81,13 @@ function Navbar() {
                   <Ul id={id} dropDownId={dropDownId}>
                     {children.map((child, index) => {
                       const { item, link } = child;
-                      return <ChildLi key={index}>{item}</ChildLi>;
+                      return (
+                        <Link key={index} href={link}>
+                          <ChildLi link={link} path={router.pathname}>
+                            {item}
+                          </ChildLi>
+                        </Link>
+                      );
                     })}
                   </Ul>
                 </Lidesktop>
