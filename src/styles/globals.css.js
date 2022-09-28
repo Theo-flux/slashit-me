@@ -1,3 +1,6 @@
+import { createGlobalStyle } from 'styled-components';
+
+export default createGlobalStyle`
 * {
   margin: 0px;
   padding: 0px;
@@ -23,3 +26,4 @@ body {
   font-size: 0.9375rem;
   font-family: 'Montserrat', sans-serif;
 }
+`;
