@@ -1,20 +1,11 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import styled from 'styled-components';
-import { device } from '../utils';
-
-const Img = styled.img`
-  height: 20px;
-
-  @media ${device.md} {
-    height: 20px;
-  }
-`;
 
 function Logo() {
   return (
     <Link href={'/'}>
-      <Img src="/images/slashit.svg" />
+      <Image src="/images/slashit.svg" width={100} height={20} alt="logo" />
     </Link>
   );
 }
