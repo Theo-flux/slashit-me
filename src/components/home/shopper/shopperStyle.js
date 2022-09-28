@@ -35,8 +35,13 @@ export const Title = styled.h1`
   margin-bottom: 1.5rem;
 
   @media ${device.md} {
+    font-size: 3rem;
+    /* margin-bottom: 4rem; */
+  }
+
+  @media ${device.lg} {
     font-size: 4rem;
-    margin-bottom: 4rem;
+    /* margin-bottom: 4rem; */
   }
 `;
 
@@ -50,6 +55,12 @@ export const Text = styled.p`
   margin-bottom: 5rem;
 
   @media ${device.md} {
+    font-size: 1.125rem;
+    line-height: 2rem;
+    margin-bottom: 8rem;
+  }
+
+  @media ${device.lg} {
     font-size: 1.35rem;
     line-height: 2rem;
   }
@@ -61,11 +72,6 @@ export const Wrapper = styled.div`
   max-width: 952px;
   width: 100%;
   /* border: 1px solid magenta; */
-
-
-  @media ${device.base} {
-    width: 0%;
-  }
 
 
   @media ${device.md} {

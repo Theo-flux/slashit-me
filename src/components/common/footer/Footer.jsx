@@ -53,9 +53,7 @@ function Footer() {
               })}
             </div>
 
-            <div>
-              <p>connect with us</p>
-            </div>
+            <p>connect with us</p>
           </Wrapper>
         </FooterContainer>
 

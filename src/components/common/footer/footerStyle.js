@@ -32,11 +32,6 @@ export const UnorderList = styled.ul`
 export const List = styled.li`
   color: var(--gray);
   margin-bottom: 1rem;
-  ${transition}
-
-  &:hover {
-    transform: translateX(1rem);
-  }
 `;
 
 export const StyledLink = styled.a`
@@ -47,9 +42,9 @@ export const StyledLink = styled.a`
   ${transition}
 
   &:hover {
-    width: fit-content;
     text-decoration: underline;
     color: var(--violet);
+    transform: translateX(1rem);
   }
 `;
 

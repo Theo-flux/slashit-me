@@ -13,7 +13,8 @@ export const ButtonContainer = styled.div`
 `;
 
 export const Icon = styled.i`
-    font-size: 1.5rem;
+    font-size: 2rem;
+    margin-right: .3rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -27,7 +28,7 @@ export const P = styled.p`
 `;
 
 export const H3 = styled.h3`
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
 `;
 

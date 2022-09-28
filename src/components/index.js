@@ -1,2 +1,2 @@
 export { Navbar, Footer } from './common';
-export { Shopper } from './home';
+export { Shopper, Business } from './home';
