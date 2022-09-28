@@ -1,6 +1,7 @@
 import React from 'react';
 import { Section, Div, Title, Button } from '../../../shared';
 import { HeroContainer, Text, InfoWrapper, Row } from './heroStyles';
+import Pay from '../../pay';
 
 function Hero() {
   return (
@@ -10,8 +11,8 @@ function Hero() {
           <InfoWrapper>
             <Title>Buy now, pay later without the stress</Title>
             <Text>
-              Get the money to shop, pay bills or pay anyone<sup>1</sup> and conveniently
-              repay over 6 weeks or 3 months.
+              Get the money to shop, pay bills or pay anyone<sup>1</sup> and
+              conveniently repay over 6 weeks or 3 months.
             </Text>
             <br />
             <Text>
@@ -22,6 +23,10 @@ function Hero() {
               <Button>Pay anyone</Button>
               <Button type="outlined">Get Paid</Button>
             </Row>
+          </InfoWrapper>
+        
+          <InfoWrapper>
+            <Pay />
           </InfoWrapper>
         </HeroContainer>
       </Div>

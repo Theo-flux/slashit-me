@@ -4,33 +4,41 @@ import { device, transition } from '../../../utils';
 export const HeroContainer = styled.section`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
 
   @media ${device.md} {
-    flex-direction: column;
+    flex-direction: row;
   }
 `;
 
 export const InfoWrapper = styled.div`
   width: 100%;
+  margin-top: 5rem;
+
+  &:first-of-type {
+    margin-bottom: 3rem;
+  }
 
   @media ${device.md} {
     width: 40%;
+
+    &:first-of-type {
+      margin-bottom: 0rem;
+    }
   }
 `;
 
 export const Row = styled.div`
   margin-top: 3rem;
   width: 100%;
-  /* max-width: 200px; */
   display: flex;
   flex-direction: column;
 
   @media ${device.md} {
     margin-top: 5rem;
-    max-width: 350px;
+    max-width: 370px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

@@ -58,7 +58,7 @@ function Navbar() {
   }, [dropDownId, handleDropdownId]);
 
   return (
-    <Section ref={ref}>
+    <Section type={'fixed'} ref={ref}>
       <NavWrapper>
         <Nav>
           <div style={{ width: '100%' }}>
