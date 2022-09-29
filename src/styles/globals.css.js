@@ -12,6 +12,7 @@ export default createGlobalStyle`
   --gray: #1d1d1d;
   --alto: #d9d9d9;
   --link: #f8fafd;
+  --silver: #C2C2C2;
   --gr: linear-gradient(
     180deg,
     rgba(108, 33, 255, 0.2) 0%,
