@@ -37,8 +37,13 @@ export const InfoWrapper = styled.div`
 `;
 
 export const Bottom = styled.div`
+  width: 90%;
   margin-top: 2rem;
   height: auto;
+
+  @media ${device.md} {
+    width: fit-content;
+  }
 `;
 
 export const Step = styled.div`
@@ -100,8 +105,7 @@ export const Num = styled.span`
 `;
 
 export const Info = styled.div`
-  margin-left: 1rem;
-  width: 250px;
+  width: 220px;
 `;
 
 export const InfoTitle = styled.p`
