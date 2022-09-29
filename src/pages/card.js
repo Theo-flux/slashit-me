@@ -1,9 +1,10 @@
 import Layout from '../containers/Layout';
-import { Business, Hero, Shopper, Footer } from '../components';
+import { Business, Hero, Shopper, Footer, Download } from '../components';
 
 export default function Card() {
   return (
     <Layout>
+      <Download />
       <Footer>
         <p>
           <sup>1</sup> The minimum amount you can fund with is $10 and the
