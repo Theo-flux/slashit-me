@@ -25,7 +25,7 @@ export const navItems = [
     children: [
       {
         id: '1',
-        item: 'Accept slashit',
+        item: 'Get paid',
         link: '/',
       },
 
@@ -44,19 +44,13 @@ export const navItems = [
     children: [
       {
         id: '1',
-        item: 'Our story',
+        item: 'About us',
         link: '/',
       },
 
       {
         id: '2',
         item: 'Blog',
-        link: '/',
-      },
-
-      {
-        id: '3',
-        item: 'Career',
         link: '/',
       },
     ],
