@@ -1,9 +1,10 @@
 import Layout from '../containers/Layout';
-import { Business, Hero, Shopper, Footer, Download } from '../components';
+import { CardHero, Footer, Download } from '../components';
 
 export default function Card() {
   return (
     <Layout>
+      <CardHero />
       <Download />
       <Footer>
         <p>
