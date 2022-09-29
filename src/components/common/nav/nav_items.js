@@ -26,13 +26,13 @@ export const navItems = [
       {
         id: '1',
         item: 'Get paid',
-        link: '/',
+        link: '/getpaid',
       },
 
       {
         id: '2',
         item: 'Pricing',
-        link: '/',
+        link: '/pricing',
       },
     ],
   },
@@ -45,13 +45,13 @@ export const navItems = [
       {
         id: '1',
         item: 'About us',
-        link: '/',
+        link: '/about',
       },
 
       {
         id: '2',
         item: 'Blog',
-        link: '/',
+        link: '/blog',
       },
     ],
   },
