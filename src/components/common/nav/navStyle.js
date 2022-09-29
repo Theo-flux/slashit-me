@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { device, transition } from '../../../utils';
 
 export const Nav = styled.nav`
-
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -140,7 +139,7 @@ export const MobileBackdrop = styled.div`
   top: 0px;
   width: 100%;
   height: 100%;
-  background-color: var(--violet);
+  background-color: var(--gray);
   opacity: 0.8;
   z-index: 3;
 `;
