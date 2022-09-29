@@ -43,7 +43,7 @@ export const Title = styled.h1`
   }
 
   @media ${device.lg} {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 `;
 

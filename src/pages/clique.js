@@ -1,9 +1,10 @@
 import Layout from '../containers/Layout';
-import { Business, Hero, Shopper, Footer } from '../components';
+import { CliqueHero, Footer } from '../components';
 
 export default function Clique() {
   return (
     <Layout>
+      <CliqueHero />
       <Footer>
         <p>
           <sup>1</sup> Friends here means people you have a very close

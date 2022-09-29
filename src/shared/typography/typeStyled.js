@@ -4,7 +4,6 @@ import { device } from '../../utils';
 export const Titlecontainer = styled.h1`
   font-weight: 600;
   font-size: 2rem;
-  line-height: 1;
   margin-bottom: 1.5rem;
 
   @media ${device.md} {
@@ -12,7 +11,7 @@ export const Titlecontainer = styled.h1`
   }
 
   @media ${device.lg} {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 `;
 
