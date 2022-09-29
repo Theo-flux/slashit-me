@@ -1,11 +1,12 @@
 import Layout from '../containers/Layout';
-import { CliqueHero, HowItWorks, Footer } from '../components';
+import { CliqueHero, HowItWorks, Footer, Download } from '../components';
 
 export default function Clique() {
   return (
     <Layout>
       <CliqueHero />
       <HowItWorks />
+      <Download />
       <Footer>
         <p>
           <sup>1</sup> Friends here means people you have a very close
