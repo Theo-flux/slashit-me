@@ -105,7 +105,7 @@ export const MenuIcon = styled.i`
 export const Mobile = styled.div`
   position: fixed;
   top: 0px;
-  left: ${(props) => (props.openMobileNav ? '0px' : '-400px')};
+  left: ${(props) => (props.openMobileNav ? '0px' : '-900px')};
   opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
   ${transition}
   height: 100vh;
@@ -122,9 +122,9 @@ export const MobileContent = styled.div`
   width: 80%;
   height: 100%;
   background-color: white;
-  left: ${(props) => (props.openMobileNav ? '0px' : '-400px')};
+  left: ${(props) => (props.openMobileNav ? '0px' : '-900px')};
   ${transition}
-  transition-delay: 300ms;
+  transition-delay: 150ms;
   opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
   z-index: 4;
 
