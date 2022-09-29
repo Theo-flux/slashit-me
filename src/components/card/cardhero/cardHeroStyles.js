@@ -16,7 +16,7 @@ export const HeroContainer = styled.section`
 
 export const InfoWrapper = styled.div`
   width: 100%;
-
+  /* border: 1px solid magenta; */
   &:first-of-type {
     margin-bottom: 3rem;
   }
@@ -36,7 +36,6 @@ export const Text = styled.p`
   font-weight: 200;
   color: ${(props) => props.color || `var(--gray)`};
   opacity: ${(props) => props.color || `0.8`};
-  margin-bottom: 2rem;
 
   @media ${device.md} {
     font-size: 1.125rem;

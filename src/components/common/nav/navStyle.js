@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { device, transition } from '../../../utils';
 
 export const Nav = styled.nav`
+
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -90,4 +91,56 @@ export const ChildLi = styled.li`
     background-color: var(--violet);
     ${transition}
   }
+`;
+
+export const MenuIcon = styled.i`
+  font-size: 2rem;
+  cursor: pointer;
+  /* border: 1px solid magenta; */
+
+  @media ${device.md} {
+    display: none;
+  }
+`;
+
+export const Mobile = styled.div`
+  position: fixed;
+  top: 0px;
+  left: ${(props) => (props.openMobileNav ? '0px' : '-400px')};
+  opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
+  ${transition}
+  height: 100vh;
+  width: 100%;
+
+  @media ${device.md} {
+    display: none;
+  }
+`;
+
+export const MobileContent = styled.div`
+  position: absolute;
+  top: 0px;
+  width: 80%;
+  height: 100%;
+  background-color: white;
+  left: ${(props) => (props.openMobileNav ? '0px' : '-400px')};
+  ${transition}
+  transition-delay: 300ms;
+  opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
+  z-index: 4;
+
+  @media ${device.base} {
+    width: 50%;
+  }
+`;
+
+export const MobileBackdrop = styled.div`
+  transform: ${(props) => (props.openMobileNav ? 'scaleX(1)' : 'scaleX(0)')};
+  ${transition}
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--violet);
+  opacity: 0.8;
+  z-index: 3;
 `;

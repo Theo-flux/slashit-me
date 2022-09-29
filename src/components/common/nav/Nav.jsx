@@ -2,8 +2,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Section, NavWrapper, Logo } from '../../../shared';
-import { Nav, UlDesktop, Lidesktop, Ul, ChildLi } from './navStyle';
 import { navItems } from './nav_items';
+import {
+  Nav,
+  UlDesktop,
+  Lidesktop,
+  Ul,
+  ChildLi,
+  MenuIcon,
+  Mobile,
+  MobileContent,
+  MobileBackdrop,
+} from './navStyle';
 
 function Navbar() {
   const router = useRouter();
@@ -33,18 +43,6 @@ function Navbar() {
   function handleMobileNav() {
     setMobileNav(!openMobileNav);
   }
-
-  useEffect(() => {
-    const scrollY = document.body.style.top;
-    if (openMobileNav) {
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * 1);
-    }
-  }, [openMobileNav]);
 
   useEffect(() => {
     const ref = document.getElementById('ref');
@@ -94,8 +92,29 @@ function Navbar() {
               );
             })}
           </UlDesktop>
+          <MenuIcon onClick={() => handleMobileNav()}>
+            <svg
+              width="25"
+              height="16"
+              viewBox="0 0 25 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="25" height="2" fill="currentColor"></rect>
+              <rect y="14" width="25" height="2" fill="currentColor"></rect>
+            </svg>
+          </MenuIcon>
         </Nav>
       </NavWrapper>
+      <Mobile openMobileNav={openMobileNav}>
+        <MobileContent openMobileNav={openMobileNav}>
+          mobile content
+        </MobileContent>
+        <MobileBackdrop
+          openMobileNav={openMobileNav}
+          onClick={() => handleMobileNav()}
+        />
+      </Mobile>
     </Section>
   );
 }
