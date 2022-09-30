@@ -6,6 +6,10 @@ import {
   Title,
   Wrapper,
   Img,
+  LearnMoreMobile,
+  LearnMoreDesktop,
+  Container,
+  Heading,
 } from './businessStyle';
 
 function Business() {
@@ -26,7 +30,21 @@ function Business() {
             <Img src="/images/image-slider-3.png" alt="slide-1" />
           </Wrapper>
 
-          <Button>Learn more</Button>
+          <LearnMoreDesktop>
+            <Button>Learn more</Button>
+          </LearnMoreDesktop>
+
+          <LearnMoreMobile>
+            <Container>
+              <Heading>Get paid the easy way</Heading>
+              <Text color="white">
+                Your customers pay in 4 or 3 installments and we pay you in full
+                instantly - we’ve made friends with your customers already so
+                that they can pay us back
+              </Text>
+              <Button type="outlined">Learn more</Button>
+            </Container>
+          </LearnMoreMobile>
         </BusinessContainer>
       </Div>
     </Section>

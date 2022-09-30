@@ -34,7 +34,7 @@ export const H3 = styled.h3`
 
 export const AnchorButton = styled.button`
   background-color: ${(props) =>
-    props.type === 'outlined' ? 'transparent' : props.bg || 'var(--gray)'};
+    props.type === 'outlined' ? 'white' : props.bg || 'var(--gray)'};
   border: 1px solid ${(props) => props.bg || 'var(--gray)'};
   padding: 1rem 3rem;
   border-radius: 0.375rem;
