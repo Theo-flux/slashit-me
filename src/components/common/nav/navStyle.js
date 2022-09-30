@@ -46,7 +46,7 @@ export const Ul = styled.ul`
   top: 0px;
   left: 0px;
   list-style: none;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   padding: 0.75rem 0.5rem;
   background-color: white;
   width: 145px;

@@ -27,7 +27,6 @@ export const H6 = styled.h6`
 
 export const UnorderList = styled.ul`
   list-style: none;
-  padding: none;
 `;
 
 export const List = styled.li`
