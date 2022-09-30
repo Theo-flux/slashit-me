@@ -99,6 +99,7 @@ export const Img = styled.img`
 
 export const LearnMoreDesktop = styled.div`
   display: none;
+  margin-top: 3rem;
 
   @media ${device.md} {
     display: block;

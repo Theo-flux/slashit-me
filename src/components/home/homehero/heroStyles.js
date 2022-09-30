@@ -8,7 +8,7 @@ export const HeroContainer = styled.section`
   justify-content: space-between;
   align-items: center;
 
-  @media ${device.md} {
+  @media ${device.lg} {
     flex-direction: row;
   }
 `;
@@ -21,7 +21,7 @@ export const InfoWrapper = styled.div`
     margin-bottom: 3rem;
   }
 
-  @media ${device.md} {
+  @media ${device.lg} {
     width: 45%;
 
     &:first-of-type {
@@ -29,7 +29,7 @@ export const InfoWrapper = styled.div`
     }
 
     &:last-of-type {
-      width: 35%;
+      width: 40%;
     }
   }
 `;
