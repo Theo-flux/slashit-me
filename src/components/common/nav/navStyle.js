@@ -143,3 +143,28 @@ export const MobileBackdrop = styled.div`
   opacity: 0.8;
   z-index: 3;
 `;
+
+export const Column = styled.div`
+  padding: 2rem;
+`;
+
+export const InnerContent = styled.div`
+  margin-top: 4rem;
+  padding: 1rem;
+`;
+
+export const MobilePod = styled.div``;
+
+export const Parent = styled.h4``;
+
+export const Children = styled.div`
+  padding: 1rem;
+`;
+
+export const Child = styled.div`
+  margin-bottom: 1rem;
+
+  /* &:last-of-type {
+    margin-bottom: 0rem;
+  } */
+`;

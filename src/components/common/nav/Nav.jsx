@@ -13,6 +13,12 @@ import {
   Mobile,
   MobileContent,
   MobileBackdrop,
+  InnerContent,
+  Column,
+  MobilePod,
+  Parent,
+  Children,
+  Child,
 } from './navStyle';
 
 function Navbar() {
@@ -108,7 +114,25 @@ function Navbar() {
       </NavWrapper>
       <Mobile openMobileNav={openMobileNav}>
         <MobileContent openMobileNav={openMobileNav}>
-          mobile content
+          <Column>
+            <Logo />
+            <InnerContent>
+              {navItems.map((navItem, index) => {
+                const { id, item, children, icon } = navItem;
+                return (
+                  <MobilePod key={index}>
+                    <Parent>{item}</Parent>
+                    <Children>
+                      {children.map((child, index) => {
+                        const { item, link } = child;
+                        return <Child key={index}>{item}</Child>;
+                      })}
+                    </Children>
+                  </MobilePod>
+                );
+              })}
+            </InnerContent>
+          </Column>
         </MobileContent>
         <MobileBackdrop
           openMobileNav={openMobileNav}
