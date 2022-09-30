@@ -20,8 +20,8 @@ export const FooterItem = styled.div`
 `;
 
 export const H6 = styled.h6`
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   margin-bottom: 1.5rem;
 `;
 
@@ -37,7 +37,7 @@ export const List = styled.li`
 
 export const StyledLink = styled.a`
   color: var(--gray);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 300;
   text-decoration: none;
   ${transition}

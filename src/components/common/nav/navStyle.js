@@ -74,9 +74,10 @@ export const Ul = styled.ul`
 `;
 
 export const ChildLi = styled.li`
+  font-size: 0.875rem;
   margin-bottom: 0.5rem;
   padding: 0.25rem 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   background-color: var(--link);
   transition: all 0.3ms ease-in-out;
   background-color: ${(props) => props.path === props.link && `var(--violet)`};
