@@ -21,11 +21,6 @@ export const InfoWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  &:first-of-type {
-    margin-bottom: 3rem;
-    display: none;
-  }
-
   @media ${device.md} {
     width: 45%;
 
@@ -36,9 +31,26 @@ export const InfoWrapper = styled.div`
   }
 `;
 
+export const Title = styled.h1`
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  @media ${device.md} {
+    font-size: 3rem;
+    text-align: left;
+  }
+
+  @media ${device.lg} {
+    font-size: 3rem;
+  }
+`;
+
 export const Text = styled.p`
   width: 100%;
   max-width: 600px;
+  text-align: center;
   font-weight: 200;
   color: ${(props) => props.color || `var(--gray)`};
   opacity: ${(props) => props.color || `0.8`};
@@ -51,6 +63,7 @@ export const Text = styled.p`
   @media ${device.lg} {
     font-size: 1.35rem;
     line-height: 2rem;
+    text-align: left;
   }
 `;
 

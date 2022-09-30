@@ -1,6 +1,12 @@
 import Image from 'next/image';
-import { Section, Div, Title, GetAppButton } from '../../../shared';
-import { DownloadContainer, Wrapper, Text, Spacer } from './downloadStyles';
+import { Section, Div } from '../../../shared';
+import {
+  DownloadContainer,
+  Wrapper,
+  Title,
+  Text,
+  Spacer,
+} from './downloadStyles';
 
 function Download() {
   return (

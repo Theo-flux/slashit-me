@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import { Section, Div, Title } from '../../../shared';
+import { Section, Div } from '../../../shared';
 import {
   CreditContainer,
   InfoWrapper,
+  Title,
   Text,
   Bottom,
   Line,
