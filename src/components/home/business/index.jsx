@@ -33,7 +33,6 @@ function Business() {
           <LearnMoreDesktop>
             <Button>Learn more</Button>
           </LearnMoreDesktop>
-
           <LearnMoreMobile>
             <Container>
               <Heading>Get paid the easy way</Heading>

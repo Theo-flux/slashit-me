@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { device, transition } from '../../../utils';
 
 export const BusinessContainer = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -107,8 +108,10 @@ export const LearnMoreDesktop = styled.div`
 `;
 
 export const LearnMoreMobile = styled.div`
+  height: auto;
   display: block;
   margin-top: 3rem;
+  padding: 0.5rem;
   width: 100%;
 
   @media ${device.md} {
@@ -127,8 +130,10 @@ export const Container = styled.div`
   border-radius: 0.375rem;
   padding: 2rem;
   background-color: var(--gray);
+  /* display: none; */
 
   & > p {
+    font-size: 0.875rem;
     margin-bottom: 3rem;
   }
 `;

@@ -10,6 +10,7 @@ import {
   Ul,
   ChildLi,
   MenuIcon,
+  CloseIcon,
   Mobile,
   MobileContent,
   MobileBackdrop,
@@ -19,6 +20,7 @@ import {
   Parent,
   Children,
   Child,
+  ItemContainer,
 } from './navStyle';
 
 function Navbar() {
@@ -115,8 +117,15 @@ function Navbar() {
       <Mobile openMobileNav={openMobileNav}>
         <MobileContent openMobileNav={openMobileNav}>
           <Column>
-            <Logo />
             <InnerContent>
+              <Logo />
+              <CloseIcon
+                onClick={() => handleMobileNav()}
+                className="ri-close-fill"
+              />
+            </InnerContent>
+
+            <ItemContainer>
               {navItems.map((navItem, index) => {
                 const { id, item, children, icon } = navItem;
                 return (
@@ -131,7 +140,7 @@ function Navbar() {
                   </MobilePod>
                 );
               })}
-            </InnerContent>
+            </ItemContainer>
           </Column>
         </MobileContent>
         <MobileBackdrop

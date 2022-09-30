@@ -70,3 +70,8 @@ export const Text = styled.p`
     line-height: 2rem;
   }
 `;
+
+export const Clipper = styled.span`
+  color: var(--violet);
+  text-decoration: line-through 5px var(--gray);
+`;

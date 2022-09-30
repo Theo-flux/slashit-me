@@ -102,6 +102,16 @@ export const MenuIcon = styled.i`
   }
 `;
 
+export const CloseIcon = styled.i`
+  font-size: 1.5rem;
+  cursor: pointer;
+  /* border: 1px solid magenta; */
+
+  @media ${device.md} {
+    display: none;
+  }
+`;
+
 export const Mobile = styled.div`
   position: fixed;
   top: 0px;
@@ -145,26 +155,42 @@ export const MobileBackdrop = styled.div`
 `;
 
 export const Column = styled.div`
-  padding: 2rem;
+  border: '1px solid magenta';
 `;
 
 export const InnerContent = styled.div`
-  margin-top: 4rem;
-  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 1rem;
 `;
 
-export const MobilePod = styled.div``;
+export const ItemContainer = styled.div``;
 
-export const Parent = styled.h4``;
+export const MobilePod = styled.div`
+  border-bottom: 0.3px dashed var(--gray);
+  padding: 2rem;
+
+  &:last-of-type {
+    border: none;
+  }
+`;
+
+export const Parent = styled.h4`
+  color: var(--silver);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 400;
+`;
 
 export const Children = styled.div`
-  padding: 1rem;
+  padding: 1.5rem 1rem 0rem 1rem;
 `;
 
 export const Child = styled.div`
   margin-bottom: 1rem;
 
-  /* &:last-of-type {
+  &:last-of-type {
     margin-bottom: 0rem;
-  } */
+  }
 `;
