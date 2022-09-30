@@ -93,7 +93,7 @@ export const ChildLi = styled.li`
 `;
 
 export const MenuIcon = styled.i`
-  font-size: 2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   /* border: 1px solid magenta; */
 
@@ -162,7 +162,7 @@ export const InnerContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 1rem;
+  padding: 1.3rem 1rem;
 `;
 
 export const ItemContainer = styled.div``;
