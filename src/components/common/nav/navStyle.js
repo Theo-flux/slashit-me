@@ -36,7 +36,8 @@ export const Lidesktop = styled.li`
   }
 
   & > div > p {
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.875rem;
   }
 `;
 
