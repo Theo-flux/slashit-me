@@ -3,7 +3,7 @@ import { CareerContainer, CareerTitle } from './careersStyles';
 
 function CareerHero() {
   return (
-    <Section bg={`black`}>
+    <Section bg={`var(--gray)`}>
       <Div>
         <CareerContainer>
           <CareerTitle>
