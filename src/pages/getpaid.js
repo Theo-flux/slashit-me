@@ -1,10 +1,11 @@
 import Layout from '../containers/Layout';
-import { Banner, OnCredit, Footer, Download } from '../components';
+import { Banner, Sell, OnCredit, Footer, Download } from '../components';
 
 export default function Clique() {
   return (
     <Layout>
       <Banner />
+      <Sell />
       <OnCredit />
       <Download />
       <Footer>

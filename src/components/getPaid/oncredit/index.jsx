@@ -39,7 +39,7 @@ const steps = [
 
 function OnCredit() {
   return (
-    <Section bg={`var(--link)`}>
+    <Section>
       <Div>
         <CreditContainer>
           <InfoWrapper>

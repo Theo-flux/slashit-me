@@ -27,5 +27,4 @@ function CardHero() {
     </Section>
   );
 }
-
 export default CardHero;
