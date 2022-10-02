@@ -28,4 +28,26 @@ body {
   font-size: 0.9375rem;
   font-family: 'Montserrat', sans-serif;
 }
+
+.reveal-ans {
+  font-size: 0.9375rem;
+  font-weight: 300;
+  /* unshrink, then fade in */
+  transition: font-size .25s,
+  margin .25s,
+  padding .25s,
+  opacity .5s .25s;
+}
+
+.hide-ans {
+  font-size: 0;
+  margin: 0;
+  opacity: 0;
+  padding: 0;
+  /* fade out, then shrink */
+  transition: opacity .25s,
+    font-size .5s .25s,
+    margin .5s .25s,
+    padding .5s .25s;
+}
 `;

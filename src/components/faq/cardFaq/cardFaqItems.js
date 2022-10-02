@@ -1,4 +1,4 @@
-const cardFaqItems = [
+export const cardFaqItems = [
   {
     id: '1',
     question: 'Who can use Slashit?',

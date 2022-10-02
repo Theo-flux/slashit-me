@@ -1,4 +1,4 @@
-const cliqueFaqItems = [
+export const cliqueFaqItems = [
   {
     id: '1',
     question: 'Who can use Slashit?',

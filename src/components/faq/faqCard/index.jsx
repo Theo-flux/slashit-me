@@ -4,17 +4,20 @@ import {
   FaqQuestionBox,
   FaqQuestion,
   FaqAnswer,
-  ArrowSVG,
+  Icon,
 } from './faqcardStyles';
 
 function FaqCard({ faq, handleTarget, target }) {
+  const { id, question, answer } = faq;
   return (
     <FaqCardContainer>
-      <FaqQuestionBox>
-        <FaqQuestion></FaqQuestion>
-        <ArrowSVG />
+      <FaqQuestionBox id={id} target={target} onClick={() => handleTarget(id)}>
+        <FaqQuestion>{question}</FaqQuestion>
+        <Icon id={id} target={target} className="ri-arrow-down-s-fill"></Icon>
       </FaqQuestionBox>
-      <FaqAnswer></FaqAnswer>
+      <FaqAnswer className={`${target === id ? 'reveal-ans' : 'hide-ans'}`}>
+        {answer}
+      </FaqAnswer>
     </FaqCardContainer>
   );
 }
