@@ -8,7 +8,8 @@ export default createGlobalStyle`
 }
 
 :root {
-  --violet: #6c21ff;
+  --violet: #7521FF;
+  --purple: #FF00D6;
   --gray: #1d1d1d;
   --alto: #d9d9d9;
   --link: #f8fafd;

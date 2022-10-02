@@ -32,8 +32,8 @@ export const CareerTitle = styled.h1`
   }
   background: linear-gradient(
     140.43deg,
-    #1914ff 43.26%,
-    rgba(211, 33, 255, 0.86) 76.56%
+    var(--violet) 43.26%,
+    var(--purple) 76.56%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

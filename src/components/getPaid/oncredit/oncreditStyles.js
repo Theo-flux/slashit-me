@@ -112,7 +112,7 @@ export const NumDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--link);
+  background-color: white;
   width: 80px;
   height: 80px;
   border-radius: 50%;

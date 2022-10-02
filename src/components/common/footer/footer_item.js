@@ -4,11 +4,11 @@ export const footerItem = [
     parent: 'Shopper',
     children: [
       {
-        to: '/',
+        to: '/clique',
         name: 'Clique',
       },
       {
-        to: '/',
+        to: '/card',
         name: 'Virtual Card',
       },
     ],
@@ -19,11 +19,11 @@ export const footerItem = [
     parent: 'Merchant',
     children: [
       {
-        to: '/',
+        to: '/getpaid',
         name: 'Get Paid',
       },
       {
-        to: '/',
+        to: '/pricing',
         name: 'Pricing',
       },
     ],
@@ -42,8 +42,12 @@ export const footerItem = [
         name: 'Blog',
       },
       {
-        to: '/',
+        to: '/careers',
         name: 'Careers',
+      },
+      {
+        to: '/faqs',
+        name: 'FAQs',
       },
       {
         to: '/',
