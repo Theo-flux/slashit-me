@@ -1,5 +1,12 @@
 import Layout from '../containers/Layout';
-import { Banner, Sell, OnCredit, Footer, Download } from '../components';
+import {
+  Banner,
+  Sell,
+  PaymentLink,
+  OnCredit,
+  Footer,
+  Download,
+} from '../components';
 
 export default function Clique() {
   return (
@@ -7,6 +14,7 @@ export default function Clique() {
       <Banner />
       <Sell />
       <OnCredit />
+      <PaymentLink />
       <Download />
       <Footer>
         <p>

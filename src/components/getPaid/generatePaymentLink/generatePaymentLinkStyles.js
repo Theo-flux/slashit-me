@@ -1,19 +1,18 @@
 import styled from 'styled-components';
-import { InputContainer } from '../../shared';
+import { InputContainer } from '../../../shared';
 
-export const PayForm = styled.div`
+export const GenerateLinkForm = styled.div`
   padding: 2rem;
   border-radius: 0.5rem;
-  background-color: var(--link);
+  background-color: white;
   width: 100%;
   filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
     drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 `;
 
-export const PaySection = styled.div`
+export const LinkSection = styled.div`
   border-bottom: 1px solid var(--alto);
   padding-bottom: 1rem;
-
   &:last-of-type {
     border: none;
   }

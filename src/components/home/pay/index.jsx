@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, InputContainer } from '../../shared';
+import { Button, InputContainer } from '../../../shared';
 import { PayForm, PaySection, InfoBox, Icon, Row, Col } from './payStyles';
 
 function Pay() {

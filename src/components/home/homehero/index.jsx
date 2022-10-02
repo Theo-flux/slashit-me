@@ -1,7 +1,7 @@
 import React from 'react';
 import { Section, Div, Title, Button } from '../../../shared';
 import { HeroContainer, Text, InfoWrapper, Row, Clipper } from './heroStyles';
-import Pay from '../../pay';
+import Pay from '../pay';
 
 function Hero() {
   return (
