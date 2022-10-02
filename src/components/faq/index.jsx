@@ -45,6 +45,12 @@ function Faq() {
               </FaqPod>
             </FaqRow>
           </FaqCol>
+
+          <FaqCol>
+            {activeFaq === 'clique' && <CliqueFaq />}
+            {activeFaq === 'card' && <CardFaq />}
+            {activeFaq === 'merchant' && <MerchantFaq />}
+          </FaqCol>
         </FaqWrapper>
       </Div>
     </Section>
