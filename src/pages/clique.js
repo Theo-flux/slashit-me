@@ -22,7 +22,7 @@ export default function Clique() {
         </p>
 
         <p>
-          <sup>3</sup> Maintain a minimum Spending balance NGN15,0000 for at
+          <sup>3</sup> Maintain a minimum Spending balance NGN15,000 for at
           least 15 days and you’ll be eligible to increase your Credit limit to
           NGN5,000 everyday if you continue to maintain a minimum Spending
           balance of NGN15,000. However, you might not be able to increase your

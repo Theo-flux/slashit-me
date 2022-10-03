@@ -10,8 +10,8 @@ function CardHero() {
           <InfoWrapper>
             <Title>A new kind of virtual Card</Title>
             <Text>
-              Fund with any amount1, pay 25% upfront of that amount and pay the
-              rest over 6 weeks
+              Fund with any amount<sup>1</sup>, pay 25% upfront of that amount
+              and pay the rest over 6 weeks
             </Text>
           </InfoWrapper>
           <InfoWrapper>
