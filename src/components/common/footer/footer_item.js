@@ -50,7 +50,7 @@ export const footerItem = [
         name: 'FAQs',
       },
       {
-        to: '/',
+        to: '/contactus',
         name: 'Contact us',
       },
     ],

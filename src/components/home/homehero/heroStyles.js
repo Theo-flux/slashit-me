@@ -7,6 +7,7 @@ export const HeroContainer = styled.section`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  /* border: 1px solid magenta; */
 
   @media ${device.lg} {
     flex-direction: row;
@@ -15,7 +16,7 @@ export const HeroContainer = styled.section`
 
 export const InfoWrapper = styled.div`
   width: 100%;
-  margin-top: 5rem;
+  margin-top: 1.5rem;
 
   &:first-of-type {
     margin-bottom: 3rem;

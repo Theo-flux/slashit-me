@@ -21,4 +21,16 @@ export const Input = styled.input`
   }
 `;
 
+export const Textarea = styled.textarea`
+  border-radius: 0.375rem;
+  padding: 1rem;
+  border: 1px solid var(--alto);
+  width: 100%;
+  resize: none;
+
+  &:focus {
+    outline: 1px solid var(--violet);
+  }
+`;
+
 export const Error = styled.small``;
