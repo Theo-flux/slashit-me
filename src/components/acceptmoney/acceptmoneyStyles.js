@@ -11,13 +11,17 @@ export const AcceptContainer = styled.div`
 
 export const Title = styled.h1`
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-align: center;
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
   margin-bottom: 1.5rem;
   @media ${device.md} {
+    font-size: 2rem;
+  }
+
+  @media ${device.lg} {
     font-size: 2.5rem;
   }
 `;
@@ -68,6 +72,7 @@ export const SelectStoreContainer = styled.div`
   padding: 1rem;
   margin: 3rem auto;
   width: 100%;
+  background-color: white;
   max-width: 400px;
   border: ${(props) =>
     props.selectStore ? `1px solid var(--violet)` : `1px solid var(--silver)`};
