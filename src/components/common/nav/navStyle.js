@@ -139,10 +139,6 @@ export const MobileContent = styled.div`
   transition-delay: 150ms;
   opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
   z-index: 4;
-
-  @media ${device.base} {
-    width: 80%;
-  }
 `;
 
 export const MobileBackdrop = styled.div`
