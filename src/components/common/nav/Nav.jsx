@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Section, NavWrapper, Logo } from '../../../shared';
-import { navItems } from './nav_items';
+import { navItems, mobileNavItems } from './nav_items';
 import {
   Nav,
   UlDesktop,
@@ -20,7 +21,10 @@ import {
   Parent,
   Children,
   Child,
+  ChildTitle,
+  ChildText,
   ItemContainer,
+  Row,
 } from './navStyle';
 
 function Navbar() {
@@ -118,15 +122,30 @@ function Navbar() {
             </InnerContent>
 
             <ItemContainer>
-              {navItems.map((navItem, index) => {
-                const { id, item, children, icon } = navItem;
+              {mobileNavItems.map((navItem, index) => {
+                const { item, children } = navItem;
                 return (
                   <MobilePod key={index}>
                     <Parent>{item}</Parent>
                     <Children>
                       {children.map((child, index) => {
-                        const { item, link } = child;
-                        return <Child key={index}>{item}</Child>;
+                        const { title, text, icon, link } = child;
+                        return (
+                          <Link href={link} key={index}>
+                            <Child>
+                              <Image
+                                src={icon}
+                                width={20}
+                                height={20}
+                                alt={'icon'}
+                              />
+                              <Row>
+                                <ChildTitle>{title}</ChildTitle>
+                                <ChildText>{text}</ChildText>
+                              </Row>
+                            </Child>
+                          </Link>
+                        );
                       })}
                     </Children>
                   </MobilePod>

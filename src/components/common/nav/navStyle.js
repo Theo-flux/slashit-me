@@ -131,7 +131,7 @@ export const Mobile = styled.div`
 export const MobileContent = styled.div`
   position: absolute;
   top: 0px;
-  width: 80%;
+  width: 100%;
   height: 100%;
   background-color: white;
   left: ${(props) => (props.openMobileNav ? '0px' : '-900px')};
@@ -141,7 +141,7 @@ export const MobileContent = styled.div`
   z-index: 4;
 
   @media ${device.base} {
-    width: 50%;
+    width: 80%;
   }
 `;
 
@@ -190,9 +190,25 @@ export const Children = styled.div`
 `;
 
 export const Child = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
 
   &:last-of-type {
     margin-bottom: 0rem;
   }
+`;
+
+export const ChildTitle = styled.h4`
+  margin-bottom: 0.375rem;
+`;
+
+export const ChildText = styled.small`
+  font-size: 0.75rem;
+`;
+
+export const Row = styled.div`
+  width: 80%;
+  margin-left: 1rem;
 `;
