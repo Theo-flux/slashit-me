@@ -148,7 +148,7 @@ export const MobileBackdrop = styled.div`
   width: 100%;
   height: 100%;
   background-color: var(--gray);
-  opacity: 0.8;
+  opacity: 0.5;
   z-index: 3;
 `;
 
@@ -178,7 +178,7 @@ export const Parent = styled.h4`
   color: var(--silver);
   text-transform: uppercase;
   font-size: 0.75rem;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 export const Children = styled.div`

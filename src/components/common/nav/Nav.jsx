@@ -154,10 +154,10 @@ function Navbar() {
             </ItemContainer>
           </Column>
         </MobileContent>
-        {/* <MobileBackdrop
+        <MobileBackdrop
           openMobileNav={openMobileNav}
           onClick={() => handleMobileNav()}
-        /> */}
+        />
       </Mobile>
     </Section>
   );
