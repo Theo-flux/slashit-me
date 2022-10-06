@@ -37,7 +37,7 @@ function Pay() {
         <Row>
           <div>How you’ll pay</div>
           <div>
-            4 x installments <i class="fa-solid fa-caret-down"></i>
+            4 x installments <i className="fa-solid fa-caret-down"></i>
           </div>
         </Row>
         <Row>

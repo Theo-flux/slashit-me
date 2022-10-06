@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-sync-scripts */
-// pages/_document.js
 import { ServerStyleSheet } from 'styled-components';
 import Document, {
   Html,
@@ -45,11 +43,6 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-          />
           <link rel="icon" href="/images/slashit.svg" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
