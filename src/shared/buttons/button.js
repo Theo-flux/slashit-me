@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import { device, transition } from '../../utils';
 
 export const ButtonContainer = styled.div`
@@ -42,4 +43,21 @@ export const AnchorButton = styled.button`
   font-size: 1.125rem;
   font-weight: 600;
   outline: 0;
+`;
+
+export const StyledLink = styled(Link)`
+  cursor: pointer;
+`;
+
+export const StyledContent = styled.div`
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.isDisabled ? `var(--violet)` : `var(--silver)`};
+  padding: 1rem 3rem;
+  border-radius: 0.375rem;
+  color: ${(props) => (props.isDisabled ? 'white' : 'var(--alto)')};
+  font-size: 1.125rem;
+  font-weight: 600;
+  outline: 0;
+  ${transition}
 `;

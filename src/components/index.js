@@ -6,4 +6,4 @@ export { Banner, OnCredit, Sell, PaymentLink } from './getPaid';
 export { default as CareerHero } from './careers';
 export { default as Faq } from './faq';
 export { default as Contact } from './contactus';
-export { default as Accept } from './acceptmoney';
+export { Accept, LoginComponent } from './acceptmoney';

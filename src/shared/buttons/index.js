@@ -5,6 +5,8 @@ import {
   P,
   H3,
   AnchorButton,
+  StyledLink,
+  StyledContent,
 } from './button';
 
 export const GetAppButton = ({ data }) => {
@@ -25,5 +27,13 @@ export const Button = ({ bg, type, children }) => {
     <AnchorButton bg={bg} type={type}>
       {children}
     </AnchorButton>
+  );
+};
+
+export const LinkButton = ({ href, isDisabled, children }) => {
+  return (
+    <StyledLink href={`${isDisabled ? `${href}` : `#`}`}>
+      <StyledContent isDisabled={isDisabled}>{children}</StyledContent>
+    </StyledLink>
   );
 };

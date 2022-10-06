@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { device, transition } from '../../utils';
+import { device, transition } from '../../../utils';
 
 export const AcceptContainer = styled.div`
   margin-top: 1.5rem;

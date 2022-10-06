@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { Section, Div, Button } from '../../shared';
+import { Section, Div, LinkButton } from '../../../shared';
 import {
   AcceptContainer,
   Title,
@@ -49,7 +49,9 @@ function Accept() {
             </Text>
           </SelectStoreContainer>
 
-          <Button bg={`var(--violet)`}>Continue</Button>
+          <LinkButton href="acceptmoney/login" isDisabled={selectStore}>
+            Continue
+          </LinkButton>
         </AcceptContainer>
       </Div>
     </Section>
