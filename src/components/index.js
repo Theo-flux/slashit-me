@@ -7,3 +7,4 @@ export { default as CareerHero } from './careers';
 export { default as Faq } from './faq';
 export { default as Contact } from './contactus';
 export { Accept, LoginComponent } from './acceptmoney';
+export { Price } from './pricing';

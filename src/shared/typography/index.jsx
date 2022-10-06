@@ -15,3 +15,19 @@ export const Title = styled.h1`
   }
 `;
 
+export const Text = styled.p`
+  width: 100%;
+  max-width: 600px;
+  font-weight: 200;
+  color: var(--gray);
+  opacity: 0.8;
+  font-size: 0.625rem;
+
+  @media ${device.md} {
+    font-size: 1.125rem;
+  }
+
+  @media ${device.lg} {
+    font-size: 1.125rem;
+  }
+`;

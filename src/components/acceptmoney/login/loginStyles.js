@@ -36,6 +36,7 @@ export const Row = styled.div`
   font-size: 0.875rem;
   cursor: pointer;
 
+
   &:hover {
     color: var(--violet);
   }
