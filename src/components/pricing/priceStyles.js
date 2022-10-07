@@ -3,6 +3,7 @@ import { Title, Text } from '../../shared';
 import { device, transition } from '../../utils';
 
 export const PriceContainer = styled.div`
+  width: 100%;
   margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -10,11 +11,35 @@ export const PriceContainer = styled.div`
   align-items: center;
 `;
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  & > div {
+    width: 100%;
+    margin-bottom: 3em;
+  }
+
+  & > div:last-of-type {
+    margin-bottom: 0em;
+  }
+
+  @media ${device.md} {
+    & > div {
+      width: 45%;
+    }
+  }
+`;
 
 export const Tag = styled.p`
   text-align: center;
   font-weight: 600;
+  margin-bottom: 0.5rem;
 
   @media ${device.md} {
     font-size: 1.25rem;

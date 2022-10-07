@@ -22,9 +22,9 @@ export const GetAppButton = ({ data }) => {
   );
 };
 
-export const Button = ({ bg, type, children }) => {
+export const Button = ({ width, bg, type, children }) => {
   return (
-    <AnchorButton bg={bg} type={type}>
+    <AnchorButton width={width} bg={bg} type={type}>
       {children}
     </AnchorButton>
   );

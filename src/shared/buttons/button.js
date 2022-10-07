@@ -34,6 +34,7 @@ export const H3 = styled.h3`
 `;
 
 export const AnchorButton = styled.button`
+  width: ${(props) => props.width};
   background-color: ${(props) =>
     props.type === 'outlined' ? 'white' : props.bg || 'var(--gray)'};
   border: 1px solid ${(props) => props.bg || 'var(--gray)'};
