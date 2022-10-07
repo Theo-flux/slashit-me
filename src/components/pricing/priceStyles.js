@@ -14,7 +14,7 @@ export const PriceContainer = styled.div`
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 1000px;
-  margin-top: 5rem;
+  margin-top: 7rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

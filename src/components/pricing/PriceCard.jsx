@@ -1,12 +1,15 @@
-import { Button } from '../../shared';
 import {
   CardContainer,
   CardContent,
+  Button,
   PlanType,
   Type,
   Price,
   BenefitContainer,
   BenefitItem,
+  Icon,
+  InfoItem,
+  InfoContainer,
 } from './priceCardStyles';
 
 function PriceCard({ data }) {
@@ -24,15 +27,28 @@ function PriceCard({ data }) {
         </PlanType>
 
         <BenefitContainer>
-          <BenefitItem>Pay in 4 only 1</BenefitItem>
-          <BenefitItem>
-            3.5% per transaction 2Instant payout to wallet 3
-          </BenefitItem>
-          <BenefitItem>No free transfers</BenefitItem>
-          <BenefitItem>Not Eligible for zero transaction fees</BenefitItem>
+          {benefits.map((benefit, index) => {
+            const { item, isAvailable } = benefit;
+            return (
+              <BenefitItem key={index}>
+                <Icon
+                  className={`${
+                    isAvailable ? 'ri-check-line' : 'ri-close-line'
+                  }`}
+                />
+                {item}
+              </BenefitItem>
+            );
+          })}
 
           <Button width={`100%`}>{button}</Button>
         </BenefitContainer>
+
+        <InfoContainer>
+          {info.map((item, index) => {
+            return <InfoItem key={index}>{item}</InfoItem>;
+          })}
+        </InfoContainer>
       </CardContent>
     </CardContainer>
   );

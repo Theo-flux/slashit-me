@@ -8,15 +8,15 @@ export const plan = [
     benefits: [
       {
         isAvailable: true,
-        item: `Pay in 4 only <sup>1</sup>`,
+        item: `Pay in 4 only`,
       },
       {
         isAvailable: true,
-        item: `3.5% per transaction <sup>2</sup>`,
+        item: `3.5% per transaction`,
       },
       {
         isAvailable: true,
-        item: `Instant payout to wallet <sup>3</sup>`,
+        item: `Instant payout to wallet`,
       },
 
       {
@@ -31,9 +31,9 @@ export const plan = [
     ],
 
     info: [
-      `<sup>1</sup> Your customers can pay in 4 installments over 6 weeks.`,
-      `<sup>2</sup> You'll be charged 3.5% whenever your customers pay in installments with their Slashit account.`,
-      `<sup>3<s/up>  Slashit settles instantly to your Slashit balance when your customer completes an order in installments. No delayed or next day settlements.`,
+      `Your customers can pay in 4 installments over 6 weeks.`,
+      `You'll be charged 3.5% whenever your customers pay in installments with their Slashit account.`,
+      `Slashit settles instantly to your Slashit balance when your customer completes an order in installments. No delayed or next day settlements.`,
     ],
   },
 
@@ -46,15 +46,15 @@ export const plan = [
     benefits: [
       {
         isAvailable: true,
-        item: `Pay in 4 & Pay in 3 <sup>1</sup>`,
+        item: `Pay in 4 & Pay in 3`,
       },
       {
         isAvailable: true,
-        item: `3.5% per transaction <sup>2</sup>`,
+        item: `3.5% per transaction`,
       },
       {
         isAvailable: true,
-        item: `Instant payout to bank <sup>3</sup>`,
+        item: `Instant payout to bank`,
       },
 
       {
@@ -69,11 +69,11 @@ export const plan = [
     ],
 
     info: [
-      `<sup>1</sup> Your customers can pay in 4 installments over 6 weeks or in 3 installments over 3 months.`,
-      `<sup>2</sup>  You'll be charged 3.5% whenever your customers pay in installments with their Slashit account.`,
-      `<sup>3</sup>  3 Slashit settles instantly to your bank account when your customer completes an order provided that you’ve added a bank account to your Slashit account. No delayed or next day settlements.`,
-      `<sup>4</sup> Transfer to any bank account as many times as you want without paying any extra fee for one month.`,
-      `<sup>5</sup> The 3.5% fee per transaction is waived when your customer chooses to make their repayments from their Spending balance instead of their debit/credit card. That means zero transaction fee.`,
+      `Your customers can pay in 4 installments over 6 weeks or in 3 installments over 3 months.`,
+      `You'll be charged 3.5% whenever your customers pay in installments with their Slashit account.`,
+      `Slashit settles instantly to your bank account when your customer completes an order provided that you’ve added a bank account to your Slashit account. No delayed or next day settlements.`,
+      `Transfer to any bank account as many times as you want without paying any extra fee for one month.`,
+      `The 3.5% fee per transaction is waived when your customer chooses to make their repayments from their Spending balance instead of their debit/credit card. That means zero transaction fee.`,
     ],
   },
 ];
