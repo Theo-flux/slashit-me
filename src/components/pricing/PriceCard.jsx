@@ -41,7 +41,9 @@ function PriceCard({ data }) {
             );
           })}
 
-          <Button width={`100%`}>{button}</Button>
+          <Button bg={`var(--violet)`} width={`100%`}>
+            {button}
+          </Button>
         </BenefitContainer>
 
         <InfoContainer>

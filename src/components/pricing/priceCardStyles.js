@@ -3,7 +3,7 @@ import { AnchorButton } from '../../shared/buttons/button';
 import { device, transition } from '../../utils';
 
 export const CardContainer = styled.div`
-  border-radius: 0.375rem;
+  border-radius: 0.875rem;
   width: 100%;
   height: auto;
   background: ${(props) =>

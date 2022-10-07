@@ -2,7 +2,7 @@ export const plan = [
   {
     id: '1',
     planType: 'Free',
-    bg_color: `var(--gray)`,
+    bg_color: `var(--violet)`,
     price: '0',
     button: 'Get started for free',
     benefits: [
