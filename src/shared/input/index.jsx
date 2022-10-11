@@ -58,3 +58,20 @@ export const SelectContainer = ({ options, placeholder, id, legend }) => {
     </Box>
   );
 };
+
+export const Checker = () => {
+  return (
+    <main class="fancy">
+      <label for="Cookies">
+        <input
+          id="Cookies"
+          name="yaybox"
+          type="checkbox"
+          value="Cookies"
+          checked
+        />
+        <span>Chocolate Chip Cookies</span>
+      </label>
+    </main>
+  );
+};

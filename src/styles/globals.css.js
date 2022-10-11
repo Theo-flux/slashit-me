@@ -51,4 +51,10 @@ body {
     margin .5s .25s,
     padding .5s .25s;
 }
+
+input[type=checkbox]{
+    border: 1px solid magenta;
+    background-color: var(--violet);
+  }
+
 `;

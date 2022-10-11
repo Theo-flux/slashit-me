@@ -6,6 +6,7 @@ import {
   InputContainer,
   PhoneInputContainer,
   SelectContainer,
+  Checker,
 } from '../../../shared';
 import { Button } from '../pricecard/priceCardStyles';
 import {
@@ -75,7 +76,7 @@ const security_item = [
 ];
 
 function Register() {
-  const [active, setActive] = useState('business');
+  const [active, setActive] = useState('personal');
 
   function handleActive(arg) {
     setActive(arg);
@@ -203,6 +204,7 @@ function Register() {
                     />
                   );
                 })}
+                <Checker />
               </Column>
               <Button>Next</Button>
 
