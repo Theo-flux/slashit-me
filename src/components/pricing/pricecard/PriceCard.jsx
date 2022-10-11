@@ -10,6 +10,7 @@ import {
   Icon,
   InfoItem,
   InfoContainer,
+  Small,
 } from './priceCardStyles';
 
 function PriceCard({ data }) {
@@ -22,7 +23,7 @@ function PriceCard({ data }) {
           <Type>{planType}</Type>
           <Price>
             <sup>NGN</sup>
-            {price}
+            {price} <Small>/month</Small>
           </Price>
         </PlanType>
 
@@ -41,8 +42,8 @@ function PriceCard({ data }) {
             );
           })}
 
-          <Button bg={`var(--violet)`} width={`100%`}>
-            {button}
+          <Button bg={bg_color} width={`100%`}>
+            {button} <Small>/month</Small>
           </Button>
         </BenefitContainer>
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { AnchorButton } from '../../shared/buttons/button';
-import { device, transition } from '../../utils';
+import { AnchorButton } from '../../../shared/buttons/button';
+import { device, transition } from '../../../utils';
 
 export const CardContainer = styled.div`
   border-radius: 0.875rem;
@@ -41,6 +41,12 @@ export const Price = styled.div`
   @media ${device.lg} {
     font-size: 2rem;
   }
+`;
+
+export const Small = styled.small`
+  font-weight: 300;
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
 `;
 
 export const BenefitContainer = styled.div`

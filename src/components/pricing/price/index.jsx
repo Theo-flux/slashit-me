@@ -1,4 +1,4 @@
-import { Section, Div } from '../../shared';
+import { Section, Div } from '../../../shared';
 import {
   PriceContainer,
   Wrapper,
@@ -7,8 +7,8 @@ import {
   StyledText,
   StyledType,
 } from './priceStyles';
+import PriceCard from '../pricecard/PriceCard';
 import { plan } from './priceplan_item';
-import PriceCard from './PriceCard';
 
 function Price() {
   return (
@@ -36,4 +36,4 @@ function Price() {
   );
 }
 
-export { Price };
+export default Price;

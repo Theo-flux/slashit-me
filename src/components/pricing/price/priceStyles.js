@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Title, Text } from '../../shared';
-import { device, transition } from '../../utils';
+import { Title, Text } from '../../../shared';
+import { device, transition } from '../../../utils';
 
 export const PriceContainer = styled.div`
   width: 100%;

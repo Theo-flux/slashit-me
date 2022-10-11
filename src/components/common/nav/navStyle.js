@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { device, transition } from '../../../utils';
+import { device, transition, shadow } from '../../../utils';
 
 export const Nav = styled.nav`
   width: 100%;
@@ -54,8 +54,7 @@ export const Ul = styled.ul`
   transform: ${(props) =>
     props.dropDownId === props.id ? 'translateY(2rem)' : 'translateY(0)'};
   border-radius: 0.5rem;
-  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
-    drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  ${shadow}
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

@@ -2,7 +2,7 @@ export const plan = [
   {
     id: '1',
     planType: 'Free',
-    bg_color: `var(--violet)`,
+    bg_color: `var(--gray)`,
     price: '0',
     button: 'Get started for free',
     benefits: [
@@ -41,8 +41,8 @@ export const plan = [
     id: '2',
     planType: 'Thrive',
     bg_color: `var(--violet)`,
-    price: '17,000/month',
-    button: 'Pay NGN 17,000/month',
+    price: '17,000',
+    button: 'Pay NGN 17,000',
     benefits: [
       {
         isAvailable: true,
