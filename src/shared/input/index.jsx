@@ -1,5 +1,6 @@
 import {
   Input,
+  InputCheck,
   Textarea,
   Select,
   Legend,
@@ -7,12 +8,15 @@ import {
   Box,
   BoxRow,
   Prefix,
+  FormGroup,
+  FormCheck,
+  Label,
 } from './inputStyles';
 
 export const InputContainer = ({ type, placeholder, id, legend }) => {
   return (
     <Box>
-      <Legend for={id}>{legend}</Legend>
+      <Legend htmlFor={id}>{legend}</Legend>
       <Input id={id} type={type} placeholder={placeholder} />
       {/* <Error>{error}</Error> */}
     </Box>
@@ -22,7 +26,7 @@ export const InputContainer = ({ type, placeholder, id, legend }) => {
 export const TextAreaContainer = ({ id, legend, placeholder }) => {
   return (
     <Box>
-      <Legend for={id}>{legend}</Legend>
+      <Legend htmlFor={id}>{legend}</Legend>
       <Textarea rows={10} resi cols={50} id={id} placeholder={placeholder} />
     </Box>
   );
@@ -31,7 +35,7 @@ export const TextAreaContainer = ({ id, legend, placeholder }) => {
 export const PhoneInputContainer = ({ type, placeholder, id, legend }) => {
   return (
     <Box>
-      <Legend for={id}>{legend}</Legend>
+      <Legend htmlFor={id}>{legend}</Legend>
       <BoxRow>
         <Prefix>+234</Prefix>
         <Input id={id} type={type} placeholder={placeholder} />
@@ -44,7 +48,7 @@ export const PhoneInputContainer = ({ type, placeholder, id, legend }) => {
 export const SelectContainer = ({ options, placeholder, id, legend }) => {
   return (
     <Box>
-      <Legend for={id}>{legend}</Legend>
+      <Legend htmlFor={id}>{legend}</Legend>
       <Select id={id} name={placeholder}>
         {options.map((opt, index) => {
           return (
@@ -59,19 +63,12 @@ export const SelectContainer = ({ options, placeholder, id, legend }) => {
   );
 };
 
-export const Checker = () => {
+export const Checker = ({ content }) => {
   return (
-    <main class="fancy">
-      <label for="Cookies">
-        <input
-          id="Cookies"
-          name="yaybox"
-          type="checkbox"
-          value="Cookies"
-          checked
-        />
-        <span>Chocolate Chip Cookies</span>
-      </label>
-    </main>
+    <label class="container">
+      {content}
+      <input type="checkbox" />
+      <span class="checkmark"></span>
+    </label>
   );
 };

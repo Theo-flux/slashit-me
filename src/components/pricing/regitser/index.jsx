@@ -76,7 +76,7 @@ const security_item = [
 ];
 
 function Register() {
-  const [active, setActive] = useState('personal');
+  const [active, setActive] = useState('security');
 
   function handleActive(arg) {
     setActive(arg);
@@ -175,7 +175,7 @@ function Register() {
                   );
                 })}
               </Column>
-              <Button onClick={() => handleActive('password')}>Next</Button>
+              <Button onClick={() => handleActive('security')}>Next</Button>
 
               <Column>
                 <Link href={'/'}>
@@ -186,7 +186,7 @@ function Register() {
           </RegisterContainer>
         )}
 
-        {active === 'password' && (
+        {active === 'security' && (
           <RegisterContainer>
             <Wrapper>
               <StyledTitle>Create your password</StyledTitle>
@@ -204,7 +204,9 @@ function Register() {
                     />
                   );
                 })}
-                <Checker />
+                <Checker
+                  content={`you agree to Slashit terms of use and privacy policy.`}
+                />
               </Column>
               <Button>Next</Button>
 
