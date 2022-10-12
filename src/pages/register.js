@@ -5,7 +5,7 @@ export default function Registration() {
   return (
     <Layout>
       <Register />
-      <Footer>
+      {/* <Footer>
         <p>
           <sup>1</sup> While BVN, bank statements, proof of employment or other
           Identification document is not a requirement to pay in installments
@@ -13,7 +13,7 @@ export default function Registration() {
           documents if we detect that they may have abused the Slashit terms of
           use or installment agreement.
         </p>
-      </Footer>
+      </Footer> */}
     </Layout>
   );
 }

@@ -33,7 +33,7 @@ export const H3 = styled.h3`
   font-weight: 600;
 `;
 
-export const AnchorButton = styled.button`
+export const StyledButton = styled.button`
   width: ${(props) => props.width};
   background-color: ${(props) =>
     props.type === 'outlined' ? 'white' : props.bg || 'var(--gray)'};

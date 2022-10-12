@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AnchorButton } from '../../../shared/buttons/button';
+import { StyledButton } from '../../../shared/buttons/button';
 import { device, transition } from '../../../utils';
 
 export const CardContainer = styled.div`
@@ -72,7 +72,7 @@ export const Icon = styled.i`
   margin-right: 0.5rem;
 `;
 
-export const Button = styled(AnchorButton)`
+export const Button = styled(StyledButton)`
   margin-top: 1.5rem;
   padding: 1rem;
   width: 100%;

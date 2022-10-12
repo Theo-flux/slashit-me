@@ -41,6 +41,17 @@ export const Column = styled.div`
   }
 `;
 
+export const Content = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  max-width: fit-content;
+  /* border: 1px solid magenta; */
+
+  & input:last-of-type {
+    margin: 0rem;
+  }
+`;
+
 export const StyledTitle = styled(Title)`
   text-align: center;
   font-size: 1.5rem;

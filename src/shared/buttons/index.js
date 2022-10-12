@@ -4,7 +4,7 @@ import {
   Icon,
   P,
   H3,
-  AnchorButton,
+  StyledButton,
   StyledLink,
   StyledContent,
 } from './button';
@@ -22,11 +22,11 @@ export const GetAppButton = ({ data }) => {
   );
 };
 
-export const Button = ({ width, bg, type, children }) => {
+export const Button = ({ onClick, width, bg, type, children }) => {
   return (
-    <AnchorButton width={width} bg={bg} type={type}>
+    <StyledButton onClick={onClick} width={width} bg={bg} type={type}>
       {children}
-    </AnchorButton>
+    </StyledButton>
   );
 };
 

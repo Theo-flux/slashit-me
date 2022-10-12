@@ -56,8 +56,8 @@ body {
 .container {
   display: block;
   position: relative;
-  /* padding-left: 2rem; */
-  margin-bottom: 12px;
+  padding-left: 2rem;
+  margin-bottom: 2rem;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

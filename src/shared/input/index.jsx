@@ -1,6 +1,7 @@
 import {
   Input,
   InputCheck,
+  OtpInput,
   Textarea,
   Select,
   Legend,
@@ -70,5 +71,18 @@ export const Checker = ({ content }) => {
       <input type="checkbox" />
       <span class="checkmark"></span>
     </label>
+  );
+};
+
+export const OtpInputContainer = ({ id, name, dataNext, dataPrevious }) => {
+  return (
+    <OtpInput
+      type="text"
+      id={id}
+      name={name}
+      data-next={dataNext}
+      data-previous={dataPrevious}
+      maxLength={1}
+    />
   );
 };
