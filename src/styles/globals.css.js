@@ -118,8 +118,8 @@ body {
 /* Style the checkmark/indicator */
 .container .checkmark:after {
   transition: 500ms all ease-in-out;
-  left: 7px;
-  top: -2px;
+  left: 8px;
+  top: -3px;
   width: 3px;
   height: 10px;
   border: 0.2px solid white;

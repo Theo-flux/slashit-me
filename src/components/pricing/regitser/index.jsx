@@ -76,7 +76,7 @@ const security_item = [
 ];
 
 function Register() {
-  const [active, setActive] = useState('security');
+  const [active, setActive] = useState('personal');
 
   function handleActive(arg) {
     setActive(arg);
