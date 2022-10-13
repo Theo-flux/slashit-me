@@ -74,7 +74,13 @@ export const Checker = ({ content }) => {
   );
 };
 
-export const OtpInputContainer = ({ id, name, dataNext, dataPrevious }) => {
+export const OtpInputContainer = ({
+  onChange,
+  id,
+  name,
+  dataNext,
+  dataPrevious,
+}) => {
   return (
     <OtpInput
       type="text"
@@ -83,6 +89,7 @@ export const OtpInputContainer = ({ id, name, dataNext, dataPrevious }) => {
       data-next={dataNext}
       data-previous={dataPrevious}
       maxLength={1}
+      onChange={onChange}
     />
   );
 };

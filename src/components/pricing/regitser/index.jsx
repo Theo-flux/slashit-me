@@ -7,7 +7,7 @@ import SecurityForm from './security';
 import OtpForm from './otp';
 
 function Register() {
-  const [active, setActive] = useState('personal');
+  const [active, setActive] = useState('otp');
 
   function handleActive(arg) {
     setActive(arg);

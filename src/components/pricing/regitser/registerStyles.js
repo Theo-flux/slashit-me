@@ -43,7 +43,7 @@ export const Column = styled.div`
 
 export const Content = styled.div`
   width: 100%;
-  margin: 0 auto;
+  margin: 4rem auto;
   max-width: fit-content;
   /* border: 1px solid magenta; */
 
@@ -54,11 +54,11 @@ export const Content = styled.div`
 
 export const StyledTitle = styled(Title)`
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 2rem;
 
-  @media ${device.md} {
-    font-size: 2rem;
+  @media ${device.lg} {
+    font-size: 1.5rem;
   }
 `;
 
