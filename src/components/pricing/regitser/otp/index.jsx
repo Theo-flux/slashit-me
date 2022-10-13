@@ -11,83 +11,69 @@ import {
 
 const otp_item = [
   {
+    id: 'otp_digit_0',
+    name: 'otp_digit_0',
+  },
+
+  {
     id: 'otp_digit_1',
     name: 'otp_digit_1',
-    dataNext: 'otp_digit_2',
   },
 
   {
     id: 'otp_digit_2',
     name: 'otp_digit_2',
-    dataNext: 'otp_digit_3',
-    dataPrevious: 'otp_digit_1',
   },
 
   {
     id: 'otp_digit_3',
     name: 'otp_digit_3',
-    dataNext: 'otp_digit_4',
-    dataPrevious: 'otp_digit_2',
   },
 
   {
     id: 'otp_digit_4',
     name: 'otp_digit_4',
-    dataNext: 'otp_digit_5',
-    dataPrevious: 'otp_digit_3',
   },
 
   {
     id: 'otp_digit_5',
     name: 'otp_digit_5',
-    dataNext: 'otp_digit_6',
-    dataPrevious: 'otp_digit_5',
-  },
-
-  {
-    id: 'otp_digit_6',
-    name: 'otp_digit_6',
-    dataNext: 'otp_digit_7',
-    dataPrevious: 'otp_digit_5',
   },
 ];
 
 function OtpForm() {
-  const [otpData, setOtpData] = useState({
-    otp_digit_1: '',
-    otp_digit_2: '',
-    otp_digit_3: '',
-    otp_digit_4: '',
-    otp_digit_5: '',
-    otp_digit_6: '',
-  });
-
-  let otpDataCombination = '';
+  const [otpData, setOtpData] = useState(['']);
 
   function handleOtpOnChange(event, index) {
-    const { name, value } = event.target;
-    setOtpData({ ...otpData, [name]: parseInt(value) });
-    let current = document.getElementById(`otp_digit_${index + 1}`);
-    // console.log(current.value);
+    const { value } = event.target;
 
-    if (current.value) {
+    setOtpData((otpStr) => {
+      otpStr[index] = value;
+      return otpStr;
+    });
+
+    if (value) {
       if (index < 5) {
-        document.getElementById(`otp_digit_${index + 2}`).focus();
-      } else {
         document.getElementById(`otp_digit_${index + 1}`).focus();
+      } else {
+        document.getElementById(`otp_digit_${index}`).focus();
       }
     }
-  }
 
-  function combineData(otpData) {
-    for (let el in otpData) {
-      if (otpData[el] >= 0) otpDataCombination += otpData[el];
+    if (!otpData[index]) {
+      event.target.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace') {
+          document.getElementById(`otp_digit_${index - 1}`)?.focus();
+        }
+        event.target.value = '';
+      });
     }
-    console.log(otpDataCombination);
   }
 
   useEffect(() => {
-    combineData(otpData);
+    if (otpData.length === 0) {
+      document.getElementById(`otp_digit_0`).focus();
+    }
   }, [otpData]);
 
   return (
@@ -103,8 +89,6 @@ function OtpForm() {
                   key={index}
                   id={otp_item.id}
                   name={otp_item.name}
-                  dataNext={otp_item.dataNext}
-                  dataPrevious={otp_item.dataPrevious}
                   onChange={(e) => handleOtpOnChange(e, index)}
                 />
               );
