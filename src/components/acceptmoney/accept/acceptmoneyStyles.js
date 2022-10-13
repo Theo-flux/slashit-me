@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { device, transition } from '../../../utils';
 
 export const AcceptContainer = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,12 +17,9 @@ export const Title = styled.h1`
   width: 100%;
   margin: 0 auto;
   margin-bottom: 1.5rem;
-  @media ${device.md} {
-    font-size: 2rem;
-  }
 
   @media ${device.lg} {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 `;
 
@@ -70,7 +67,7 @@ export const Text = styled.p`
 
 export const SelectStoreContainer = styled.div`
   padding: 1rem;
-  margin: 3rem auto;
+  margin: 2rem auto;
   width: 100%;
   background-color: white;
   max-width: 400px;

@@ -11,7 +11,7 @@ export const RegisterContainer = styled.div`
 
 export const Wrapper = styled.div`
   background-color: white;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 0.375rem;
 
   @media ${device.md} {
@@ -57,7 +57,7 @@ export const Content = styled.div`
 export const StyledTitle = styled(Title)`
   text-align: center;
   font-size: 1.25rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   @media ${device.lg} {
     font-size: 1.5rem;

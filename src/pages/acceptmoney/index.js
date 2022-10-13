@@ -5,7 +5,6 @@ export default function Acceptmoneay() {
   return (
     <Layout>
       <Accept />
-      <Footer />
     </Layout>
   );
 }
