@@ -10,12 +10,14 @@ export const BannerContainer = styled.div`
 
   @media ${device.base} {
     background: url('./images/getpaid-banner-tablet.png') no-repeat;
-    background-position: right center;
+    background-size: cover;
+    background-position: center;
   }
 
   @media ${device.md} {
     background: url('./images/getpaid-banner-desktop.png') no-repeat;
-    background-position: right center;
+    background-size: cover;
+    background-position: center;
     height: 700px;
   }
 `;

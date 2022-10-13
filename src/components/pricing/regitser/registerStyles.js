@@ -3,6 +3,7 @@ import { Title, Text } from '../../../shared';
 import { device, shadow, transition } from '../../../utils';
 
 export const RegisterContainer = styled.div`
+  height: 100%;
   width: 100%;
   max-width: 500px;
   margin: 6rem auto;
@@ -11,6 +12,7 @@ export const RegisterContainer = styled.div`
 export const Wrapper = styled.div`
   background-color: white;
   padding: 1rem;
+  border-radius: 0.375rem;
 
   @media ${device.md} {
     padding: 2rem;

@@ -28,6 +28,7 @@ body {
   margin: 0;
   font-size: 0.9375rem;
   font-family: 'Montserrat', sans-serif;
+  background-color: var(--alto);
 }
 
 .reveal-ans {
