@@ -26,10 +26,10 @@ export const Input = styled.input`
   width: 100%;
   outline: 0px;
   height: 100%;
-
+  /* 
   &:focus {
     outline: 1px solid var(--violet);
-  }
+  } */
 `;
 
 export const StyledImage = styled.div`
