@@ -5,6 +5,7 @@ export const plan = [
     bg_color: `var(--gray)`,
     price: '0',
     button: 'Get started for free',
+    link: '/pricing/freeplan',
     benefits: [
       {
         isAvailable: true,
@@ -43,6 +44,7 @@ export const plan = [
     bg_color: `var(--violet)`,
     price: '17,000',
     button: 'Pay NGN 17,000',
+    link: '/pricing/thriveplan',
     benefits: [
       {
         isAvailable: true,

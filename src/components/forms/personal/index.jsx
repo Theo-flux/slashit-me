@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { InputContainer, PhoneInputContainer, Button } from '../../../../shared';
+import { InputContainer, PhoneInputContainer, Button } from '../../../shared';
 import {
-  RegisterContainer,
+  FormContainer,
   Wrapper,
   Row,
   Column,
   StyledText,
   StyledTitle,
   A,
-} from '../registerStyles';
+} from '../formStyles';
 
 const personal_item = [
   {
@@ -42,7 +42,7 @@ const personal_item = [
 
 function PersonalForm({ handleActive }) {
   return (
-    <RegisterContainer>
+    <FormContainer>
       <Wrapper>
         <StyledTitle>Let’s get to know you</StyledTitle>
         <StyledText>Provide some basic information about yourself</StyledText>
@@ -87,7 +87,9 @@ function PersonalForm({ handleActive }) {
             );
           })}
         </Column>
-        <Button width={`100%`}  onClick={() => handleActive('business')}>Next</Button>
+        <Button width={`100%`} onClick={() => handleActive('business')}>
+          Next
+        </Button>
 
         <Column>
           <Link href={'/'}>
@@ -95,7 +97,7 @@ function PersonalForm({ handleActive }) {
           </Link>
         </Column>
       </Wrapper>
-    </RegisterContainer>
+    </FormContainer>
   );
 }
 

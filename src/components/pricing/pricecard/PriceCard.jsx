@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   CardContainer,
   CardContent,
@@ -14,7 +15,7 @@ import {
 } from './priceCardStyles';
 
 function PriceCard({ data }) {
-  const { planType, bg_color, price, button, benefits, info } = data;
+  const { planType, bg_color, price, button, benefits, info, link } = data;
 
   return (
     <CardContainer bg={bg_color}>
@@ -42,9 +43,11 @@ function PriceCard({ data }) {
             );
           })}
 
-          <Button bg={bg_color} width={`100%`}>
-            {button} <Small>/month</Small>
-          </Button>
+          <Link href={`${link}`}>
+            <Button bg={bg_color} width={`100%`}>
+              {button} <Small>/month</Small>
+            </Button>
+          </Link>
         </BenefitContainer>
 
         <InfoContainer>

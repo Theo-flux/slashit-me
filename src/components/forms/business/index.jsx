@@ -1,12 +1,6 @@
 import Link from 'next/link';
-import { InputContainer, SelectContainer, Button } from '../../../../shared';
-import {
-  RegisterContainer,
-  Wrapper,
-  Column,
-  StyledTitle,
-  A,
-} from '../registerStyles';
+import { InputContainer, SelectContainer, Button } from '../../../shared';
+import { FormContainer, Wrapper, Column, StyledTitle, A } from '../formStyles';
 
 const business_item = [
   {
@@ -27,7 +21,7 @@ const business_item = [
 
 function BusinessForm({ handleActive }) {
   return (
-    <RegisterContainer>
+    <FormContainer>
       <Wrapper>
         <StyledTitle>Tell us about your business</StyledTitle>
 
@@ -67,7 +61,7 @@ function BusinessForm({ handleActive }) {
           </Link>
         </Column>
       </Wrapper>
-    </RegisterContainer>
+    </FormContainer>
   );
 }
 

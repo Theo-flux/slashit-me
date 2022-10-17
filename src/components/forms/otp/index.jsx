@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { OtpInputContainer } from '../../../../shared';
+import { OtpInputContainer } from '../../../shared';
 import {
-  RegisterContainer,
+  FormContainer,
   Wrapper,
   Column,
   Content,
   StyledTitle,
   A,
-} from '../registerStyles';
+} from '../formStyles';
 
 const otp_item = [
   {
@@ -77,7 +77,7 @@ function OtpForm() {
   }, [otpData]);
 
   return (
-    <RegisterContainer>
+    <FormContainer>
       <Wrapper>
         <StyledTitle>Enter the code sent to your email</StyledTitle>
 
@@ -96,7 +96,7 @@ function OtpForm() {
           </Content>
         </Column>
       </Wrapper>
-    </RegisterContainer>
+    </FormContainer>
   );
 }
 

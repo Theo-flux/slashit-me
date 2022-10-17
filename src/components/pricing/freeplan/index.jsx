@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import { Section, Div } from '../../../shared';
-import PersonalForm from './personal';
-import BusinessForm from './business';
-import SecurityForm from './security';
-import OtpForm from './otp';
+import { TitleCentered } from '../pricingStyles';
+import { PasswordForm, BusinessForm, PersonalForm, OtpForm } from '../../forms';
 
-function Register() {
+function FreeplanRegistration() {
   const [active, setActive] = useState('personal');
 
   function handleActive(arg) {
@@ -16,13 +13,14 @@ function Register() {
   return (
     <Section>
       <Div>
+        <TitleCentered>Free Plan</TitleCentered>
         {active === 'personal' && <PersonalForm handleActive={handleActive} />}
         {active === 'business' && <BusinessForm handleActive={handleActive} />}
-        {active === 'security' && <SecurityForm handleActive={handleActive} />}
+        {active === 'security' && <PasswordForm handleActive={handleActive} />}
         {active === 'otp' && <OtpForm handleActive={handleActive} />}
       </Div>
     </Section>
   );
 }
 
-export default Register;
+export default FreeplanRegistration;

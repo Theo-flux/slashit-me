@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { Title, Text } from '../../../shared';
-import { device, shadow, transition } from '../../../utils';
+import { Title, Text } from '../../shared';
+import { device, shadow, transition } from '../../utils';
 
-export const RegisterContainer = styled.div`
+export const FormContainer = styled.div`
   height: 100%;
   width: 100%;
   max-width: 500px;
-  margin: 6rem auto;
+  margin: 4rem auto;
 `;
 
 export const Wrapper = styled.div`

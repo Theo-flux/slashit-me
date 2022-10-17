@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import {
   Input,
   InputCheck,
   OtpInput,
+  StyledImage,
   Textarea,
   Select,
   Legend,
@@ -14,7 +16,7 @@ import {
   Label,
 } from './inputStyles';
 
-export const InputContainer = ({ type, placeholder, id, legend }) => {
+export const InputContainer = ({ type, placeholder, id, legend, error }) => {
   return (
     <Box>
       <Legend htmlFor={id}>{legend}</Legend>
@@ -39,6 +41,28 @@ export const PhoneInputContainer = ({ type, placeholder, id, legend }) => {
       <Legend htmlFor={id}>{legend}</Legend>
       <BoxRow>
         <Prefix>+234</Prefix>
+        <Input id={id} type={type} placeholder={placeholder} />
+      </BoxRow>
+      {/* <Error>{error}</Error> */}
+    </Box>
+  );
+};
+
+export const CardInputContainer = ({
+  type,
+  src,
+  placeholder,
+  id,
+  legend,
+  error,
+}) => {
+  return (
+    <Box>
+      <Legend htmlFor={id}>{legend}</Legend>
+      <BoxRow>
+        <StyledImage>
+          <Image src={src} width={40} height={40} alt="card-image" />
+        </StyledImage>
         <Input id={id} type={type} placeholder={placeholder} />
       </BoxRow>
       {/* <Error>{error}</Error> */}

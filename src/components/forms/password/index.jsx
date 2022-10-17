@@ -1,12 +1,6 @@
 import Link from 'next/link';
-import { InputContainer, Checker, Button } from '../../../../shared';
-import {
-  RegisterContainer,
-  Wrapper,
-  Column,
-  StyledTitle,
-  A,
-} from '../registerStyles';
+import { InputContainer, Checker, Button } from '../../../shared';
+import { FormContainer, Wrapper, Column, StyledTitle, A } from '../formStyles';
 
 const security_item = [
   {
@@ -17,9 +11,9 @@ const security_item = [
   },
 ];
 
-function SecurityForm({ handleActive }) {
+function PasswordForm({ handleActive }) {
   return (
-    <RegisterContainer>
+    <FormContainer>
       <Wrapper>
         <StyledTitle>Create your password</StyledTitle>
 
@@ -50,8 +44,8 @@ function SecurityForm({ handleActive }) {
           </Link>
         </Column>
       </Wrapper>
-    </RegisterContainer>
+    </FormContainer>
   );
 }
 
-export default SecurityForm;
+export default PasswordForm;

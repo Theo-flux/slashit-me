@@ -1,5 +1,5 @@
-import Layout from '../containers/Layout';
-import { Price, Footer, Download } from '../components';
+import Layout from '../../containers/Layout';
+import { Price, Footer, Download } from '../../components';
 
 export default function Pricing() {
   return (

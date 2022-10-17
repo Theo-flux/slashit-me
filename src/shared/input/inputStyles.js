@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import { device } from '../../utils';
 
@@ -27,6 +28,11 @@ export const Input = styled.input`
   &:focus {
     outline: 1px solid var(--violet);
   }
+`;
+
+export const StyledImage = styled.div`
+  padding: 0 1rem;
+  padding-top: 0.35rem;
 `;
 
 export const Select = styled.select`
