@@ -57,7 +57,7 @@ export const Content = styled.div`
 export const StyledTitle = styled(Title)`
   text-align: center;
   font-size: 1.25rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   @media ${device.lg} {
     font-size: 1.5rem;

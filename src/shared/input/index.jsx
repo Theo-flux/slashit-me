@@ -54,6 +54,9 @@ export const CardInputContainer = ({
   placeholder,
   id,
   legend,
+  name,
+  value,
+  onChange,
   error,
 }) => {
   return (
@@ -63,7 +66,14 @@ export const CardInputContainer = ({
         <StyledImage>
           <Image src={src} width={40} height={40} alt="card-image" />
         </StyledImage>
-        <Input id={id} type={type} placeholder={placeholder} />
+        <Input
+          id={id}
+          value={value}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          onChange={onChange}
+        />
       </BoxRow>
       {/* <Error>{error}</Error> */}
     </Box>
