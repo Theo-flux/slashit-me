@@ -25,6 +25,7 @@ export const Input = styled.input`
   border: 1px solid var(--alto);
   width: 100%;
   outline: 0px;
+  height: 100%;
 
   &:focus {
     outline: 1px solid var(--violet);
