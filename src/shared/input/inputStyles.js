@@ -33,8 +33,8 @@ export const Input = styled.input`
 `;
 
 export const StyledImage = styled.div`
-  padding: 0 1rem;
-
+  padding-top: 0.45rem;
+  padding-left: 0.5rem;
   @media ${device.md} {
     padding-top: 0.35rem;
   }
