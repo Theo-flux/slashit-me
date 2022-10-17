@@ -57,6 +57,7 @@ export const CardInputContainer = ({
   name,
   value,
   onChange,
+  maxlength,
   error,
 }) => {
   return (
@@ -73,6 +74,7 @@ export const CardInputContainer = ({
           type={type}
           placeholder={placeholder}
           onChange={onChange}
+          maxLength={maxlength}
         />
       </BoxRow>
       {/* <Error>{error}</Error> */}

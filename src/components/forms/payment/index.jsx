@@ -17,6 +17,7 @@ const cardItems = [
     src: '/images/card_number.svg',
     placeholder: 'xxxx-xxxx-xxxx-xxxx',
     legend: 'Card number',
+    maxlength: 19,
   },
 
   {
@@ -26,6 +27,7 @@ const cardItems = [
     src: '/images/card_expiry.svg',
     placeholder: '01/22',
     legend: 'Expiry',
+    maxlength: 5,
   },
 
   {
@@ -35,10 +37,12 @@ const cardItems = [
     src: '/images/card_cvv.svg',
     placeholder: '123',
     legend: 'CVV',
+    maxlength: 3,
   },
 ];
 
 function CardForm({ handleActive }) {
+  const [getCard, setgetCard] = useState('add-card');
   const [cardValues, setCardValues] = useState({
     cardNumber: '',
     cardExpiry: '',
@@ -74,58 +78,90 @@ function CardForm({ handleActive }) {
       }
     } else if (name === 'cardCvv') {
       let cardCvv = document.getElementById('card_cvv');
-      cardCvv.setAttribute('maxLength', 3);
     }
 
     setCardValues({ ...cardValues, [name]: value });
   }
 
   return (
-    <FormContainer>
-      <Wrapper>
-        <StyledTitle>Enter your card details</StyledTitle>
+    <>
+      {getCard === 'add-card' && (
+        <FormContainer>
+          <Wrapper>
+            <StyledTitle>Enter your card details</StyledTitle>
 
-        <Column>
-          {cardItems.slice(0, 1).map((item, index) => {
-            const { id, type, src, placeholder, legend, name } = item;
-            return (
-              <CardInputContainer
-                key={index}
-                name={name}
-                id={id}
-                type={type}
-                src={src}
-                placeholder={placeholder}
-                legend={legend}
-                onChange={(e) => handleCardChanges(e)}
-              />
-            );
-          })}
+            <Column>
+              {cardItems.slice(0, 1).map((item, index) => {
+                const { id, type, src, placeholder, legend, name, maxlength } =
+                  item;
+                return (
+                  <CardInputContainer
+                    key={index}
+                    name={name}
+                    id={id}
+                    type={type}
+                    src={src}
+                    placeholder={placeholder}
+                    legend={legend}
+                    maxlength={maxlength}
+                    onChange={(e) => handleCardChanges(e)}
+                  />
+                );
+              })}
 
-          <Row>
-            {cardItems.slice(1).map((item, index) => {
-              const { id, type, src, placeholder, legend, name } = item;
-              return (
-                <CardInputContainer
-                  key={index}
-                  name={name}
-                  id={id}
-                  type={type}
-                  src={src}
-                  placeholder={placeholder}
-                  legend={legend}
-                  onChange={(e) => handleCardChanges(e)}
-                />
-              );
-            })}
-          </Row>
+              <Row>
+                {cardItems.slice(1).map((item, index) => {
+                  const {
+                    id,
+                    type,
+                    src,
+                    placeholder,
+                    legend,
+                    name,
+                    maxlength,
+                  } = item;
+                  return (
+                    <CardInputContainer
+                      key={index}
+                      name={name}
+                      id={id}
+                      type={type}
+                      src={src}
+                      placeholder={placeholder}
+                      legend={legend}
+                      maxlength={maxlength}
+                      onChange={(e) => handleCardChanges(e)}
+                    />
+                  );
+                })}
+              </Row>
 
-          <Button bg={`var(--violet)`} width={`100%`}>
-            Add card
-          </Button>
-        </Column>
-      </Wrapper>
-    </FormContainer>
+              <Button
+                bg={`var(--violet)`}
+                width={`100%`}
+                onClick={() => setgetCard('add-pin')}
+              >
+                Add card
+              </Button>
+            </Column>
+          </Wrapper>
+        </FormContainer>
+      )}
+
+      {getCard === 'add-pin' && (
+        <FormContainer>
+          <Wrapper>
+            <StyledTitle>Enter your card details</StyledTitle>
+
+            <Column>
+              <Button bg={`var(--violet)`} width={`100%`}>
+                Continue
+              </Button>
+            </Column>
+          </Wrapper>
+        </FormContainer>
+      )}
+    </>
   );
 }
 
