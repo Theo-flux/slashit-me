@@ -3,6 +3,6 @@ import { Title } from '../../shared';
 
 export const TitleCentered = styled(Title)`
   text-align: center;
-  margin-top: 2rem;
+  margin: 1rem;
   color: var(--violet);
 `;

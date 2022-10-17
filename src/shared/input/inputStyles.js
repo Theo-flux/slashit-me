@@ -22,7 +22,7 @@ export const Legend = styled.legend`
 export const Input = styled.input`
   border-radius: 0.375rem;
   padding: 1rem;
-  border: 1px solid var(--alto);
+  border-left: 1px solid var(--alto);
   width: 100%;
 
   &:focus {
