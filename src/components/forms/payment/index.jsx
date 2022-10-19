@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CardInputContainer, Button } from '../../../shared';
+import { CardInputContainer, InputContainer, Button } from '../../../shared';
 import {
   FormContainer,
   Wrapper,
@@ -57,7 +57,7 @@ const availableCard = {
 };
 
 function CardForm() {
-  const [getCard, setgetCard] = useState('add-card');
+  const [getCard, setgetCard] = useState('add-pin');
   const [cardValues, setCardValues] = useState({
     cardNumber: '',
     cardExpiry: '',
@@ -179,24 +179,36 @@ function CardForm() {
               Please enter your card PIN below and press continue
             </StyledText>
 
-            <CardBox>
-              <CardDetails>Card details</CardDetails>
-              <InnerBoxRow>
-                <StyledImage>
-                  <Image
-                    src={cardImage || '/image/card_number.svg'}
-                    width={40}
-                    height={40}
-                    alt="card-image"
-                  />
-                </StyledImage>
-
-                <CardNumber>{cardValues.cardNumber}</CardNumber>
-                <CardExpiry>{cardValues.cardExpiry}</CardExpiry>
-              </InnerBoxRow>
-            </CardBox>
-
             <Column>
+              <CardBox>
+                <CardDetails>Card details</CardDetails>
+                <InnerBoxRow>
+                  <StyledImage>
+                    <Image
+                      src={'/images/card_number.svg'}
+                      width={40}
+                      height={40}
+                      alt="card-image"
+                    />
+                  </StyledImage>
+
+                  <CardNumber>{`9876 8765 8765 555`}</CardNumber>
+                  <CardExpiry>{`98/98`}</CardExpiry>
+                </InnerBoxRow>
+              </CardBox>
+
+              <Row>
+                <InputContainer
+                  name={'pin'}
+                  id={'pin'}
+                  type={'text'}
+                  placeholder={'xxxx'}
+                  legend={'card pin'}
+                  maxlength={4}
+                  onChange={(e) => handleCardChanges(e)}
+                />
+              </Row>
+
               <Button bg={`var(--violet)`} width={`100%`}>
                 Continue
               </Button>
