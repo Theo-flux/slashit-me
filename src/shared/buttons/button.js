@@ -34,6 +34,7 @@ export const H3 = styled.h3`
 `;
 
 export const StyledButton = styled.button`
+  cursor: pointer;
   width: ${(props) => props.width};
   background-color: ${(props) =>
     props.type === 'outlined' ? 'white' : props.bg || 'var(--gray)'};

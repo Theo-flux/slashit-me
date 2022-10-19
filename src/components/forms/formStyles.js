@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import { Title, Text } from '../../shared';
 import { device, shadow, transition } from '../../utils';
@@ -83,5 +84,71 @@ export const A = styled.p`
 
   &:hover {
     text-decoration: underline;
+  }
+`;
+
+export const CardBox = styled.div`
+  width: 100%;
+  margin-bottom: 1rem;
+`;
+
+export const CardDetails = styled.p`
+  font-size: 0.875rem;
+  margin-bottom: 0.7rem;
+`;
+
+export const InnerBoxRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--alto);
+  border-radius: 0.375rem;
+  padding: 0 1rem;
+
+  & > div {
+    border-radius: 0rem;
+    border: 0rem;
+  }
+`;
+
+export const StyledImage = styled.div`
+  @media ${device.md} {
+    padding-top: 0.35rem;
+  }
+`;
+export const CardNumber = styled.p`
+  /* width: 70%; */
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  @media ${device.xl} {
+    font-size: 0.9375rem;
+  }
+
+  @media ${device.base} {
+    font-size: 1rem;
+  }
+
+  @media ${device.md} {
+    font-size: 1.25rem;
+  }
+`;
+
+export const CardExpiry = styled.p`
+  /* width: 30%; */
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  @media ${device.xl} {
+    font-size: 0.9375rem;
+  }
+
+  @media ${device.base} {
+    font-size: 1rem;
+  }
+
+  @media ${device.md} {
+    font-size: 1.25rem;
   }
 `;

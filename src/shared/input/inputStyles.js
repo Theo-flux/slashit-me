@@ -69,7 +69,9 @@ export const Textarea = styled.textarea`
   }
 `;
 
-export const Error = styled.small``;
+export const Error = styled.small`
+  color: red;
+`;
 
 export const BoxRow = styled.span`
   display: flex;
@@ -87,6 +89,9 @@ export const BoxRow = styled.span`
   &:active {
     border: 1px solid var(--violet);
   }
+
+  ${(props) => props.error && 'border: 1px solid red;'}
+  ${(props) => props.error && 'margin-bottom: 0.5rem;'}
 `;
 
 export const OtpInput = styled.input`

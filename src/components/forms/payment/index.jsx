@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CardInputContainer, Button } from '../../../shared';
@@ -7,7 +8,16 @@ import {
   Column,
   StyledTitle,
   Row,
+  StyledText,
+  CardBox,
+  CardDetails,
+  InnerBoxRow,
+  StyledImage,
+  ContentText,
+  CardNumber,
+  CardExpiry,
 } from '../formStyles';
+import { checkCreditCard } from '../../../helpers';
 
 const cardItems = [
   {
@@ -15,7 +25,7 @@ const cardItems = [
     name: 'cardNumber',
     type: 'text',
     src: '/images/card_number.svg',
-    placeholder: 'xxxx-xxxx-xxxx-xxxx',
+    placeholder: 'xxxx xxxx xxxx xxxx',
     legend: 'Card number',
     maxlength: 19,
   },
@@ -41,28 +51,30 @@ const cardItems = [
   },
 ];
 
-function CardForm({ handleActive }) {
+const availableCard = {
+  MasterCard: '/images/mastercard.svg',
+  Visa: '/images/visa.svg',
+};
+
+function CardForm() {
   const [getCard, setgetCard] = useState('add-card');
   const [cardValues, setCardValues] = useState({
     cardNumber: '',
     cardExpiry: '',
     cardCvv: '',
   });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [cardImage, setCardImage] = useState('');
 
   function handleCardChanges(event) {
     const { name, value } = event.target;
 
     if (name === 'cardNumber') {
       let cardNum = document.getElementById('card_number');
-      let index = cardNum.value.lastIndexOf('-');
+      let index = cardNum.value.lastIndexOf(' ');
       let test = cardNum.value.substr(index + 1);
       if (test.length === 4 && cardNum.value.length < 16) {
-        cardNum.value = `${cardNum.value}-`;
-      }
-
-      if (cardNum.value.length === 19) {
-        let cardExp = document.getElementById('card_expiry');
-        cardExp.focus();
+        cardNum.value = `${cardNum.value} `;
       }
     } else if (name === 'cardExpiry') {
       let cardExp = document.getElementById('card_expiry');
@@ -81,6 +93,16 @@ function CardForm({ handleActive }) {
     }
 
     setCardValues({ ...cardValues, [name]: value });
+  }
+
+  function handleOnSubmit(cardnumber) {
+    let res = checkCreditCard(cardnumber);
+    setErrorMessage(res.message);
+    setCardImage(availableCard[res.type]);
+
+    if (res.success) {
+      return setgetCard('add-pin');
+    }
   }
 
   return (
@@ -105,6 +127,7 @@ function CardForm({ handleActive }) {
                     legend={legend}
                     maxlength={maxlength}
                     onChange={(e) => handleCardChanges(e)}
+                    error={errorMessage && errorMessage}
                   />
                 );
               })}
@@ -139,7 +162,7 @@ function CardForm({ handleActive }) {
               <Button
                 bg={`var(--violet)`}
                 width={`100%`}
-                onClick={() => setgetCard('add-pin')}
+                onClick={() => handleOnSubmit(cardValues.cardNumber)}
               >
                 Add card
               </Button>
@@ -151,7 +174,27 @@ function CardForm({ handleActive }) {
       {getCard === 'add-pin' && (
         <FormContainer>
           <Wrapper>
-            <StyledTitle>Enter your card details</StyledTitle>
+            <StyledTitle>Enter your card pin</StyledTitle>
+            <StyledText>
+              Please enter your card PIN below and press continue
+            </StyledText>
+
+            <CardBox>
+              <CardDetails>Card details</CardDetails>
+              <InnerBoxRow>
+                <StyledImage>
+                  <Image
+                    src={cardImage || '/image/card_number.svg'}
+                    width={40}
+                    height={40}
+                    alt="card-image"
+                  />
+                </StyledImage>
+
+                <CardNumber>{cardValues.cardNumber}</CardNumber>
+                <CardExpiry>{cardValues.cardExpiry}</CardExpiry>
+              </InnerBoxRow>
+            </CardBox>
 
             <Column>
               <Button bg={`var(--violet)`} width={`100%`}>

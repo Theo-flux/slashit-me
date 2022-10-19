@@ -63,7 +63,7 @@ export const CardInputContainer = ({
   return (
     <Box>
       <Legend htmlFor={id}>{legend}</Legend>
-      <BoxRow>
+      <BoxRow error={error}>
         <StyledImage>
           <Image src={src} width={40} height={40} alt="card-image" />
         </StyledImage>
@@ -77,7 +77,7 @@ export const CardInputContainer = ({
           maxLength={maxlength}
         />
       </BoxRow>
-      {/* <Error>{error}</Error> */}
+      <Error>{error}</Error>
     </Box>
   );
 };
