@@ -1,11 +1,11 @@
 export const paymentDetailsValidator = (paymentDetails) => {
   //Response format
-  const regex = new RegExp('^[0-9]{1,}$');
+  const amountRegex = new RegExp('^[0-9]{1,}$');
   const response = {};
 
   if (!paymentDetails?.amount) {
     response.amount = 'Pls enter an amount';
-  } else if (!regex.test(parseInt(paymentDetails?.amount))) {
+  } else if (!amountRegex.test(paymentDetails?.amount)) {
     response.amount = 'Amount must be in figures';
   } else {
     response.amount = '';

@@ -31,6 +31,10 @@ export const Input = styled.input`
     outline: 1px solid var(--violet);
     ${(props) => (props.error ? 'outline: 1px solid red;' : '')}
   }
+
+  &:invalid {
+    outline: 1px solid red;
+  }
 `;
 
 export const StyledImage = styled.div`

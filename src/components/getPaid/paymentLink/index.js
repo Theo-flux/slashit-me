@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Section, Div, Title, Button } from '../../../shared';
 import GeneratePaymentLink from '../generatePaymentLink';
@@ -13,6 +13,7 @@ import {
 
 function PaymentLink() {
   let paymentLinkEl = '';
+  const [isValidated, setIsValidated] = useState(false);
 
   if (typeof window !== 'undefined') {
     paymentLinkEl = window.document.getElementById('generate');
