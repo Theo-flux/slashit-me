@@ -16,6 +16,10 @@ export const LinkSection = styled.div`
   &:last-of-type {
     border: none;
   }
+
+  &:focus input:nth-child(1) {
+    border: 1px solid var(--violet);
+  }
 `;
 
 export const InfoBox = styled.p`

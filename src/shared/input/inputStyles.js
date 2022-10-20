@@ -26,10 +26,11 @@ export const Input = styled.input`
   width: 100%;
   outline: 0px;
   height: 100%;
-  /* 
+
   &:focus {
     outline: 1px solid var(--violet);
-  } */
+    ${(props) => (props.error ? 'outline: 1px solid red;' : '')}
+  }
 `;
 
 export const StyledImage = styled.div`
@@ -88,10 +89,16 @@ export const BoxRow = styled.span`
   &:hover,
   &:active {
     border: 1px solid var(--violet);
+    ${(props) => (props.error ? 'border: 1px solid red;' : '')}
   }
 
-  ${(props) => props.error && 'border: 1px solid red;'}
-  ${(props) => props.error && 'margin-bottom: 0.5rem;'}
+  &:focus {
+    border: 1px solid var(--violet);
+    ${(props) => (props.error ? 'border: 1px solid red;' : '')}
+  }
+
+  ${(props) => (props.error ? 'border: 1px solid red;' : '')}
+  ${(props) => (props.error ? 'margin-bottom: 0.5rem;' : '')}
 `;
 
 export const OtpInput = styled.input`

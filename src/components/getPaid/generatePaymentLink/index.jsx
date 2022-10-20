@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Button, InputContainer } from '../../../shared';
 import {
   GenerateLinkForm,
@@ -8,31 +8,74 @@ import {
   Row,
   Col,
 } from './generatePaymentLinkStyles';
+import { paymentDetailsValidator } from '../../../helpers';
 
-function GeneratePaymentLink() {
+const paymentItem = [
+  {
+    legend: 'Amount to collect',
+    id: 'amount-to-collect',
+    type: 'text',
+    prefix: 'NGN',
+    placeholder: '2000',
+    name: 'amount',
+  },
+
+  {
+    legend: 'Your mail',
+    id: 'your-mail',
+    type: 'mail',
+    placeholder: 'youremail@gmail.com',
+    name: 'mail',
+  },
+
+  {
+    legend: 'Note (optional)',
+    id: 'note',
+    type: 'text',
+    placeholder: 'Pay me on Slashit 🙏',
+    name: 'note',
+  },
+];
+
+function GeneratePaymentLink({ id }) {
+  const [paymentDetails, setPaymentDetails] = useState({
+    amount: '',
+    mail: '',
+    note: '',
+  });
+  const [errors, setErrors] = useState({});
+
+  function handlePaymentDetailsChange(event) {
+    const { name, value } = event.target;
+    setPaymentDetails({ ...paymentDetails, [name]: value });
+  }
+
+  function handleGetPaymentLinkSubmit(paymentDetails) {
+    const res = paymentDetailsValidator(paymentDetails);
+    console.log(res);
+    setErrors(res);
+  }
+
+  console.log(paymentDetails.amount);
   return (
     <GenerateLinkForm>
-      <LinkSection>
-        <InputContainer
-          legend={`Amount to collect`}
-          id={'amount-to-collect'}
-          type={'text'}
-          placeholder={'NGN 2000'}
-        />
-
-        <InputContainer
-          legend={`Your mail`}
-          id={'your-mail'}
-          type={'email'}
-          placeholder={'youremail@gmail.com'}
-        />
-
-        <InputContainer
-          legend={`Note (optional)`}
-          id={'note'}
-          type={'text'}
-          placeholder={'Pay me on Slashit 🙏'}
-        />
+      <LinkSection id={id}>
+        {paymentItem.map((item, index) => {
+          const { name, id, legend, placeholder, type, prefix } = item;
+          return (
+            <InputContainer
+              key={index}
+              legend={legend}
+              id={id}
+              prefix={prefix}
+              type={type}
+              placeholder={placeholder}
+              name={name}
+              onChange={(e) => handlePaymentDetailsChange(e)}
+              error={errors[`${name}`]}
+            />
+          );
+        })}
 
         <InfoBox>
           <Icon className="fa-solid fa-circle-info"></Icon>
@@ -43,7 +86,12 @@ function GeneratePaymentLink() {
 
       <LinkSection>
         <Col>
-          <Button bg={'var(--violet)'}>Create Link</Button>
+          <Button
+            bg={'var(--violet)'}
+            onClick={() => handleGetPaymentLinkSubmit(paymentDetails)}
+          >
+            Create Link
+          </Button>
         </Col>
       </LinkSection>
     </GenerateLinkForm>

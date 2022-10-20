@@ -16,12 +16,33 @@ import {
   Label,
 } from './inputStyles';
 
-export const InputContainer = ({ maxlength, type, placeholder, id, legend, error }) => {
+export const InputContainer = ({
+  maxlength,
+  name,
+  type,
+  placeholder,
+  id,
+  legend,
+  prefix,
+  onChange,
+  error,
+}) => {
   return (
     <Box>
       <Legend htmlFor={id}>{legend}</Legend>
-      <Input id={id} type={type} placeholder={placeholder} maxLength={maxlength}/>
-      {/* <Error>{error}</Error> */}
+      <BoxRow error={error}>
+        {prefix && <Prefix>{prefix}</Prefix>}
+        <Input
+          error={error}
+          id={id}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          maxLength={maxlength}
+          onChange={onChange}
+        />
+      </BoxRow>
+      <Error>{error}</Error>
     </Box>
   );
 };

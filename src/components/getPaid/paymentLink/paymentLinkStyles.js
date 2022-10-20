@@ -30,6 +30,12 @@ export const InfoWrapper = styled.div`
   }
 `;
 
+export const Target = styled.div`
+  &:focus {
+    border: 1px solid var(--violet);
+  }
+`;
+
 export const Text = styled.p`
   width: 100%;
   max-width: 600px;

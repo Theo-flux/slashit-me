@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { Section, Div, Title, Button } from '../../../shared';
 import GeneratePaymentLink from '../generatePaymentLink';
@@ -11,6 +12,17 @@ import {
 } from './paymentLinkStyles';
 
 function PaymentLink() {
+  let paymentLinkEl = '';
+
+  if (typeof window !== 'undefined') {
+    paymentLinkEl = window.document.getElementById('generate');
+  }
+
+  function handleFocus() {
+    paymentLinkEl?.firstChild?.children[1]?.focus();
+    paymentLinkEl?.firstChild?.children[1]?.lastChild?.focus();
+  }
+
   return (
     <Section bg={`var(--link)`}>
       <Div>
@@ -26,13 +38,13 @@ function PaymentLink() {
               installments over time and Slashit pays you now in full.
             </Text>
 
-            <Button>
+            <Button onClick={() => handleFocus()}>
               <EmojiHandSide>👈 </EmojiHandSide>
               <EmojiHandDown>👇</EmojiHandDown> Try it
             </Button>
           </InfoWrapper>
           <InfoWrapper>
-            <GeneratePaymentLink />
+            <GeneratePaymentLink id="generate" />
           </InfoWrapper>
         </PaymentContainer>
       </Div>
