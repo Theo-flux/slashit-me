@@ -11,7 +11,7 @@ export const StoreContainer = styled.aside`
   padding-top: 3rem;
 
   @media ${device.md} {
-    width: 60%;
+    width: 70%;
   }
 `;
 

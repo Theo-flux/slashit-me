@@ -12,7 +12,7 @@ export const AsideContainer = styled.aside`
   );
 
   @media ${device.md} {
-    width: 40%;
+    width: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
