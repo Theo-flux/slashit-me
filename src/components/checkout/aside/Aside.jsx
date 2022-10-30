@@ -4,6 +4,10 @@ import {
   Icon,
   ItemText,
   ItemPod,
+  Column,
+  Row,
+  SmallText,
+  Terms,
 } from './asideStyles';
 
 const sideItems = [
@@ -38,6 +42,15 @@ function Aside() {
             </ItemPod>
           );
         })}
+
+        <Column>
+          <Row>
+            <Icon className="ri-lock-2-fill" />
+            <SmallText>Buy now, pay later by Slashit</SmallText>
+          </Row>
+
+          <Terms>Terms | Privacy</Terms>
+        </Column>
       </AsideWrapper>
     </AsideContainer>
   );

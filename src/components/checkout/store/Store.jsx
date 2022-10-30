@@ -1,3 +1,4 @@
+import { Button } from '../../../shared';
 import {
   StoreContainer,
   StoreWrapper,
@@ -8,7 +9,12 @@ import {
   ProfileName,
   ProfileMail,
   OrderPrice,
+  ProcessWrapper,
+  ButtonWrapper,
 } from './storeStyle';
+import Confirmer from './confirmer/Confirmer';
+import Orderer from './orderer/Orderer';
+import Scheduler from './scheduler/Scheduler';
 
 function Store() {
   return (
@@ -28,6 +34,16 @@ function Store() {
             <sup>NGN</sup> 12,002.00
           </OrderPrice>
         </ProfileContainer>
+
+        <ProcessWrapper>
+          <Orderer />
+          <Scheduler />
+          <Confirmer />
+        </ProcessWrapper>
+
+        <ButtonWrapper>
+          <Button width={`100%`}>Pay now</Button>
+        </ButtonWrapper>
       </StoreWrapper>
     </StoreContainer>
   );
