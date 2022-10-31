@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Section, Div, LinkButton } from '../../../shared';
 import {
@@ -10,6 +10,9 @@ import {
   Row,
   IconCheck,
 } from './acceptmoneyStyles';
+import { FetchUserById } from '../../../api/userAPI';
+import { fetchUserById } from '../../../store/reducers/auth';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Accept() {
   const [selectStore, setSelectStore] = useState(false);
@@ -17,6 +20,7 @@ function Accept() {
   function handleSelectStore() {
     setSelectStore(!selectStore);
   }
+
   return (
     <Section>
       <Div>
