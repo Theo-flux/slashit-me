@@ -1,23 +1,20 @@
-import ENV from "../../env";
-
+const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 
 export const FetchUserById = async () => {
   let msg;
-  //Retrieve Token
+  /* Retrieve Token From Local Storage */
   let token;
-  // let getCred = await Keychain.getGenericPassword();
-  // if (getCred) {
-  //   if (getCred.username) {
-  //     getCred = JSON.parse(getCred.username);
-  //     token = getCred.token;
-  //   }
-  // }
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
 
-  await fetch(`${ENV.REACT_APP_GRAPHQL_ENDPOINT}`, {
-    method: "POST",
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -91,3 +88,5 @@ export const FetchUserById = async () => {
     });
   return msg;
 };
+
+

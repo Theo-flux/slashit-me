@@ -1,15 +1,16 @@
 import Head from 'next/head';
 import GlobalCSS from '../styles/globals.css';
-import ENV from './../../env';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { useEffect } from 'react';
 import { FetchUserById } from '../api/userAPI';
 
+const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
+
 function MyApp({ Component, pageProps }) {
   const client = new ApolloClient({
-    uri: `${ENV.REACT_APP_GRAPHQL_ENDPOINT}`,
+    uri: API_ENDPOINT,
     cache: new InMemoryCache(),
   });
 
@@ -25,8 +26,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     fetchUser();
-  },[]);
-
+  }, []);
 
   return (
     <>
