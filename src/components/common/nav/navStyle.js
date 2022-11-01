@@ -6,7 +6,6 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.3rem 0;
 `;
 
 export const UlDesktop = styled.ul`
@@ -159,7 +158,7 @@ export const InnerContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.3rem 1rem;
+  padding: 1.3rem 1.5rem;
 `;
 
 export const ItemContainer = styled.div``;

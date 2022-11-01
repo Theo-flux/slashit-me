@@ -74,5 +74,21 @@ export const Text = styled.p`
 
 export const Clipper = styled.span`
   color: var(--violet);
-  text-decoration: line-through 5px var(--gray);
+  /* text-decoration: line-through 5px var(--gray); */
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: '';
+    left: 5px;
+    top: 50%;
+    right: 0px;
+    border-top: 5px solid;
+    border-color: var(--gray);
+    -webkit-transform: rotate(-8deg);
+    -moz-transform: rotate(-8deg);
+    -ms-transform: rotate(-8deg);
+    -o-transform: rotate(-8deg);
+    transform: rotate(-8deg);
+  }
 `;

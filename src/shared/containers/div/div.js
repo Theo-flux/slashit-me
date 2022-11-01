@@ -10,7 +10,7 @@ export const DivContainer = styled.div`
 `;
 
 export const NavContainer = styled.div`
-  width: 85%;
+  width: 90%;
   margin: 0 auto;
   padding: 1rem 0;
   max-width: ${size.lg};

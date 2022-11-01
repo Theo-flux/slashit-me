@@ -10,7 +10,8 @@ function Hero() {
         <HeroContainer>
           <InfoWrapper>
             <Title>
-              Buy now, pay later without the <Clipper>stress</Clipper>
+              Buy now, pay later without the
+              <Clipper> stress</Clipper>
             </Title>
             <Text>
               Get the money to shop, pay bills or pay anyone<sup>1</sup> and
