@@ -15,7 +15,7 @@ function Layout({ children }) {
         <meta name="author" content="" />
         <meta
           name="description"
-          content="Slashit is an online ecommerce site"
+          content="Slashit | Buy now, Pay later without the stress"
         />
         <link rel="icon" href="/images/slashit.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

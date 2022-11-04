@@ -5,7 +5,7 @@ function CheckoutLayout() {
   return (
     <div>
       <Head>
-        <title>slashit - checkout</title>
+        <title>Slashit - Checkout</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -14,7 +14,7 @@ function CheckoutLayout() {
         <meta name="author" content="" />
         <meta
           name="description"
-          content="Slashit is an online ecommerce site"
+          content="Slashit | Buy now, Pay later without the stress"
         />
         <link rel="icon" href="/images/slashit.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

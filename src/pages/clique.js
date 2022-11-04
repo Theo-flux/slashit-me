@@ -10,13 +10,12 @@ export default function Clique() {
       <Footer>
         <p>
           <sup>1</sup> Friends here means people you have a very close
-          relationship with - your siblings or other family memebers can also be
-          friends in this case.
+          relationship with.
         </p>
 
         <p>
           <sup>2</sup> Clique is where the friends you add appear on the Slashit
-          app. Here you can manage who remove a friend, add new friends and get
+          app. Here you can remove a friend, add new friends and get
           insights into how your friends are getting ahead of repayments on
           their accounts.
         </p>
