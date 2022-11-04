@@ -17,7 +17,7 @@ export const StoreContainer = styled.aside`
 
 export const StoreWrapper = styled.div`
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
   border: 1px solid #d9d9d950;
   border-radius: 0.375rem;
@@ -89,7 +89,6 @@ export const ProcessWrapper = styled.div`
 
   @media ${device.lg} {
     border: none;
-    
   }
 `;
 
@@ -137,13 +136,13 @@ export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 `;
 
 export const Text = styled.p`
   font-size: 1rem;
   font-weight: 500;
 `;
-
 
 export const ButtonWrapper = styled.div`
   width: 100%;

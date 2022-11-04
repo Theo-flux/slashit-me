@@ -1,3 +1,4 @@
+import { InputContainer } from '../../../../shared';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -8,9 +9,73 @@ import {
   Row,
   Text,
 } from '../storeStyle';
-import { OrderContent, OrderDetails, OrderSummary } from './orderStyles';
+import {
+  OrderContent,
+  OrderDetails,
+  Details,
+  OrderSummary,
+  InfoBox,
+  InfoText,
+  Orders,
+  OrderItems,
+  OrderedItem,
+  ItemName,
+  ItemQty,
+  ItemPrice,
+} from './orderStyles';
 
-function Orderer() {
+const orderedItems = [
+  {
+    id: '1',
+    name: 'Pen',
+    qty: '1',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '2',
+    name: 'Pencil',
+    qty: '10',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '3',
+    name: 'Keyboard',
+    qty: '109',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '4',
+    name: 'Mouse',
+    qty: '500',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '1',
+    name: 'Pen',
+    qty: '1',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '2',
+    name: 'Pencil',
+    qty: '10',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '3',
+    name: 'Keyboard',
+    qty: '109',
+    price: 'NGN 1200.00',
+  },
+  {
+    id: '4',
+    name: 'Mouse',
+    qty: '500',
+    price: 'NGN 1200.00',
+  },
+];
+
+function Orderer({ openOrderer }) {
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -27,8 +92,30 @@ function Orderer() {
           <OrderDetails>
             <Row>
               <Text>Your details</Text>{' '}
-              <Icon className="ri-arrow-down-s-line" />
+              <Icon
+                className={`${
+                  openOrderer ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                }`}
+              />
             </Row>
+            {openOrderer && (
+              <Details>
+                <InputContainer
+                  id={'orderer-email'}
+                  type={'email'}
+                  name={'email'}
+                  legend={'Enter email address'}
+                  // onChange={}
+                  // error={}
+                />
+                <InfoBox>
+                  <Icon className="fa-solid fa-circle-info"></Icon>
+                  <InfoText>
+                    Use your Slashit email address if you have a Slashit account
+                  </InfoText>
+                </InfoBox>
+              </Details>
+            )}
           </OrderDetails>
 
           <OrderSummary>
@@ -36,6 +123,20 @@ function Orderer() {
               <Text>Order Summary</Text>
               <Icon className="ri-arrow-down-s-line" />
             </Row>
+            <Orders>
+              <OrderItems>
+                {orderedItems.map((orderedItem, index) => {
+                  const { name, qty, price } = orderedItem;
+                  return (
+                    <OrderedItem KEY={index}>
+                      <ItemName>{name}</ItemName>
+                      <ItemQty>{qty}</ItemQty>
+                      <ItemPrice>{price}</ItemPrice>
+                    </OrderedItem>
+                  );
+                })}
+              </OrderItems>
+            </Orders>
           </OrderSummary>
         </OrderContent>
       </EnvelopeCover>

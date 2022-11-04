@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '../../../shared';
 import {
   StoreContainer,
@@ -17,6 +18,8 @@ import Orderer from './orderer/Orderer';
 import Scheduler from './scheduler/Scheduler';
 
 function Store() {
+  const [openOrderer, setOrderer] = useState(false);
+
   return (
     <StoreContainer>
       <StoreWrapper>
@@ -36,13 +39,19 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          <Orderer />
+          <Orderer openOrderer={openOrderer} />
           <Scheduler />
           <Confirmer />
         </ProcessWrapper>
 
         <ButtonWrapper>
-          <Button width={`100%`}>Pay now</Button>
+          {openOrderer || (
+            <Button onClick={() => setOrderer(true)} width={`100%`}>
+              Pay now
+            </Button>
+          )}
+
+          {openOrderer && <Button width={`100%`}>Continue</Button>}
         </ButtonWrapper>
       </StoreWrapper>
     </StoreContainer>
