@@ -22,6 +22,17 @@ import {
   ItemName,
   ItemQty,
   ItemPrice,
+  SubTotalContainer,
+  SubTotal,
+  Shipping,
+  TotalContainer,
+  Total,
+  SubtotalText,
+  ShippingText,
+  TotalText,
+  SubtotalPrice,
+  ShippingPrice,
+  TotalPrice,
 } from './orderStyles';
 
 const orderedItems = [
@@ -121,14 +132,19 @@ function Orderer({ openOrderer }) {
           <OrderSummary>
             <Row>
               <Text>Order Summary</Text>
-              <Icon className="ri-arrow-down-s-line" />
+              <Icon
+                className={`${
+                  openOrderer ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                }`}
+              />
             </Row>
+            {/* {openOrderer && ( */}
             <Orders>
               <OrderItems>
                 {orderedItems.map((orderedItem, index) => {
                   const { name, qty, price } = orderedItem;
                   return (
-                    <OrderedItem KEY={index}>
+                    <OrderedItem key={index}>
                       <ItemName>{name}</ItemName>
                       <ItemQty>{qty}</ItemQty>
                       <ItemPrice>{price}</ItemPrice>
@@ -136,7 +152,24 @@ function Orderer({ openOrderer }) {
                   );
                 })}
               </OrderItems>
+
+              <SubTotalContainer>
+                <SubTotal>
+                  <SubtotalText>Subtotal</SubtotalText>
+                  <SubtotalPrice>NGN 320000.00</SubtotalPrice>
+                </SubTotal>
+                <Shipping>
+                  <ShippingText>Shipping</ShippingText>
+                  <ShippingPrice>NGN 12000.00</ShippingPrice>
+                </Shipping>
+              </SubTotalContainer>
+
+              <Total>
+                <TotalText>Total</TotalText>
+                <TotalPrice>NGN 330000.00</TotalPrice>
+              </Total>
             </Orders>
+            {/* )} */}
           </OrderSummary>
         </OrderContent>
       </EnvelopeCover>

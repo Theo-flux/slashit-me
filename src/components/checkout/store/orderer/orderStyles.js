@@ -40,7 +40,7 @@ export const OrderItems = styled.div`
   /* border: 1px solid magenta; */
   /* background-color: var(--alto); */
   padding-top: 1.5rem;
-  height: 200px;
+  height: 162px;
   overflow-y: scroll;
 `;
 
@@ -77,4 +77,56 @@ export const ItemPrice = styled.p`
   font-weight: 500;
   text-align: right;
   /* border: 1px solid magenta; */
+`;
+
+export const SubTotalContainer = styled.div`
+  border-top: 1px solid #d9d9d950;
+  border-bottom: 1px solid #d9d9d950;
+  margin-top: 1rem;
+  padding: 1rem 0rem;
+`;
+
+export const SubTotal = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+`;
+
+export const Shipping = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: centers;
+`;
+export const Total = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: centers;
+  padding: 1rem 0rem;
+  border-bottom: 1px solid #d9d9d950;
+`;
+
+export const SubtotalText = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+export const ShippingText = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+export const TotalText = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+export const SubtotalPrice = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+export const ShippingPrice = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+export const TotalPrice = styled.p`
+  font-size: 1rem;
+  font-weight: 600;
 `;
