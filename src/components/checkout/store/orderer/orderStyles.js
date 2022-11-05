@@ -40,7 +40,7 @@ export const OrderItems = styled.div`
   /* border: 1px solid magenta; */
   /* background-color: var(--alto); */
   padding-top: 1.5rem;
-  height: 162px;
+  height: 127px;
   overflow-y: scroll;
 `;
 
@@ -48,7 +48,7 @@ export const OrderedItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 `;
 export const ItemName = styled.p`
   font-size: 0.9375rem;

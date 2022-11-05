@@ -18,7 +18,36 @@ import Orderer from './orderer/Orderer';
 import Scheduler from './scheduler/Scheduler';
 
 function Store() {
-  const [openOrderer, setOrderer] = useState(false);
+  const [openOrder, setOpenOrder] = useState(false);
+  const [orderer, setOrderer] = useState({
+    email: '',
+    pass: '',
+  });
+  const [showPass, setShowPass] = useState(false);
+  const [error, setError] = useState({});
+
+  function handleOrdererOnchange(event) {
+    const { name, value } = event.target;
+
+    setOrderer({ ...orderer, [name]: value });
+  }
+
+  function handleEmailContinue() {
+    let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!orderer.email) {
+      setError({ ...error, email: 'Email is empty!' });
+    } else if (!orderer.email.match(mailformat)) {
+      setError({ ...error, email: 'Invalid Email!' });
+    } else {
+      setError({});
+    }
+
+    if (error?.email) {
+      setShowPass(false);
+    } else {
+      setShowPass(true);
+    }
+  }
 
   return (
     <StoreContainer>
@@ -39,19 +68,27 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          <Orderer openOrderer={openOrderer} />
+          <Orderer
+            openOrder={openOrder}
+            error={error}
+            handleOrdererOnchange={handleOrdererOnchange}
+          />
           <Scheduler />
           <Confirmer />
         </ProcessWrapper>
 
         <ButtonWrapper>
-          {openOrderer || (
-            <Button onClick={() => setOrderer(true)} width={`100%`}>
+          {openOrder || (
+            <Button onClick={() => setOpenOrder(true)} width={`100%`}>
               Pay now
             </Button>
           )}
 
-          {openOrderer && <Button width={`100%`}>Continue</Button>}
+          {openOrder && (
+            <Button onClick={() => handleEmailContinue()} width={`100%`}>
+              Continue
+            </Button>
+          )}
         </ButtonWrapper>
       </StoreWrapper>
     </StoreContainer>

@@ -87,7 +87,7 @@ const orderedItems = [
   },
 ];
 
-function Orderer({ openOrderer }) {
+function Orderer({ openOrder, handleOrdererOnchange, error }) {
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -106,19 +106,19 @@ function Orderer({ openOrderer }) {
               <Text>Your details</Text>{' '}
               <Icon
                 className={`${
-                  openOrderer ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                  openOrder ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                 }`}
               />
             </Row>
-            {openOrderer && (
+            {openOrder && (
               <Details>
                 <InputContainer
                   id={'orderer-email'}
                   type={'email'}
                   name={'email'}
                   legend={'Enter email address'}
-                  // onChange={}
-                  // error={}
+                  onChange={(e) => handleOrdererOnchange(e)}
+                  error={error?.email}
                 />
                 <InfoBox>
                   <Icon className="fa-solid fa-circle-info"></Icon>
@@ -135,11 +135,11 @@ function Orderer({ openOrderer }) {
               <Text>Order Summary</Text>
               <Icon
                 className={`${
-                  openOrderer ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                  openOrder ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                 }`}
               />
             </Row>
-            {openOrderer && (
+            {openOrder && (
               <Orders>
                 <OrderItems>
                   {orderedItems.map((orderedItem, index) => {
