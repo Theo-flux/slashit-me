@@ -14,9 +14,10 @@ export const Prefix = styled.p`
   color: var(--silver);
 `;
 
-export const Legend = styled.legend`
+export const Label = styled.label`
   font-size: 0.875rem;
   margin-bottom: 0.7rem;
+  /* border: 1px solid magenta; */
 `;
 
 export const Input = styled.input`
@@ -68,6 +69,7 @@ export const Textarea = styled.textarea`
   border: 1px solid var(--alto);
   width: 100%;
   resize: none;
+  margin-top: 0.7rem;
 
   &:focus {
     outline: 1px solid var(--violet);
@@ -84,6 +86,7 @@ export const BoxRow = styled.span`
   overflow: hidden;
   border: 1px solid var(--alto);
   border-radius: 0.375rem;
+  margin-top: 0.7rem;
 
   & > input {
     border-radius: 0rem;

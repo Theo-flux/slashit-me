@@ -1,4 +1,5 @@
-import { InputContainer } from '../../../../shared';
+import { useState } from 'react';
+import { InputContainer, TextAreaContainer } from '../../../../shared';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -138,38 +139,45 @@ function Orderer({ openOrderer }) {
                 }`}
               />
             </Row>
-            {/* {openOrderer && ( */}
-            <Orders>
-              <OrderItems>
-                {orderedItems.map((orderedItem, index) => {
-                  const { name, qty, price } = orderedItem;
-                  return (
-                    <OrderedItem key={index}>
-                      <ItemName>{name}</ItemName>
-                      <ItemQty>{qty}</ItemQty>
-                      <ItemPrice>{price}</ItemPrice>
-                    </OrderedItem>
-                  );
-                })}
-              </OrderItems>
+            {openOrderer && (
+              <Orders>
+                <OrderItems>
+                  {orderedItems.map((orderedItem, index) => {
+                    const { name, qty, price } = orderedItem;
+                    return (
+                      <OrderedItem key={index}>
+                        <ItemName>{name}</ItemName>
+                        <ItemQty>{qty}</ItemQty>
+                        <ItemPrice>{price}</ItemPrice>
+                      </OrderedItem>
+                    );
+                  })}
+                  <OrderItems>
+                    <TextAreaContainer
+                      legend={'Note'}
+                      placeholder={'Pay me on Slashit 🙏'}
+                      rows={3}
+                    />
+                  </OrderItems>
+                </OrderItems>
 
-              <SubTotalContainer>
-                <SubTotal>
-                  <SubtotalText>Subtotal</SubtotalText>
-                  <SubtotalPrice>NGN 320000.00</SubtotalPrice>
-                </SubTotal>
-                <Shipping>
-                  <ShippingText>Shipping</ShippingText>
-                  <ShippingPrice>NGN 12000.00</ShippingPrice>
-                </Shipping>
-              </SubTotalContainer>
+                <SubTotalContainer>
+                  <SubTotal>
+                    <SubtotalText>Subtotal</SubtotalText>
+                    <SubtotalPrice>NGN 32,000.00</SubtotalPrice>
+                  </SubTotal>
+                  <Shipping>
+                    <ShippingText>Shipping</ShippingText>
+                    <ShippingPrice>NGN 32,000.00</ShippingPrice>
+                  </Shipping>
+                </SubTotalContainer>
 
-              <Total>
-                <TotalText>Total</TotalText>
-                <TotalPrice>NGN 330000.00</TotalPrice>
-              </Total>
-            </Orders>
-            {/* )} */}
+                <Total>
+                  <TotalText>Total</TotalText>
+                  <TotalPrice>NGN 32,000.00</TotalPrice>
+                </Total>
+              </Orders>
+            )}
           </OrderSummary>
         </OrderContent>
       </EnvelopeCover>

@@ -6,7 +6,6 @@ import {
   StyledImage,
   Textarea,
   Select,
-  Legend,
   Error,
   Box,
   BoxRow,
@@ -29,7 +28,7 @@ export const InputContainer = ({
 }) => {
   return (
     <Box>
-      <Legend htmlFor={id}>{legend}</Legend>
+      <Label htmlFor={id}>{legend}</Label>
       <BoxRow error={error}>
         {prefix && <Prefix>{prefix}</Prefix>}
         <Input
@@ -47,11 +46,11 @@ export const InputContainer = ({
   );
 };
 
-export const TextAreaContainer = ({ id, legend, placeholder }) => {
+export const TextAreaContainer = ({ id, legend, placeholder, rows, cols }) => {
   return (
     <Box>
-      <Legend htmlFor={id}>{legend}</Legend>
-      <Textarea rows={10} resi cols={50} id={id} placeholder={placeholder} />
+      <Label htmlFor={id}>{legend}</Label>
+      <Textarea rows={rows ? rows : 10} resi cols={cols ? cols : 5} id={id} placeholder={placeholder} />
     </Box>
   );
 };
@@ -59,7 +58,7 @@ export const TextAreaContainer = ({ id, legend, placeholder }) => {
 export const PhoneInputContainer = ({ type, placeholder, id, legend }) => {
   return (
     <Box>
-      <Legend htmlFor={id}>{legend}</Legend>
+      <Label htmlFor={id}>{legend}</Label>
       <BoxRow>
         <Prefix>+234</Prefix>
         <Input id={id} type={type} placeholder={placeholder} />
@@ -83,7 +82,7 @@ export const CardInputContainer = ({
 }) => {
   return (
     <Box>
-      <Legend htmlFor={id}>{legend}</Legend>
+      <Label htmlFor={id}>{legend}</Label>
       <BoxRow error={error}>
         <StyledImage>
           <Image src={src} width={40} height={40} alt="card-image" />
@@ -106,7 +105,7 @@ export const CardInputContainer = ({
 export const SelectContainer = ({ options, placeholder, id, legend }) => {
   return (
     <Box>
-      <Legend htmlFor={id}>{legend}</Legend>
+      <Label htmlFor={id}>{legend}</Label>
       <Select id={id} name={placeholder}>
         {options.map((opt, index) => {
           return (

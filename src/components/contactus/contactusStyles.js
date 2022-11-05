@@ -24,12 +24,8 @@ export const Title = styled.h1`
   max-width: 900px;
 
   @media ${device.md} {
-    font-size: 2.3rem;
-    max-width: 800px;
-  }
-
-  @media ${device.lg} {
-    font-size: 3rem;
+    font-size: 2rem;
+    max-width: 600px;
   }
 `;
 

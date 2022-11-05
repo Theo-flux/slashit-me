@@ -30,23 +30,19 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-::-webkit-scrollbar,
-::-moz-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track,
-::-moz-scrollbar-track {
+::-webkit-scrollbar-track{
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb,
-::-moz-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: var(--violet);
 }
 
-::-webkit-scrollbar-thumb:hover,
-::-moz-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: var(--violet);
 }
 
