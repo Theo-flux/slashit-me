@@ -57,7 +57,7 @@ const availableCard = {
 };
 
 function CardForm() {
-  const [getCard, setgetCard] = useState('add-pin');
+  const [getCard, setgetCard] = useState('add-card');
   const [cardValues, setCardValues] = useState({
     cardNumber: '',
     cardExpiry: '',

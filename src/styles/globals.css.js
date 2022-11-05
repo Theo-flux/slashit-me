@@ -31,7 +31,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track{
@@ -39,7 +39,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--violet);
+  background: var(--alto);
 }
 
 ::-webkit-scrollbar-thumb:hover {

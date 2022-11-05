@@ -152,13 +152,13 @@ function Orderer({ openOrderer }) {
                       </OrderedItem>
                     );
                   })}
-                  <OrderItems>
+                  <OrderedItem>
                     <TextAreaContainer
                       legend={'Note'}
                       placeholder={'Pay me on Slashit 🙏'}
                       rows={3}
                     />
-                  </OrderItems>
+                  </OrderedItem>
                 </OrderItems>
 
                 <SubTotalContainer>
