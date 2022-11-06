@@ -15,6 +15,7 @@ export default createGlobalStyle`
   --link: #f8fafd;
   --silver: #C2C2C2;
   --supernova: #FFC701;
+  --brown: #EDEDED;
   --gr: linear-gradient(
     180deg,
     rgba(108, 33, 255, 0.2) 0%,

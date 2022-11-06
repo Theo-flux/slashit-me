@@ -3,11 +3,11 @@ import { device } from '../../utils';
 
 export const Title = styled.h1`
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.85rem;
   margin-bottom: 1.5rem;
 
   @media ${device.md} {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   @media ${device.lg} {
