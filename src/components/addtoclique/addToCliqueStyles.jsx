@@ -47,6 +47,7 @@ export const CliqueMembers = styled.div`
   align-items: center;
   /* border: 1px solid magenta; */
   width: fit-content;
+  margin-bottom: 2rem;
 
   & > div:not(:first-of-type) {
     margin-left: -0.7rem;
@@ -64,4 +65,9 @@ export const Name = styled.p`
   margin-top: 0.5rem;
   font-size: 0.6rem;
   font-weight: 600;
+`;
+
+export const Details = styled.div`
+  width: 100%;
+  max-width: 350px;
 `;

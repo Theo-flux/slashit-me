@@ -4,7 +4,7 @@ import { device } from '../../utils';
 
 export const Box = styled.div`
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const Prefix = styled.p`
