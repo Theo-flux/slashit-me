@@ -1,5 +1,15 @@
 const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 
+export const SaveLoginCredentials =  (credentials) => {
+  localStorage.setItem('userAuth', credentials);
+  return;
+};
+
+export const RemoveLoginCredentials =  () => {
+  localStorage.setItem('userAuth', '');
+  return;
+};
+
 export const FetchUserById = async () => {
   let msg;
   /* Retrieve Token From Local Storage */
@@ -122,7 +132,7 @@ export const Register = async (props) => {
   return msg;
 };
 
-export const ForgotPassword = async (email, internet) => {
+export const ForgotPassword = async (email, ipAddress) => {
   let msg;
   await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -141,7 +151,7 @@ export const ForgotPassword = async (email, internet) => {
                   }`,
       variables: {
         email,
-        ipAddress: internet?.details ? internet?.details?.ipAddress : '',
+        ipAddress,
       },
     }),
   })
@@ -380,7 +390,7 @@ export const VerifyPhone = async (phone, country, phoneVerificationCode) => {
   return msg;
 };
 
-export const Login = async (props, internet) => {
+export const Login = async (props) => {
   let msg;
   await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -460,11 +470,6 @@ export const Login = async (props, internet) => {
               }`,
       variables: {
         ...props,
-        // deviceId: `${getBrand()} ${getDeviceId().substring(0, 10)}`,
-        // latitude,
-        // longitude,
-        platform: Platform.OS,
-        ipAddress: internet?.details ? internet?.details?.ipAddress : '',
       },
     }),
   })
@@ -613,6 +618,7 @@ export const FetchClique = async () => {
                     success,      
                     message,
                     code,
+                    user,
                     cliqueReceived{
                       firstname
                       lastname
@@ -690,6 +696,47 @@ export const VerifyCAT = async (CAT) => {
       console.log(res, 'VerifCAT');
       if (res.data.VerifyCAT) {
         msg = res.data.VerifyCAT;
+      }
+    });
+  return msg;
+};
+
+export const CliqueAccept = async (cliqueToken) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+              mutation($token:String! ){
+               CliqueAccept(token:$token){
+                      success,      
+                      message,
+                      code,
+                  }
+              }`,
+      variables: { token: cliqueToken },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res, 'CliqueAccept');
+      if (res.data.CliqueAccept) {
+        msg = res.data.CliqueAccept;
       }
     });
   return msg;

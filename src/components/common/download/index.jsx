@@ -15,7 +15,7 @@ function Download() {
         <DownloadContainer>
           <Wrapper>
             <Title>Download our app</Title>
-            <Text>Invite your besties to join your Clique on Slashit</Text>
+            <Text>Invite your friends to join your Clique on Slashit</Text>
           </Wrapper>
 
           <Wrapper>

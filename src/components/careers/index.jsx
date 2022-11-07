@@ -7,8 +7,7 @@ function CareerHero() {
       <Div>
         <CareerContainer>
           <CareerTitle>
-            Join us to build access to credit for millions who typically don’t
-            qualify!
+            Join us to build the new wave of Buy now, Pay later!
           </CareerTitle>
         </CareerContainer>
       </Div>
