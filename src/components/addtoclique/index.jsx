@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import { Section, Div, Checker, InputContainer, Button } from '../../shared';
+import { validateThis } from '../../helpers';
 import {
   CliqueDiv,
   SmallText,
@@ -35,20 +37,37 @@ const members = [
 const details = [
   {
     id: 'email',
-    name: 'Email',
+    name: 'email',
     legend: 'Enter your Email',
     type: 'email',
   },
 
   {
     id: 'password',
-    name: 'Password',
+    name: 'password',
     legend: 'Enter your Password',
     type: 'password',
   },
 ];
 
 function JoinClique() {
+  const [memberForm, setMemberForm] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState({});
+
+  function handleMemberFormOnchange(event) {
+    const { name, value } = event.target;
+
+    setMemberForm({ ...memberForm, [name]: value });
+  }
+
+  function handleMemberFormSubmit() {
+    const errors = validateThis(memberForm);
+    setError(errors);
+  }
+
   return (
     <Section>
       <Div>
@@ -86,6 +105,8 @@ function JoinClique() {
                     type={type}
                     legend={legend}
                     id={id}
+                    onChange={(e) => handleMemberFormOnchange(e)}
+                    error={error?.[`${name}`]}
                   />
                 );
               })}
@@ -101,7 +122,14 @@ function JoinClique() {
                     your account to them at anytime.
                 `}
               />
-              <Button width={'100%'} bg={`var(--violet)`} type="filled">Join now</Button>
+              <Button
+                onClick={() => handleMemberFormSubmit()}
+                width={'100%'}
+                bg={`var(--violet)`}
+                type="filled"
+              >
+                Join now
+              </Button>
             </Details>
           </Wrapper>
         </CliqueDiv>

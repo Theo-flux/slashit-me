@@ -21,7 +21,7 @@ function Store() {
   const [openOrder, setOpenOrder] = useState(false);
   const [orderer, setOrderer] = useState({
     email: '',
-    pass: '',
+    password: '',
   });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState({});
@@ -33,7 +33,8 @@ function Store() {
   }
 
   function handleEmailContinue() {
-    let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
     if (!orderer.email) {
       setError({ ...error, email: 'Email is empty!' });
     } else if (!orderer.email.match(mailformat)) {
