@@ -1,6 +1,7 @@
 import { ToastContainer, ToastIcon, ToastText } from './toastStyles';
 
 export const Toast = ({
+  showToast,
   showIcon,
   text,
   backgroundColor,
@@ -12,6 +13,7 @@ export const Toast = ({
 }) => {
   return (
     <ToastContainer
+      showToast={showToast}
       backgroundColor={backgroundColor}
       top={top}
       right={right}

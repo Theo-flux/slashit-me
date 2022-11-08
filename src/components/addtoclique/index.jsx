@@ -80,6 +80,8 @@ function JoinClique() {
   const [loading, setLoading] = useState(false);
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
+  const [showToast, setShowToast] = useState(false);
+  let toastMsg = '';
   let platform = '';
   let os = '';
   if (typeof window !== 'undefined') {
@@ -122,10 +124,10 @@ function JoinClique() {
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        console.log(
-          'Please complete your profile on the Slashit app, then come back to add someone to your Clique.',
-        );
         //TODO - Toast console message
+        // STATUS - Done
+        toastMsg =
+          'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
         //TODO - Open password input field
       }
@@ -176,6 +178,7 @@ function JoinClique() {
   async function verifyCliqueAccessToken(token) {
     setLoading(true);
     let sendReq = await VerifyCAT(token);
+    console.log(sendReq);
     if (sendReq.success) {
       setInviter(sendReq.user);
       setMembers(sendReq.cliqueActive);
@@ -194,6 +197,18 @@ function JoinClique() {
     };
   }, []);
 
+  // tester
+  toastMsg =
+    'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
+
+  useEffect(() => {
+    if (toastMsg) {
+      setShowToast(true);
+    }
+    setTimeout(() => setShowToast(false), 5000);
+    toastMsg = '';
+  }, [toastMsg]);
+
   // if (!inviter)
   //   return (
   //     //Return a loading indicator or shimmer effect
@@ -203,13 +218,14 @@ function JoinClique() {
   return (
     <Section>
       <Div>
+        <Toast
+          showToast={showToast}
+          showIcon={false}
+          right={'30px'}
+          text={toastMsg}
+          backgroundColor={'red'}
+        />
         <CliqueDiv>
-          <Toast
-            showIcon={false}
-            right={'30px'}
-            text={'A toast for testing'}
-            backgroundColor={'red'}
-          />
           <SmallText>
             Only join this Clique if you have a close relationship with{' '}
             {inviter?.firstname}
