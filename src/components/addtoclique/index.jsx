@@ -69,7 +69,7 @@ function JoinClique(props) {
   });
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
-  const [invitee, setInvitee] = useState('');
+  const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
 
   function handleMemberFormOnchange(event) {
@@ -153,7 +153,7 @@ function JoinClique(props) {
     setLoading(true);
     let sendReq = await VerifyCAT();
     if (sendReq.success) {
-      setInvitee(sendReq.user);
+      setInviter(sendReq.user);
       setMembers(sendReq.cliqueActive);
     }
     setLoading(false);
@@ -164,12 +164,12 @@ function JoinClique(props) {
     verifyCliqueAccessToken();
     return () => {
       setLoading(false);
-      setInvitee();
+      setInviter();
       setMembers();
     };
   }, []);
 
-  // if (!invitee)
+  // if (!inviter)
   //   return (
   //     //Return a loading indicator or shimmer effect
   //     <></>
@@ -181,12 +181,12 @@ function JoinClique(props) {
         <CliqueDiv>
           <SmallText>
             Only join this Clique if you have a close relationship with{' '}
-            {invitee?.firstname}
+            {inviter?.firstname}
           </SmallText>
 
           <Wrapper>
             <StyledTitle>
-              {invitee?.firstname} wants you to join their Clique on Slashit
+              {inviter?.firstname} wants you to join their Clique on Slashit
             </StyledTitle>
             <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
 
