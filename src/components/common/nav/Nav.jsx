@@ -43,8 +43,6 @@ function Navbar() {
     [dropDownId],
   );
 
-  console.log(router.pathname);
-
   function handleMobileNavItem(ref) {
     if (mobileNavItem === ref) {
       return setMobileNavItem(null);

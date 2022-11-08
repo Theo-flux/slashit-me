@@ -1,12 +1,22 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { device, shadow } from '../../utils';
+
+const fadein = keyframes`
+  from {right: 0; opacity: 0;}
+  to {right: 30px; opacity: 1;}
+`;
+
+const fadeout = keyframes`
+  from {right: 30px; opacity: 1;}
+  to {right: 0; opacity: 0;}
+`;
 
 export const ToastContainer = styled.div`
   /* visibility: hidden;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s; */
+  -webkit-animation: ${fadein} 0.5s, fadeout 0.5s 2.5s;
+  animation: ${fadein} 0.5s, ${fadeout} 0.5s 2.5s; */
   position: fixed;
-  top: ${(props) => (props.top ? `${props.top}` : '60px')};
+  top: ${(props) => props.top && `${props.top}`};
   left: ${(props) => props.left && `${props.left}`};
   right: ${(props) => props.right && `${props.right}`};
   bottom: ${(props) => props.bottom && `${props.bottom}`};
@@ -16,11 +26,14 @@ export const ToastContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  max-width: fit-content;
+  width: fit-content;
+
   background-color: ${(props) =>
     props.backgroundColor ? `${props.backgroundColor}` : 'var(--gray)'};
   ${shadow}
+
+  @media ${device.md} {
+  }
 `;
 
 export const ToastIcon = styled.i`

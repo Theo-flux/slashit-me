@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
@@ -69,8 +70,8 @@ const details = [
   },
 ];
 
-function JoinClique(props) {
-  const {} = props;
+function JoinClique() {
+  const router = useRouter();
   const [memberForm, setMemberForm] = useState({
     email: '',
     password: '',
@@ -84,7 +85,7 @@ function JoinClique(props) {
     const { name, value } = event.target;
     setMemberForm({ ...memberForm, [name]: value });
   }
-  console.log(error);
+  console.log(router.query.token);
 
   function handleMemberFormSubmit() {
     const errors = validateThis(memberForm);
@@ -158,9 +159,9 @@ function JoinClique(props) {
     return;
   }
 
-  async function verifyCliqueAccessToken() {
+  async function verifyCliqueAccessToken(token) {
     setLoading(true);
-    let sendReq = await VerifyCAT();
+    let sendReq = await VerifyCAT(token);
     if (sendReq.success) {
       setInviter(sendReq.user);
       setMembers(sendReq.cliqueActive);
@@ -170,7 +171,7 @@ function JoinClique(props) {
   }
 
   useEffect(() => {
-    verifyCliqueAccessToken();
+    verifyCliqueAccessToken(router.query?.token);
     return () => {
       setLoading(false);
       setInviter();
@@ -186,15 +187,14 @@ function JoinClique(props) {
 
   return (
     <Section>
-      <Toast
-        showIcon={true}
-        right={'30px'}
-        text={'A toast for testing'}
-        // backgroundColor={'red'}
-        // textColor={'white'}
-      />
       <Div>
         <CliqueDiv>
+          <Toast
+            showIcon={false}
+            right={'30px'}
+            text={'A toast for testing'}
+            backgroundColor={'red'}
+          />
           <SmallText>
             Only join this Clique if you have a close relationship with{' '}
             {inviter?.firstname}
