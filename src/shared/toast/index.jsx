@@ -5,19 +5,22 @@ export const Toast = ({
   text,
   backgroundColor,
   textColor,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
+  top,
+  left,
+  right,
+  bottom,
 }) => {
   return (
     <ToastContainer
       backgroundColor={backgroundColor}
-      topLeft={topLeft}
-      topRight={topRight}
-      bottomLeft={bottomLeft}
-      bottomRight={bottomRight}
+      top={top}
+      right={right}
+      left={left}
+      bottom={bottom}
     >
+      <ToastText showIcon={showIcon} textColor={textColor}>
+        {text}
+      </ToastText>
       {showIcon && (
         <ToastIcon
           showIcon={showIcon}
@@ -25,9 +28,6 @@ export const Toast = ({
           className={`ri-close-line`}
         />
       )}
-      <ToastText showIcon={showIcon} textColor={textColor}>
-        {text}
-      </ToastText>
     </ToastContainer>
   );
 };

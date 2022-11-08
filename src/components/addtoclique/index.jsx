@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import Image from 'next/image';
 import {
   CliqueAccept,
@@ -7,7 +8,14 @@ import {
   ShopperExist,
   VerifyCAT,
 } from '../../api/userAPI';
-import { Section, Div, Checker, InputContainer, Button } from '../../shared';
+import {
+  Section,
+  Div,
+  Checker,
+  InputContainer,
+  Button,
+  Toast,
+} from '../../shared';
 import { validateThis } from '../../helpers';
 import {
   CliqueDiv,
@@ -76,6 +84,7 @@ function JoinClique(props) {
     const { name, value } = event.target;
     setMemberForm({ ...memberForm, [name]: value });
   }
+  console.log(error);
 
   function handleMemberFormSubmit() {
     const errors = validateThis(memberForm);
@@ -177,6 +186,13 @@ function JoinClique(props) {
 
   return (
     <Section>
+      <Toast
+        showIcon={true}
+        right={'30px'}
+        text={'A toast for testing'}
+        // backgroundColor={'red'}
+        // textColor={'white'}
+      />
       <Div>
         <CliqueDiv>
           <SmallText>
@@ -208,7 +224,22 @@ function JoinClique(props) {
             </CliqueMembers>
 
             <Details>
-              {details.map((detail, index) => {
+              {details.slice(0, 1).map((detail, index) => {
+                const { id, name, type, legend } = detail;
+                return (
+                  <InputContainer
+                    key={index}
+                    name={name}
+                    type={type}
+                    legend={legend}
+                    id={id}
+                    onChange={(e) => handleMemberFormOnchange(e)}
+                    error={error?.[`${name}`]}
+                  />
+                );
+              })}
+
+              {details.slice(1).map((detail, index) => {
                 const { id, name, type, legend } = detail;
                 return (
                   <InputContainer
