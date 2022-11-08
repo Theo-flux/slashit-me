@@ -20,7 +20,7 @@ export const ToastContainer = styled.div`
   left: ${(props) => props.left && `${props.left}`};
   right: ${(props) => props.right && `${props.right}`};
   bottom: ${(props) => props.bottom && `${props.bottom}`};
-  z-index: 999;
+  z-index: 1;
   border-radius: 0.375rem;
   padding: 0.875rem;
   display: flex;
