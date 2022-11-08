@@ -25,20 +25,23 @@ import statusCode from '../../api/statusCode';
 // const members = [
 //   {
 //     id: '1',
-//     name: 'Daniel T.',
-//     src: '/images/daniel.svg',
+//     firstname: 'Daniel',
+//     lastname: 'T.',
+//     avatar: '/images/daniel.svg',
 //   },
 
 //   {
 //     id: '2',
-//     name: 'Kayla B.',
-//     src: '/images/kayla.svg',
+//     firstname: 'Kayla',
+//     lastname: 'B.',
+//     avatar: '/images/kayla.svg',
 //   },
 
 //   {
 //     id: '3',
-//     name: 'Sarah v.',
-//     src: '/images/sarah.svg',
+//     firstname: 'Sarah',
+//     lastname: 'V.',
+//     avatar: '/images/sarah.svg',
 //   },
 // ];
 
@@ -166,11 +169,11 @@ function JoinClique(props) {
     };
   }, []);
 
-  if (!invitee)
-    return (
-      //Return a loading indicator or shimmer effect
-      <></>
-    );
+  // if (!invitee)
+  //   return (
+  //     //Return a loading indicator or shimmer effect
+  //     <></>
+  //   );
 
   return (
     <Section>
@@ -188,7 +191,7 @@ function JoinClique(props) {
             <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
 
             <CliqueMembers>
-              {members.map((member, _) => {
+              {members?.map((member, _) => {
                 const { firstname, lastname, avatar } = member;
                 return (
                   <Member key={member._id}>

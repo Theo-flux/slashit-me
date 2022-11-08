@@ -1,11 +1,11 @@
 const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 
-export const SaveLoginCredentials =  (credentials) => {
+export const SaveLoginCredentials = (credentials) => {
   localStorage.setItem('userAuth', credentials);
   return;
 };
 
-export const RemoveLoginCredentials =  () => {
+export const RemoveLoginCredentials = () => {
   localStorage.setItem('userAuth', '');
   return;
 };
