@@ -81,11 +81,14 @@ function JoinClique() {
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
   let platform = '';
+  let os = '';
   if (typeof window !== 'undefined') {
-    console.log(window.navigator.oscpu);
     platform = window.navigator.platform;
+    os = window.navigator.appVersion;
+    os = os.split(' ');
+    os = `${os[2]} ${os[3]}`;
   }
-  const [computerInfo, setComputerInfo] = useState({ platform, ip: '' });
+  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
 
   function handleMemberFormOnchange(event) {
     const { name, value } = event.target;
@@ -142,7 +145,7 @@ function JoinClique() {
       email: memberForm.email,
       password: memberForm.password,
       platform: 'web',
-      deviceId: computerInfo.platform,
+      deviceId: `${computerInfo.platform} ${computerInfo.os}`,
       ipAddress: computerInfo.ip,
     };
     let sendReq = await Login(userInfo);
