@@ -18,7 +18,6 @@ export const ToastContainer = styled.div`
   position: fixed;
   top: ${(props) => props.top && `${props.top}`};
   left: ${(props) => props.left && `${props.left}`};
-  right: ${(props) => props.right && `${props.right}`};
   bottom: ${(props) => props.bottom && `${props.bottom}`};
   z-index: 1;
   border-radius: 0.375rem;
@@ -26,13 +25,15 @@ export const ToastContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: fit-content;
+  max-width: fit-content;
+  min-width: 300px;
 
   background-color: ${(props) =>
     props.backgroundColor ? `${props.backgroundColor}` : 'var(--gray)'};
   ${shadow}
 
   @media ${device.md} {
+    right: ${(props) => props.right && `${props.right}`};
   }
 `;
 

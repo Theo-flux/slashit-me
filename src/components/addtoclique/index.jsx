@@ -80,12 +80,22 @@ function JoinClique() {
   const [loading, setLoading] = useState(false);
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
+  let platform = '';
+  if (typeof window !== 'undefined') {
+    platform = window.navigator.platform;
+  }
+  const [computerInfo, setComputerInfo] = useState({ platform, ip: '' });
 
   function handleMemberFormOnchange(event) {
     const { name, value } = event.target;
     setMemberForm({ ...memberForm, [name]: value });
   }
-  console.log(router.query.token);
+
+  async function GetComputerName() {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    setComputerInfo({ ...computerInfo, ip: data.ip });
+  }
 
   function handleMemberFormSubmit() {
     const errors = validateThis(memberForm);
@@ -131,8 +141,8 @@ function JoinClique() {
       email: memberForm.email,
       password: memberForm.password,
       platform: 'web',
-      deviceId: '',
-      ipAddress: '',
+      deviceId: computerInfo.platform,
+      ipAddress: computerInfo.ip,
     };
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
@@ -172,6 +182,7 @@ function JoinClique() {
 
   useEffect(() => {
     verifyCliqueAccessToken(router.query?.token);
+    GetComputerName();
     return () => {
       setLoading(false);
       setInviter();
@@ -265,8 +276,7 @@ function JoinClique() {
                 `}
               />
               <Button
-                onClick={joinBtn}
-                //onClick={joinClique}
+                onClick={() => handleMemberFormSubmit()}
                 width={'100%'}
                 bg={`var(--violet)`}
                 type="filled"
