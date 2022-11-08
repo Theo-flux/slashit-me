@@ -91,7 +91,7 @@ function JoinClique() {
     setMemberForm({ ...memberForm, [name]: value });
   }
 
-  async function GetComputerName() {
+  async function GetComputerIp() {
     const res = await fetch('https://api.ipify.org?format=json');
     const data = await res.json();
     setComputerInfo({ ...computerInfo, ip: data.ip });
@@ -182,7 +182,7 @@ function JoinClique() {
 
   useEffect(() => {
     verifyCliqueAccessToken(router.query?.token);
-    GetComputerName();
+    GetComputerIp();
     return () => {
       setLoading(false);
       setInviter();
