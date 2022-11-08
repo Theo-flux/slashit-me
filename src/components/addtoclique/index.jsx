@@ -82,6 +82,7 @@ function JoinClique() {
   const [members, setMembers] = useState();
   let platform = '';
   if (typeof window !== 'undefined') {
+    console.log(window.navigator);
     platform = window.navigator.platform;
   }
   const [computerInfo, setComputerInfo] = useState({ platform, ip: '' });
