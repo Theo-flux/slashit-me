@@ -16,6 +16,8 @@ import {
   InputContainer,
   Button,
   Toast,
+  LoaderContainer,
+  Loader,
 } from '../../shared';
 import { validateThis } from '../../helpers';
 import {
@@ -71,6 +73,10 @@ const details = [
 ];
 
 function JoinClique() {
+  let toastMsg = '';
+  let platform = '';
+  let os = '';
+
   const router = useRouter();
   const [memberForm, setMemberForm] = useState({
     email: '',
@@ -81,34 +87,42 @@ function JoinClique() {
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
   const [showToast, setShowToast] = useState(false);
-  let toastMsg = '';
-  let platform = '';
-  let os = '';
+  const [isMailValidated, setIsMailValidated] = useState(false);
+  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
+
   if (typeof window !== 'undefined') {
     platform = window.navigator.platform;
     os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
   }
-  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
 
   function handleMemberFormOnchange(event) {
     const { name, value } = event.target;
     setMemberForm({ ...memberForm, [name]: value });
   }
 
-  async function GetComputerIp() {
-    const res = await fetch('https://api.ipify.org?format=json');
-    const data = await res.json();
-    setComputerInfo({ ...computerInfo, ip: data.ip });
+  function handleEmailSubmit() {
+    let errors = {};
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!memberForm.email) {
+      errors.email = "Email can't be empty!";
+    } else if (!memberForm.email.match(mailformat)) {
+      errors.email = 'Inavlid email!';
+    } else {
+      errors = {};
+    }
+
+    if (errors.email) {
+      setError(errors);
+    } else {
+      validateShopper();
+      // setIsMailValidated(true);
+    }
   }
 
-  function handleMemberFormSubmit() {
-    const errors = validateThis(memberForm);
-    setError(errors);
-    return;
-  }
-
+  // async functions
   async function joinBtn() {
     if (memberForm.email && !password) {
       validateShopper();
@@ -118,18 +132,14 @@ function JoinClique() {
   }
 
   async function validateShopper() {
-    let submit = handleMemberFormSubmit();
-    if (submit.email) return;
     setLoading(true);
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        //TODO - Toast console message
-        // STATUS - Done
         toastMsg =
           'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
-        //TODO - Open password input field
+        setIsMailValidated(true);
       }
     } else {
       //TODO - Link to "Add to Clique 03"
@@ -164,12 +174,11 @@ function JoinClique() {
           //TODO - Link to "Add to Clique "CARD1""
         }
       } else {
-        console.log(join.message);
-        //TODO - Toast console message
+        toastMsg = join.message;
       }
     } else {
       console.log(sendReq.message);
-      //TODO - Toast console message
+      toastMsg = sendReq.message;
     }
     setLoading(false);
     return;
@@ -187,6 +196,12 @@ function JoinClique() {
     return;
   }
 
+  async function GetComputerIp() {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    setComputerInfo({ ...computerInfo, ip: data.ip });
+  }
+
   useEffect(() => {
     verifyCliqueAccessToken(router.query?.token);
     GetComputerIp();
@@ -197,23 +212,23 @@ function JoinClique() {
     };
   }, [router.query]);
 
-  // tester
-  toastMsg =
-    'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
-
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
     }
     setTimeout(() => setShowToast(false), 5000);
-    toastMsg = '';
   }, [toastMsg]);
 
-  // if (!inviter)
-  //   return (
-  //     //Return a loading indicator or shimmer effect
-  //     <></>
-  //   );
+  if (!inviter)
+    return (
+      <Section>
+        <Div>
+          <LoaderContainer>
+            <Loader />
+          </LoaderContainer>
+        </Div>
+      </Section>
+    );
 
   return (
     <Section>
@@ -254,39 +269,51 @@ function JoinClique() {
               })}
             </CliqueMembers>
 
-            <Details>
-              {details.slice(0, 1).map((detail, index) => {
-                const { id, name, type, legend } = detail;
-                return (
-                  <InputContainer
-                    key={index}
-                    name={name}
-                    type={type}
-                    legend={legend}
-                    id={id}
-                    onChange={(e) => handleMemberFormOnchange(e)}
-                    error={error?.[`${name}`]}
-                  />
-                );
-              })}
+            {isMailValidated ? (
+              <Details>
+                {details.slice(1).map((detail, index) => {
+                  const { id, name, type, legend } = detail;
+                  return (
+                    <InputContainer
+                      key={index}
+                      name={name}
+                      type={type}
+                      legend={legend}
+                      id={id}
+                      // onChange={(e) => handleMemberFormOnchange(e)}
+                      error={error?.[`${name}`]}
+                    />
+                  );
+                })}
 
-              {details.slice(1).map((detail, index) => {
-                const { id, name, type, legend } = detail;
-                return (
-                  <InputContainer
-                    key={index}
-                    name={name}
-                    type={type}
-                    legend={legend}
-                    id={id}
-                    onChange={(e) => handleMemberFormOnchange(e)}
-                    error={error?.[`${name}`]}
-                  />
-                );
-              })}
+                <Button
+                  // onClick={() => handleEmailSubmit()}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                >
+                  Join now
+                </Button>
+              </Details>
+            ) : (
+              <Details>
+                {details.slice(0, 1).map((detail, index) => {
+                  const { id, name, type, legend } = detail;
+                  return (
+                    <InputContainer
+                      key={index}
+                      name={name}
+                      type={type}
+                      legend={legend}
+                      id={id}
+                      onChange={(e) => handleMemberFormOnchange(e)}
+                      error={error?.[`${name}`]}
+                    />
+                  );
+                })}
 
-              <Checker
-                content={`
+                <Checker
+                  content={`
                     By continuing, you agree to Slashit’s
                     terms of use and privacy policy.
                     We’ll send reminders about debts on your account
@@ -294,16 +321,17 @@ function JoinClique() {
                     any debts on their account. 
                     We may also charge their debts to you at anytime when they don't pay on time.
                 `}
-              />
-              <Button
-                onClick={() => handleMemberFormSubmit()}
-                width={'100%'}
-                bg={`var(--violet)`}
-                type="filled"
-              >
-                Join now
-              </Button>
-            </Details>
+                />
+                <Button
+                  onClick={() => handleEmailSubmit()}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                >
+                  Continue
+                </Button>
+              </Details>
+            )}
           </Wrapper>
         </CliqueDiv>
       </Div>
