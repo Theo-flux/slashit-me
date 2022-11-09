@@ -219,16 +219,16 @@ function JoinClique() {
     setTimeout(() => setShowToast(false), 5000);
   }, [toastMsg]);
 
-  // if (!inviter)
-  //   return (
-  //     <Section>
-  //       <Div>
-  //         <LoaderContainer>
-  //           <Loader />
-  //         </LoaderContainer>
-  //       </Div>
-  //     </Section>
-  //   );
+  if (!inviter)
+    return (
+      <Section>
+        <Div>
+          <LoaderContainer>
+            <Loader />
+          </LoaderContainer>
+        </Div>
+      </Section>
+    );
 
   return (
     <Section>
