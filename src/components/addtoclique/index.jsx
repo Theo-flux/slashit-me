@@ -16,6 +16,8 @@ import {
   InputContainer,
   Button,
   Toast,
+  LoaderContainer,
+  Loader,
 } from '../../shared';
 import { validateThis } from '../../helpers';
 import {
@@ -124,8 +126,6 @@ function JoinClique() {
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        //TODO - Toast console message
-        // STATUS - Done
         toastMsg =
           'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
@@ -164,12 +164,11 @@ function JoinClique() {
           //TODO - Link to "Add to Clique "CARD1""
         }
       } else {
-        console.log(join.message);
-        //TODO - Toast console message
+        toastMsg = join.message;
       }
     } else {
       console.log(sendReq.message);
-      //TODO - Toast console message
+      toastMsg = sendReq.message;
     }
     setLoading(false);
     return;
@@ -197,10 +196,6 @@ function JoinClique() {
     };
   }, []);
 
-  // tester
-  toastMsg =
-    'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
-
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
@@ -209,11 +204,17 @@ function JoinClique() {
     toastMsg = '';
   }, [toastMsg]);
 
-  // if (!inviter)
-  //   return (
-  //     //Return a loading indicator or shimmer effect
-  //     <></>
-  //   );
+  if (!inviter)
+    return (
+      //Return a loading indicator or shimmer effect
+      <Section>
+        <Div>
+          <LoaderContainer>
+            <Loader />
+          </LoaderContainer>
+        </Div>
+      </Section>
+    );
 
   return (
     <Section>
