@@ -195,7 +195,7 @@ function JoinClique() {
       setInviter();
       setMembers();
     };
-  }, []);
+  }, [router.query]);
 
   // tester
   toastMsg =
