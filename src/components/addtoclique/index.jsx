@@ -117,7 +117,8 @@ function JoinClique() {
     if (errors.email) {
       setError(errors);
     } else {
-      setIsMailValidated(true);
+      validateShopper();
+      // setIsMailValidated(true);
     }
   }
 
@@ -131,8 +132,6 @@ function JoinClique() {
   }
 
   async function validateShopper() {
-    let submit = handleMemberFormSubmit();
-    if (submit.email) return;
     setLoading(true);
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
@@ -140,7 +139,7 @@ function JoinClique() {
         toastMsg =
           'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
-        //TODO - Open password input field
+        setIsMailValidated(true);
       }
     } else {
       //TODO - Link to "Add to Clique 03"
@@ -288,7 +287,7 @@ function JoinClique() {
                 })}
 
                 <Button
-                  onClick={() => handleEmailSubmit()}
+                  // onClick={() => handleEmailSubmit()}
                   width={'100%'}
                   bg={`var(--violet)`}
                   type="filled"
