@@ -73,6 +73,10 @@ const details = [
 ];
 
 function JoinClique() {
+  let toastMsg = '';
+  let platform = '';
+  let os = '';
+
   const router = useRouter();
   const [memberForm, setMemberForm] = useState({
     email: '',
@@ -83,34 +87,41 @@ function JoinClique() {
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
   const [showToast, setShowToast] = useState(false);
-  let toastMsg = '';
-  let platform = '';
-  let os = '';
+  const [isMailValidated, setIsMailValidated] = useState(false);
+  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
+
   if (typeof window !== 'undefined') {
     platform = window.navigator.platform;
     os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
   }
-  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
 
   function handleMemberFormOnchange(event) {
     const { name, value } = event.target;
     setMemberForm({ ...memberForm, [name]: value });
   }
 
-  async function GetComputerIp() {
-    const res = await fetch('https://api.ipify.org?format=json');
-    const data = await res.json();
-    setComputerInfo({ ...computerInfo, ip: data.ip });
+  function handleEmailSubmit() {
+    let errors = {};
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!memberForm.email) {
+      errors.email = "Email can't be empty!";
+    } else if (!memberForm.email.match(mailformat)) {
+      errors.email = 'Inavlid email!';
+    } else {
+      errors = {};
+    }
+
+    if (errors.email) {
+      setError(errors);
+    } else {
+      setIsMailValidated(true);
+    }
   }
 
-  function handleMemberFormSubmit() {
-    const errors = validateThis(memberForm);
-    setError(errors);
-    return;
-  }
-
+  // async functions
   async function joinBtn() {
     if (memberForm.email && !password) {
       validateShopper();
@@ -186,6 +197,12 @@ function JoinClique() {
     return;
   }
 
+  async function GetComputerIp() {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    setComputerInfo({ ...computerInfo, ip: data.ip });
+  }
+
   useEffect(() => {
     verifyCliqueAccessToken(router.query?.token);
     GetComputerIp();
@@ -201,20 +218,18 @@ function JoinClique() {
       setShowToast(true);
     }
     setTimeout(() => setShowToast(false), 5000);
-    toastMsg = '';
   }, [toastMsg]);
 
-  if (!inviter)
-    return (
-      //Return a loading indicator or shimmer effect
-      <Section>
-        <Div>
-          <LoaderContainer>
-            <Loader />
-          </LoaderContainer>
-        </Div>
-      </Section>
-    );
+  // if (!inviter)
+  //   return (
+  //     <Section>
+  //       <Div>
+  //         <LoaderContainer>
+  //           <Loader />
+  //         </LoaderContainer>
+  //       </Div>
+  //     </Section>
+  //   );
 
   return (
     <Section>
@@ -255,39 +270,51 @@ function JoinClique() {
               })}
             </CliqueMembers>
 
-            <Details>
-              {details.slice(0, 1).map((detail, index) => {
-                const { id, name, type, legend } = detail;
-                return (
-                  <InputContainer
-                    key={index}
-                    name={name}
-                    type={type}
-                    legend={legend}
-                    id={id}
-                    onChange={(e) => handleMemberFormOnchange(e)}
-                    error={error?.[`${name}`]}
-                  />
-                );
-              })}
+            {isMailValidated ? (
+              <Details>
+                {details.slice(1).map((detail, index) => {
+                  const { id, name, type, legend } = detail;
+                  return (
+                    <InputContainer
+                      key={index}
+                      name={name}
+                      type={type}
+                      legend={legend}
+                      id={id}
+                      // onChange={(e) => handleMemberFormOnchange(e)}
+                      error={error?.[`${name}`]}
+                    />
+                  );
+                })}
 
-              {details.slice(1).map((detail, index) => {
-                const { id, name, type, legend } = detail;
-                return (
-                  <InputContainer
-                    key={index}
-                    name={name}
-                    type={type}
-                    legend={legend}
-                    id={id}
-                    onChange={(e) => handleMemberFormOnchange(e)}
-                    error={error?.[`${name}`]}
-                  />
-                );
-              })}
+                <Button
+                  onClick={() => handleEmailSubmit()}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                >
+                  Join now
+                </Button>
+              </Details>
+            ) : (
+              <Details>
+                {details.slice(0, 1).map((detail, index) => {
+                  const { id, name, type, legend } = detail;
+                  return (
+                    <InputContainer
+                      key={index}
+                      name={name}
+                      type={type}
+                      legend={legend}
+                      id={id}
+                      onChange={(e) => handleMemberFormOnchange(e)}
+                      error={error?.[`${name}`]}
+                    />
+                  );
+                })}
 
-              <Checker
-                content={`
+                <Checker
+                  content={`
                     By continuing, you agree to Slashit’s
                     terms of use and privacy policy.
                     We’ll send reminders about debts on your account
@@ -295,16 +322,17 @@ function JoinClique() {
                     any debts on their account. 
                     We may also charge their debts to you at anytime when they don't pay on time.
                 `}
-              />
-              <Button
-                onClick={() => handleMemberFormSubmit()}
-                width={'100%'}
-                bg={`var(--violet)`}
-                type="filled"
-              >
-                Join now
-              </Button>
-            </Details>
+                />
+                <Button
+                  onClick={() => handleEmailSubmit()}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                >
+                  Continue
+                </Button>
+              </Details>
+            )}
           </Wrapper>
         </CliqueDiv>
       </Div>
