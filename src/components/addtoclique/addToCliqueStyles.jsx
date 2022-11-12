@@ -71,3 +71,10 @@ export const Details = styled.div`
   width: 100%;
   max-width: 350px;
 `;
+
+export const PositionDiv = styled.div`
+  width: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 55px;
+`;
