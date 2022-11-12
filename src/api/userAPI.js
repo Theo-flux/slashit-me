@@ -108,8 +108,8 @@ export const Register = async (props) => {
     },
     body: JSON.stringify({
       query: `
-      mutation ($firstname: String!, $lastname: String!, $mobile: String!, $email: String!, $birthDay: Date!, $type: signupEmailTypes!, $password: String!, $role: UserRole!, $country: String!, $businessName: String, $referralCode: String){
-        Register(firstname: $firstname, lastname: $lastname, mobile: $mobile, email: $email, birthDay: $birthDay, type: $type, password: $password, role: $role, country: $country, businessName: $businessName, referralCode: $referralCode){
+      mutation ($firstname: String!, $lastname: String!, $mobile: String!, $email: String!, $birthDay: Date!, $type: signupEmailTypes!, $password: String!, $role: UserRole!, $country: String!, $businessName: String,$platform: String  ){
+        Register(firstname: $firstname, lastname: $lastname, mobile: $mobile, email: $email, birthDay: $birthDay, type: $type, password: $password, role: $role, country: $country, businessName: $businessName, platform: $platform){
             code,
             success,
             message
@@ -127,6 +127,39 @@ export const Register = async (props) => {
       console.log('res', res, role);
       if (res) {
         msg = res.data.Register;
+      }
+    });
+  return msg;
+};
+
+export const NewRegister = async (props) => {
+  let msg;
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+      mutation ($firstname: String!, $lastname: String!, $mobile: String!, $email: String!, $birthDay: Date!, $type: signupEmailTypes!, $password: String!, $role: UserRole!, $country: String!, $businessName: String, $ipAddress: String, $deviceId: String, $platform: String ){
+        NewRegister(firstname: $firstname, lastname: $lastname, mobile: $mobile, email: $email, birthDay: $birthDay, type: $type, password: $password, role: $role, country: $country, businessName: $businessName, ipAddress: $ipAddress, deviceId: $deviceId, platform: $platform ){
+            code,
+            success,
+            message
+        }
+      }`,
+      variables: {
+        ...props,
+      },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log('res', res, role);
+      if (res) {
+        msg = res.data.NewRegister;
       }
     });
   return msg;

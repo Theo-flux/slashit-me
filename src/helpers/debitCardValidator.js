@@ -1,3 +1,7 @@
+import Image from 'next/image';
+import Mastercard from '../../public/images/mastercard.svg';
+import Visa from '../../public/images/visa.svg';
+
 const debitCardValidator = (cardNum) => {
   const regex = new RegExp('^[0-9]{13,19}$');
   if (!regex.test(parseInt(cardNum))) {
@@ -127,4 +131,55 @@ export const checkCreditCard = (cardnumber) => {
   }
 
   return response(true, null, cardCompany);
+};
+
+export const EncryptData = (key, text) => {
+  var cipher = forge.cipher.createCipher(
+    '3DES-ECB',
+    forge.util.createBuffer(key),
+  );
+  cipher.start({ iv: '' });
+  cipher.update(forge.util.createBuffer(text, 'utf-8'));
+  cipher.finish();
+  var encrypted = cipher.output;
+  return forge.util.encode64(encrypted.getBytes());
+};
+
+export const FormatExpirationDate = (string) => {
+  return string
+    .replace(
+      /[^0-9]/g,
+      '', // To allow only numbers
+    )
+    .replace(
+      /^([2-9])$/g,
+      '0$1', // To handle 3 > 03
+    )
+    .replace(
+      /^(1{1})([3-9]{1})$/g,
+      '0$1/$2', // 13 > 01/3
+    )
+    .replace(
+      /^0{1,}/g,
+      '0', // To handle 00 > 0
+    )
+    .replace(
+      /^([0-1]{1}[0-9]{1})([0-9]{1,2}).*/g,
+      '$1/$2', // To handle 113 > 11/3
+    );
+};
+
+export const FormatCardNumber = (number) => {
+  return number
+    .replace(/\s?/g, '')
+    .replace(/(\d{4})/g, '$1 ')
+    .trim();
+};
+
+export const resolveCardType = (cardNumber) => {
+  if (['51', '52', '53', '54', '55'].includes(cardNumber.substring(0, 2)))
+    return <Image src={Mastercard} alt="mastercard" />;
+  else {
+    if (cardNumber[0] == '4') return <Image src={Visa} alt="visa" />;
+  }
 };

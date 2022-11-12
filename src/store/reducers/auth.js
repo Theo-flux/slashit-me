@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   token: null,
@@ -10,7 +10,7 @@ const initialState = {
   userLastname: null,
   userBirthday: null,
   userPassword: null,
-  session: "inactive",
+  session: 'inactive',
   authCode: null,
   profileUpdate: {},
   user: {
@@ -27,7 +27,7 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: "userAuth",
+  name: 'userAuth',
   initialState,
   reducers: {
     //Sign in
@@ -43,8 +43,8 @@ const authSlice = createSlice({
       };
     },
 
-    //Fetch User
-    fetchUserById: (state, action) => {
+    //Set User
+    setUser: (state, action) => {
       state.user = action.payload;
     },
     //Set user email
@@ -97,7 +97,7 @@ export const {
   setBirthday,
   setEmail,
   setPassword,
-  fetchUserById,
+  setUser,
   setFirstname,
   setLastname,
   setPhone,

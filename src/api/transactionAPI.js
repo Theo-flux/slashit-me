@@ -347,10 +347,10 @@ export const FetchOrders = async ({ offset, limit, filter }) => {
   }
 
   await fetch(API_ENDPOINT, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -406,7 +406,7 @@ export const FetchOrders = async ({ offset, limit, filter }) => {
       variables: {
         offset: offset ? offset : 0,
         limit: limit ? limit : 10,
-        filter: filter || "Alltime",
+        filter: filter || 'Alltime',
       },
     }),
   })
@@ -414,7 +414,7 @@ export const FetchOrders = async ({ offset, limit, filter }) => {
       return res.json();
     })
     .then((res) => {
-      console.log("res 11", res);
+      console.log('res 11', res);
       if (res.data.FetchOrders) {
         msg = res.data.FetchOrders;
       }
@@ -432,13 +432,13 @@ export const FetchOrderById = async (orderId) => {
     auth = JSON.parse(auth);
     token = auth.token;
   }
-  console.log("orderId", orderId);
+  console.log('orderId', orderId);
 
   await fetch(API_ENDPOINT, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -497,7 +497,7 @@ export const FetchOrderById = async (orderId) => {
       return res.json();
     })
     .then((res) => {
-      console.log("fetch order by id", res.data.FetchOrderById.order);
+      console.log('fetch order by id', res.data.FetchOrderById.order);
       if (res.data.FetchOrderById) {
         msg = res.data.FetchOrderById;
       }
@@ -515,10 +515,10 @@ export const FetchOrderCard = async (order) => {
     token = auth.token;
   }
   await fetch(API_ENDPOINT, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -544,5 +544,71 @@ export const FetchOrderCard = async (order) => {
       }
     });
 
+  return msg;
+};
+
+export const FetchCards = async (showFew, isVirtualCard) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+            query($showFew: Boolean, $isVirtualCard: Boolean) {
+              FetchCard(showFew: $showFew, isVirtualCard: $isVirtualCard) {
+                code,
+                success,
+                message,
+                count,
+                result{
+                  _id,
+                  cardLogo,
+                  ordercard,
+                  last_4digits,
+                  preferred,
+                  first_6digits,
+                  type,
+                  isVirtualCard,
+                  expiry,
+                  cvv,
+                  cardPan,
+                  name,
+                  status,
+                  vCardId,
+                  createdAt,
+                  billing {
+                    address,
+                    city,
+                    state,
+                    zipcode,
+                    country
+                  },
+                }
+              }
+            }`,
+      variables: { showFew, isVirtualCard },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log('fetch cards', res.data.FetchCard.result);
+      if (res.data.FetchCard) {
+        msg = res.data.FetchCard;
+      }
+    });
   return msg;
 };

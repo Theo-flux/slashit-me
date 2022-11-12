@@ -122,22 +122,30 @@ function JoinClique() {
     }
   }
 
-  // async functions
-  async function joinBtn() {
-    if (memberForm.email && !password) {
-      validateShopper();
-    } else if (memberForm.email && password) {
+  function handlePasswordSubmit() {
+    let errors = {};
+
+    if (!memberForm.password) {
+      errors.password = 'Enter password!';
+    } else {
+      errors = {};
+    }
+
+    if (errors.password) {
+      setError(errors);
+    } else {
       joinClique();
     }
   }
 
+  // async functions
   async function validateShopper() {
     setLoading(true);
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
         toastMsg =
-          'Please complete your profile on the Slashit app, then come back to add someone to your Clique.';
+          'Please log in on the Slashit app to complete your profile, then come back to add someone to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
         setIsMailValidated(true);
       }
@@ -145,13 +153,10 @@ function JoinClique() {
       //TODO - Link to "Add to Clique 03"
     }
     setLoading(false);
-
     return;
   }
 
   async function joinClique() {
-    let submit = handleMemberFormSubmit();
-    if (submit.email || submit.password) return;
     setLoading(true);
     let userInfo = {
       email: memberForm.email,
@@ -166,7 +171,7 @@ function JoinClique() {
         JSON.stringify({ ...userInfo, token: sendReq.token }),
       );
       //Join Clique
-      let join = await CliqueAccept(props.token);
+      let join = await CliqueAccept(router.query?.token);
       if (join.success) {
         if (join.code == statusCode.OK) {
           //TODO - Link to "Add to Clique "Success""
@@ -242,13 +247,14 @@ function JoinClique() {
         />
         <CliqueDiv>
           <SmallText>
-            Only join this Clique if you have a close relationship with{' '}
-            {inviter?.firstname}
+            Only join this Clique if you have a close relationship with{''}
+            {inviter?.lastname} {inviter?.firstname}
           </SmallText>
 
           <Wrapper>
             <StyledTitle>
-              {inviter?.firstname} wants you to join their Clique on Slashit
+              {inviter?.lastname} {inviter?.firstname} wants you to join their
+              Clique on Slashit
             </StyledTitle>
             <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
 
@@ -316,14 +322,18 @@ function JoinClique() {
                   content={`
                     By continuing, you agree to Slashit’s
                     terms of use and privacy policy.
-                    We’ll send reminders about debts on your account
-                    to Yvonne Grace and you’ll receive reminders about
+                    We may send reminders about debts on your account
+                    to ${inviter?.lastname} ${inviter?.firstname} and you may receive reminders about
                     any debts on their account. 
                     We may also charge their debts to you at anytime when they don't pay on time.
                 `}
                 />
                 <Button
-                  onClick={() => handleEmailSubmit()}
+                  onClick={() => {
+                    !isMailValidated
+                      ? handleEmailSubmit()
+                      : handlePasswordSubmit();
+                  }}
                   width={'100%'}
                   bg={`var(--violet)`}
                   type="filled"
