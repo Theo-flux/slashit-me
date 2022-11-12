@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchCards } from '../../api/transactionAPI';
-import { FetchUserById } from '../../api/userAPI';
+import { FetchCards, GetAuthorisationAddCard } from '../../api/transactionAPI';
+import { CliqueAccept, FetchUserById } from '../../api/userAPI';
 import {
   EncryptData,
   FormatCardNumber,
@@ -10,6 +10,7 @@ import {
 } from '../../helpers/debitCardValidator';
 import { setUser } from '../../store/reducers/auth';
 import { setPreferredCard } from '../../store/reducers/transaction';
+import { AddCard as AddCardAPI } from '../../api/transactionAPI';
 
 function AddCard() {
   const dispatch = useDispatch();
@@ -167,9 +168,16 @@ function AddCard() {
           }, 2500);
         }
       } else {
-        //  Toast'Your card has been successfully added!',
-        //Clique Accept
-        //TODO - Link to "Add to Clique Success"
+        let join = await CliqueAccept(router.query?.CAT);
+        if (join.success) {
+          if (join.code == statusCode.OK) {
+            //TODO - Link to "Add to Clique "Success""
+          } else if (join.code == statusCode.ADD_YOUR_CARD) {
+            //TODO - Link to "Add to Clique "CARD1""
+          }
+        } else {
+          //Toast join.message
+        }
         cleanUp();
       }
     } else {
@@ -216,9 +224,16 @@ function AddCard() {
           }, 2500);
         }
       } else {
-        //Toast res.message,
-        //Clique Accept
-        //TODO - Link to "Add to Clique Success"
+        let join = await CliqueAccept(router.query?.CAT);
+        if (join.success) {
+          if (join.code == statusCode.OK) {
+            //TODO - Link to "Add to Clique "Success""
+          } else if (join.code == statusCode.ADD_YOUR_CARD) {
+            //TODO - Link to "Add to Clique "CARD1""
+          }
+        } else {
+          //Toast join.message
+        }
         cleanUp();
       }
     } else {
@@ -231,11 +246,19 @@ function AddCard() {
 
   async function ValidateOTP() {
     setloading(true);
-    const msg = await AddCard(data?.initiateChargeId, OTP);
+    const msg = await AddCardAPI(data?.initiateChargeId, OTP);
     if (msg.success) {
-      // Toast'Your card has been successfully added!',
       //Clique Accept
-      //TODO - Link to "Add to Clique Success"
+      let join = await CliqueAccept(router.query?.CAT);
+      if (join.success) {
+        if (join.code == statusCode.OK) {
+          //TODO - Link to "Add to Clique "Success""
+        } else if (join.code == statusCode.ADD_YOUR_CARD) {
+          //TODO - Link to "Add to Clique "CARD1""
+        }
+      } else {
+        //Toast join.message
+      }
       cleanUp();
     } else {
       //Toast msg.message
