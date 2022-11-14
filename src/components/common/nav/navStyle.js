@@ -136,7 +136,7 @@ export const MobileContent = styled.div`
   ${transition}
   transition-delay: 150ms;
   opacity: ${(props) => (props.openMobileNav ? '1' : '0')};
-  z-index: 4;
+  z-index: 99;
 `;
 
 export const MobileBackdrop = styled.div`
@@ -147,7 +147,7 @@ export const MobileBackdrop = styled.div`
   height: 100%;
   background-color: var(--gray);
   opacity: 0.5;
-  z-index: 3;
+  z-index: 98;
 `;
 
 export const Column = styled.div`

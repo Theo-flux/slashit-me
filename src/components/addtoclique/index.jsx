@@ -18,6 +18,7 @@ import {
   Toast,
   LoaderContainer,
   Loader,
+  ProgressBar,
 } from '../../shared';
 import { validateThis } from '../../helpers';
 import {
@@ -30,6 +31,7 @@ import {
   Member,
   Name,
   Details,
+  PositionDiv,
 } from './addToCliqueStyles';
 import statusCode from '../../api/statusCode';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,6 +86,7 @@ function JoinClique() {
     password: '',
   });
   const [error, setError] = useState({});
+  const [progress, setProgress] = useState('0%');
   const [loading, setLoading] = useState(false);
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
@@ -241,6 +244,12 @@ function JoinClique() {
     setTimeout(() => setShowToast(false), 5000);
   }, [toastMsg]);
 
+  useEffect(() => {
+    if (isMailValidated) {
+      setProgress('50%');
+    }
+  }, [isMailValidated]);
+
   if (!inviter)
     return (
       <Section>
@@ -254,6 +263,9 @@ function JoinClique() {
 
   return (
     <Section>
+      <PositionDiv>
+        <ProgressBar meter={progress} />
+      </PositionDiv>
       <Div>
         <Toast
           showToast={showToast}
