@@ -1,37 +1,44 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchCards, GetAuthorisationAddCard } from '../../api/transactionAPI';
-import { CliqueAccept, FetchUserById } from '../../api/userAPI';
+import {
+  FetchCards,
+  GetAuthorisationAddCard,
+} from '../../../api/transactionAPI';
+import { CliqueAccept, FetchUserById, NewRegister } from '../../../api/userAPI';
 import {
   EncryptData,
   FormatCardNumber,
   FormatExpirationDate,
-} from '../../helpers/debitCardValidator';
-import { setUser } from '../../store/reducers/auth';
-import { setPreferredCard } from '../../store/reducers/transaction';
-import { AddCard as AddCardAPI } from '../../api/transactionAPI';
+} from '../../../helpers/debitCardValidator';
+import { setUser } from '../../../store/reducers/auth';
+import { setPreferredCard } from '../../../store/reducers/transaction';
+import { AddCard } from '../../../api/transactionAPI';
 
-function AddCard() {
+function CardDetails(props) {
   let toastMsg = '';
   const dispatch = useDispatch();
+  const mode = props.mode;
+  const setMode = props.setMode;
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [showToast, setShowToast] = useState(false);
   const [loading, setloading] = useState(false);
   const [expiration, setExpiration] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [CVV, setCVV] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [disabled, setdisabled] = useState(true);
   const [buttonTitle, setbuttonTitle] = useState('Add Card');
-  const [cardData, setCardData] = useState('');
+  const cardData = useSelector((state) => state.helper.cardData);
   const [data, setData] = useState('');
   const [PIN, setPIN] = useState();
   const [OTP, setOTP] = useState();
-  const [mode, setMode] = useState('DETAILS');
   const [description, setDescription] = useState('Enter your card details');
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
-
   const user = useSelector((state) => state.userAuth.user);
+  const email = useSelector((state) => state.userAuth.userEmail);
   let currencyShortCode = user?.currencyShortCode;
 
   useEffect(() => {
@@ -50,12 +57,16 @@ function AddCard() {
     setOTP('');
     setdisabled(true);
     setbuttonTitle('Add Card');
+    setMode('');
+    dispatch(setCardData());
   }
 
   async function fetchUser() {
-    const fetchData = await FetchUserById();
-    if (fetchData.success) {
-      dispatch(setUser(fetchData.user));
+    if (!user.country) {
+      const fetchData = await FetchUserById();
+      if (fetchData.success) {
+        dispatch(setUser(fetchData.user));
+      }
     }
     if (!preferredCard) {
       let cardReq = await FetchCards(true);
@@ -148,7 +159,7 @@ function AddCard() {
       redirect_url: 'https://shoplens.herokuapp.com/success', //Change on production
     };
 
-    setCardData(cardData);
+    dispatch(setCardData(cardData));
 
     const encrypted = EncryptData(
       process.env.FLUTTERWAVE_KEY,
@@ -173,21 +184,12 @@ function AddCard() {
         if (res.meta.authorization.mode === 'redirect') {
           setData(res);
           setMode('REDIRECT');
-          setTimeout(() => {
-            setMode('NEW_WINDOW');
-          }, 2500);
+          //   setTimeout(() => {
+          //     setMode('NEW_WINDOW');
+          //   }, 2500);
         }
       } else {
-        let join = await CliqueAccept(router.query?.CAT);
-        if (join.success) {
-          if (join.code == statusCode.OK) {
-            //TODO - Link to "Add to Clique "Success""
-          } else if (join.code == statusCode.ADD_YOUR_CARD) {
-            //TODO - Link to "Add to Clique "CARD1""
-          }
-        } else {
-          toastMsg = join?.message || '';
-        }
+        fetchUser();
         cleanUp();
       }
     } else {
@@ -229,21 +231,12 @@ function AddCard() {
         if (res?.meta?.authorization?.mode === 'redirect') {
           setData(res);
           setMode('REDIRECT');
-          setTimeout(() => {
-            setScreen('NEW_WINDOW');
-          }, 2500);
+          //   setTimeout(() => {
+          //     setScreen('NEW_WINDOW');
+          //   }, 2500);
         }
       } else {
-        let join = await CliqueAccept(router.query?.CAT);
-        if (join.success) {
-          if (join.code == statusCode.OK) {
-            //TODO - Link to "Add to Clique "Success""
-          } else if (join.code == statusCode.ADD_YOUR_CARD) {
-            //TODO - Link to "Add to Clique "CARD1""
-          }
-        } else {
-          toastMsg = join?.message || '';
-        }
+        fetchUser();
         cleanUp();
       }
     } else {
@@ -256,19 +249,9 @@ function AddCard() {
 
   async function ValidateOTP() {
     setloading(true);
-    const msg = await AddCardAPI(data?.initiateChargeId, OTP);
+    const msg = await AddCard(data?.initiateChargeId, OTP);
     if (msg.success) {
-      //Clique Accept
-      let join = await CliqueAccept(router.query?.CAT);
-      if (join.success) {
-        if (join.code == statusCode.OK) {
-          //TODO - Link to "Add to Clique "Success""
-        } else if (join.code == statusCode.ADD_YOUR_CARD) {
-          //TODO - Link to "Add to Clique "CARD1""
-        }
-      } else {
-        toastMsg = join?.message || '';
-      }
+      fetchUser();
       cleanUp();
     } else {
       toastMsg = msg.message || '';
@@ -277,9 +260,32 @@ function AddCard() {
     return;
   }
 
+  async function createAccount() {
+    let register = await NewRegister({
+      firstname,
+      lastname,
+      country: 'NG',
+      email,
+      role: 'shopper',
+      ipAddress: computerInfo?.ip,
+      deviceId: `${computerInfo.platform} ${computerInfo.os}`,
+      ipAddress: computerInfo.ip,
+    });
+    if (register.success) {
+      setMode('VERIFY_EMAIL_NEXT');
+    } else {
+      toastMsg = register.message;
+    }
+  }
+
   function btnPress() {
     if (!user.country) {
       toastMsg = 'Please refresh this page';
+      return;
+    }
+
+    if (!isLoggedIn) {
+      createAccount();
       return;
     }
 
@@ -296,7 +302,14 @@ function AddCard() {
     return;
   }
 
-  return <div>AddCard</div>;
+  return (
+    <div>
+      {/* {Card number} */}
+      {/* {Card expiry} */}
+      {/* {Card cvv} */}
+      {/* {if isLoggedIn, hide firstname, lastname field and hide "We'll use your name to create an account for you on Slashit, so be real"} */}
+    </div>
+  );
 }
 
-export default AddCard;
+export default CardDetails;

@@ -32,6 +32,8 @@ import {
   Details,
 } from './addToCliqueStyles';
 import statusCode from '../../api/statusCode';
+import { useDispatch, useSelector } from 'react-redux';
+import { setComputerInfo } from '../../store/reducers/auth';
 
 // const members = [
 //   {
@@ -74,9 +76,8 @@ const details = [
 
 function JoinClique() {
   let toastMsg = '';
-  let platform = '';
-  let os = '';
 
+  const dispatch = useDispatch();
   const router = useRouter();
   const [memberForm, setMemberForm] = useState({
     email: '',
@@ -88,13 +89,14 @@ function JoinClique() {
   const [members, setMembers] = useState();
   const [showToast, setShowToast] = useState(false);
   const [isMailValidated, setIsMailValidated] = useState(false);
-  const [computerInfo, setComputerInfo] = useState({ platform, os, ip: '' });
+  const computerInfo = useSelector((state) => state.userAuth.computerInfo);
 
   if (typeof window !== 'undefined') {
-    platform = window.navigator.platform;
-    os = window.navigator.appVersion;
+    let platform = window.navigator.platform;
+    let os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
   }
 
   function handleMemberFormOnchange(event) {
@@ -118,7 +120,6 @@ function JoinClique() {
       setError(errors);
     } else {
       validateShopper();
-      // setIsMailValidated(true);
     }
   }
 
@@ -145,7 +146,7 @@ function JoinClique() {
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
         toastMsg =
-          'Please log in on the Slashit app to complete your profile, then come back to add someone to your Clique.';
+          'Please complete your profile on the Slashit app, then come back to add a friend to your Clique.';
       } else if (sendReq.code == statusCode.OK) {
         setIsMailValidated(true);
       }
@@ -165,11 +166,30 @@ function JoinClique() {
       deviceId: `${computerInfo.platform} ${computerInfo.os}`,
       ipAddress: computerInfo.ip,
     };
-    let sendReq = await Login(userInfo);
-    if (sendReq.success) {
-      SaveLoginCredentials(
-        JSON.stringify({ ...userInfo, token: sendReq.token }),
-      );
+    let getInfo = localStorage.getItem('userInfo');
+
+    //If User Information does not already exist in localStorage, then login
+    if (!getInfo) {
+      let sendReq = await Login(userInfo);
+      if (sendReq.success) {
+        SaveLoginCredentials(
+          JSON.stringify({ ...userInfo, token: sendReq.token }),
+        );
+        //Join Clique
+        let join = await CliqueAccept(router.query?.token);
+        if (join.success) {
+          if (join.code == statusCode.OK) {
+            //TODO - Link to "Add to Clique "Success""
+          } else if (join.code == statusCode.ADD_YOUR_CARD) {
+            //TODO - Link to "Add to Clique "CARD1""
+          }
+        } else {
+          toastMsg = join.message;
+        }
+      } else {
+        toastMsg = sendReq.message;
+      }
+    } else {
       //Join Clique
       let join = await CliqueAccept(router.query?.token);
       if (join.success) {
@@ -181,9 +201,6 @@ function JoinClique() {
       } else {
         toastMsg = join.message;
       }
-    } else {
-      console.log(sendReq.message);
-      toastMsg = sendReq.message;
     }
     setLoading(false);
     return;
@@ -204,7 +221,7 @@ function JoinClique() {
   async function GetComputerIp() {
     const res = await fetch('https://api.ipify.org?format=json');
     const data = await res.json();
-    setComputerInfo({ ...computerInfo, ip: data.ip });
+    dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
 
   useEffect(() => {

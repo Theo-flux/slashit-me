@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   token: null,
-  email: null,
   isLoading: true,
   userEmail: null,
   userPhone: null,
@@ -24,6 +23,8 @@ const initialState = {
     cliqueActive: [],
   },
   phoneVerified: false,
+  computerInfo: { platform: '', os: '', ip: '' },
+  isLoggedIn: false,
 };
 
 const authSlice = createSlice({
@@ -88,6 +89,14 @@ const authSlice = createSlice({
     setSession: (state, action) => {
       state.session = action.payload;
     },
+    //Set Computer Info
+    setComputerInfo: (state, action) => {
+      state.computerInfo = action.payload;
+    },
+    //Set Is Logged in
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
   },
 });
 
@@ -105,6 +114,8 @@ export const {
   setClique,
   setPhoneVerified,
   setSession,
+  setComputerInfo,
+  setIsLoggedIn,
 } = authSlice.actions;
 
 export default authSlice.reducer;

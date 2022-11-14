@@ -240,7 +240,7 @@ export const FetchSettlements = async ({ offset, limit }) => {
   return msg;
 };
 
-export const PayAnyone = async (currency, amount, recipient, balance) => {
+export const PayAnyone = async (currency, amount, recipient, source) => {
   let msg;
   /* Retrieve Token From Local Storage */
   let token;
@@ -259,8 +259,8 @@ export const PayAnyone = async (currency, amount, recipient, balance) => {
     },
     body: JSON.stringify({
       query: `
-        mutation($currency: String! , $amount: Float, $recipient: String!, $balance: Boolean ){
-           PayAnyone(currency: $currency, amount: $amount , recipient :$recipient, balance: $balance){
+        mutation($currency: String! , $amount: Float, $recipient: String!, $source: paymentSource ){
+           PayAnyone(currency: $currency, amount: $amount , recipient :$recipient, source: $source){
               code,
               message,
               success,          
@@ -270,7 +270,7 @@ export const PayAnyone = async (currency, amount, recipient, balance) => {
         currency,
         amount,
         recipient,
-        balance,
+        source,
       },
     }),
   })

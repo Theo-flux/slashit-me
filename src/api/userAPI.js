@@ -296,7 +296,7 @@ export const ResetPassword = async (
   return msg;
 };
 
-export const VerifyEmail = async (email, securityCode, any) => {
+export const VerifyEmail = async (email, securityCode, any, computerInfo) => {
   let msg;
   await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -305,17 +305,20 @@ export const VerifyEmail = async (email, securityCode, any) => {
     },
     body: JSON.stringify({
       query: `
-            mutation ($securityCode: String!, $email: String!, $any: Boolean){
-                VerifyEmail(securityCode: $securityCode, email: $email, any:$any){
+            mutation ($securityCode: String!, $email: String!, $any: Boolean, $ipAddress: String , $deviceId: String){
+                VerifyEmail(securityCode: $securityCode, email: $email, any:$any, ipAddress: $ipAddress, deviceId: $deviceId){
                     code,
                     success,
                     message,
+                    token
                 }
             }`,
       variables: {
         securityCode,
         email,
         any,
+        ipAddress: computerInfo?.ip,
+        deviceId: computerInfo?.platform,
       },
     }),
   })

@@ -1,25 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  filterSearchPhrase: "",
+  filterSearchPhrase: '',
   dateFilterParams: null,
   cliqueUserSelected: null,
   itemSelected: null,
   shippingDetails: {
-    shippingName: "",
-    shippingAddress: "",
-    shippingZipcode: "",
-    shippingCity: "",
-    shippingState: "",
-    shippingCountry: "",
+    shippingName: '',
+    shippingAddress: '',
+    shippingZipcode: '',
+    shippingCity: '',
+    shippingState: '',
+    shippingCountry: '',
   },
-  anyAmount: "",
+  anyAmount: '',
   anyAction: false,
-  anyTab: "",
+  anyTab: '',
+  cardData: null,
 };
 
 const helperSlice = createSlice({
-  name: "helper",
+  name: 'helper',
   initialState,
   reducers: {
     //Set Filter Search Phrase
@@ -57,6 +58,10 @@ const helperSlice = createSlice({
     setAnyTab: (state, action) => {
       state.anyTab = action.payload;
     },
+    //Set Card Data
+    setCardData: (state, action) => {
+      state.cardData = action.payload;
+    },
   },
 });
 
@@ -69,6 +74,7 @@ export const {
   setAnyAmount,
   setAnyTab,
   setAnyAction,
+  setCardData,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;
