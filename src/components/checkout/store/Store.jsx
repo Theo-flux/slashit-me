@@ -19,10 +19,12 @@ import Scheduler from './scheduler/Scheduler';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setComputerInfo } from '../../../store/reducers/auth';
+import { setComputerInfo, setEmail } from '../../../store/reducers/auth';
 import { AmountSeparator } from '../../../helpers/numberValidation';
 import { CreateOrder } from '../../../api/transactionAPI';
 import { setOrderDetails } from '../../../store/reducers/transaction';
+import { ShopperExist } from '../../../api/userAPI';
+import statusCode from '../../../api/statusCode';
 
 const orderMethods = ['API', 'LINK'];
 
@@ -37,10 +39,11 @@ function Store() {
     email: '',
     password: '',
   });
-  const [showPass, setShowPass] = useState(false);
+  const [pass, setPass] = useState('');
   const [error, setError] = useState({});
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
+  const [isMailValidated, setIsMailValidated] = useState(false);
 
   if (typeof window !== 'undefined') {
     let platform = window.navigator.platform;
@@ -67,7 +70,7 @@ function Store() {
     }
 
     if (error?.email) {
-      setShowPass(false);
+      // setShowPass(false);
     } else {
       setShowPass(true);
     }
@@ -86,6 +89,24 @@ function Store() {
   }, []);
 
   //async functions
+  async function validateShopper() {
+    setLoading(true);
+    dispatch(setEmail(orderer.email)); //Store email in global state
+    let sendReq = await ShopperExist(orderer.email);
+    if (sendReq.success) {
+      if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
+        setPass(statusCode.COMPLETE_REGISTRATION);
+      } else if (sendReq.code == statusCode.OK) {
+        setPass(statusCode.OK);
+      }
+    } else {
+      setPass(statusCode.UNAUTHORIZED);
+    }
+    setIsMailValidated(true);
+    setLoading(false);
+    return;
+  }
+
   async function createOrder() {
     let sendReq = await CreateOrder(
       router.query?.orderMethod == 'API'
@@ -105,6 +126,14 @@ function Store() {
     const res = await fetch('https://api.ipify.org?format=json');
     const data = await res.json();
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
+  }
+
+  function resetOrderer() {
+    setOrderer({
+      email: '',
+      password: '',
+    });
+    setIsMailValidated(false);
   }
 
   if (!orderDetails)
@@ -139,6 +168,10 @@ function Store() {
             openOrder={openOrder}
             error={error}
             handleOrdererOnchange={handleOrdererOnchange}
+            orderer={orderer}
+            isMailValidated={isMailValidated}
+            resetOrderer={resetOrderer}
+            pass={pass}
           />
           <Scheduler />
           <Confirmer />
@@ -163,3 +196,5 @@ function Store() {
 }
 
 export default Store;
+
+//TODO - If ismailvalidated & pass is COMPLETE_REGISTRATION, show enter the code sent to your email .

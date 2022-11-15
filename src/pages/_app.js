@@ -3,9 +3,6 @@ import GlobalCSS from '../styles/globals.css';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { useEffect } from 'react';
-import { FetchUserById } from '../api/userAPI';
-import getSymbolFromCurrency from "currency-symbol-map";
 
 const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 
@@ -14,7 +11,7 @@ function MyApp({ Component, pageProps }) {
     uri: API_ENDPOINT,
     cache: new InMemoryCache(),
   });
-console.log(getSymbolFromCurrency('AED'))
+
   return (
     <>
       <Provider store={store}>

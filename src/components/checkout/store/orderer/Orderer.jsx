@@ -37,60 +37,71 @@ import {
   ShippingPrice,
   TotalPrice,
 } from './orderStyles';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import statusCode from '../../../../api/statusCode';
 
-const orderedItems = [
-  {
-    id: '1',
-    name: 'Pen',
-    qty: '1',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '2',
-    name: 'Pencil',
-    qty: '10',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '3',
-    name: 'Keyboard',
-    qty: '109',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '4',
-    name: 'Mouse',
-    qty: '500',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '1',
-    name: 'Pen',
-    qty: '1',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '2',
-    name: 'Pencil',
-    qty: '10',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '3',
-    name: 'Keyboard',
-    qty: '109',
-    price: 'NGN 1200.00',
-  },
-  {
-    id: '4',
-    name: 'Mouse',
-    qty: '500',
-    price: 'NGN 1200.00',
-  },
-];
+// const orderedItems = [
+//   {
+//     id: '1',
+//     name: 'Pen',
+//     qty: '1',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '2',
+//     name: 'Pencil',
+//     qty: '10',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '3',
+//     name: 'Keyboard',
+//     qty: '109',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '4',
+//     name: 'Mouse',
+//     qty: '500',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '1',
+//     name: 'Pen',
+//     qty: '1',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '2',
+//     name: 'Pencil',
+//     qty: '10',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '3',
+//     name: 'Keyboard',
+//     qty: '109',
+//     price: 'NGN 1200.00',
+//   },
+//   {
+//     id: '4',
+//     name: 'Mouse',
+//     qty: '500',
+//     price: 'NGN 1200.00',
+//   },
+// ];
 
-function Orderer({ openOrder, handleOrdererOnchange, error }) {
+function Orderer({
+  openOrder,
+  handleOrdererOnchange,
+  error,
+  orderer,
+  isMailValidated,
+  resetOrderer,
+  pass,
+}) {
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
 
   return (
     <ProcessContent>
@@ -116,20 +127,55 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
             </Row>
             {openOrder && (
               <Details>
-                <InputContainer
-                  id={'orderer-email'}
-                  type={'email'}
-                  name={'email'}
-                  legend={'Enter email address'}
-                  onChange={(e) => handleOrdererOnchange(e)}
-                  error={error?.email}
-                />
-                <InfoBox>
-                  <Icon className="fa-solid fa-circle-info"></Icon>
-                  <InfoText>
-                    Use your Slashit email address if you have a Slashit account
-                  </InfoText>
-                </InfoBox>
+                {!isLoggedIn ? (
+                  <>
+                    {!isMailValidated && !pass && (
+                      <>
+                        <InputContainer
+                          id={'orderer-email'}
+                          type={'email'}
+                          name={'email'}
+                          legend={'Enter email address'}
+                          onChange={(e) => handleOrdererOnchange(e)}
+                          error={error?.email}
+                        />
+                        <InfoBox>
+                          <Icon className="fa-solid fa-circle-info"></Icon>
+                          <InfoText>
+                            Use your Slashit email address if you have a Slashit
+                            account
+                          </InfoText>
+                        </InfoBox>
+                      </>
+                    )}
+
+                    {isMailValidated && pass == statusCode.OK && (
+                      <>
+                        <InputContainer
+                          id={'orderer-password'}
+                          type={'text'}
+                          name={'password'}
+                          legend={'Enter your password'}
+                          onChange={(e) => handleOrdererOnchange(e)}
+                          error={error?.password}
+                        />
+                        <InfoBox>
+                          <Icon className="fa-solid fa-circle-info"></Icon>
+                          <InfoText>{orderer?.email}</InfoText>
+                          {/* {"TODO - Not you button - onClick resetOrderer"} */}
+                        </InfoBox>
+                      </>
+                    )}
+
+                    {isMailValidated && pass == statusCode.UNAUTHORIZED && (
+                      <>{/* {"TODO -  "Your Order 8 UI" } */}</>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/*TODO-Show "Your Order 7 UI" user?.avatar or the first letter of user?lastname and user?firstname*/}{' '}
+                  </>
+                )}
               </Details>
             )}
           </OrderDetails>
@@ -155,7 +201,7 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
                           <ItemName>{title}</ItemName>
                           <ItemQty>{quantity}</ItemQty>
                           <ItemPrice>
-                            {getSymbolFromCurre currrency}
+                            {getSymbolFromCurrency(currrency)}
                             {AmountSeparator(price)}
                           </ItemPrice>
                         </OrderedItem>
@@ -177,7 +223,7 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
                   <SubTotal>
                     <SubtotalText>Subtotal</SubtotalText>
                     <SubtotalPrice>
-                      {orderDetails.currency}
+                      {getSymbolFromCurrency(orderDetails.currency)}
                       {AmountSeparator(
                         orderDetails.amount - orderDetails.shippingCost,
                       )}
@@ -186,7 +232,7 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
                   <Shipping>
                     <ShippingText>Shipping</ShippingText>
                     <ShippingPrice>
-                      {orderDetails.currency}
+                      {getSymbolFromCurrency(orderDetails.currency)}
                       {AmountSeparator(orderDetails.shippingCost)}
                     </ShippingPrice>
                   </Shipping>
@@ -195,7 +241,7 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
                 <Total>
                   <TotalText>Total</TotalText>
                   <TotalPrice>
-                    {orderDetails.currency}
+                    {getSymbolFromCurrency(orderDetails.currency)}
                     {AmountSeparator(orderDetails.amount)}
                   </TotalPrice>
                 </Total>
@@ -209,3 +255,5 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
 }
 
 export default Orderer;
+
+//TODO - If ismailvalidated &  pass is UNAUTHORIZED, don't show password field instead show only the orderer.email "Your Order 8"
