@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   cards: null,
   preferredCard: null,
-
+  orderDetails: null,
 };
 
 const transactionSlice = createSlice({
-  name: "transaction",
+  name: 'transaction',
   initialState,
   reducers: {
     //Set Debit Cards
@@ -18,13 +18,14 @@ const transactionSlice = createSlice({
     setPreferredCard: (state, action) => {
       state.preferredCard = action.payload;
     },
+    //Set Order details
+    setOrderDetails: (state, action) => {
+      state.orderDetails = action.payload;
+    },
   },
 });
 
-export const {
-  setCards,
-  setPreferredCard,
-
-} = transactionSlice.actions;
+export const { setCards, setPreferredCard, setOrderDetails } =
+  transactionSlice.actions;
 
 export default transactionSlice.reducer;

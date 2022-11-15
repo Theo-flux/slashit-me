@@ -38,6 +38,11 @@ function Pay(props) {
     password: '',
   });
 
+  function handleFormOnchange(event) {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  }
+
   function handleEmailSubmit() {
     let errors = {};
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -45,7 +50,7 @@ function Pay(props) {
     if (!form.email) {
       errors.email = "Email can't be empty!";
     } else if (!form.email.match(mailformat)) {
-      errors.email = 'Inavlid email!';
+      errors.email = 'Invalid email!';
     } else {
       errors = {};
     }
@@ -152,6 +157,7 @@ function Pay(props) {
 
   function resetBox() {
     setMode('');
+    dispatch(setEmail());
     dispatch(setAnyAction());
     return;
   }
@@ -165,7 +171,7 @@ function Pay(props) {
         resetBox={resetBox}
       />
     ); //CARD DETAILS UI
-    
+
   if ((mode = 'VERIFY_EMAIL'))
     return (
       <CardDetails

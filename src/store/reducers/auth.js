@@ -25,6 +25,7 @@ const initialState = {
   phoneVerified: false,
   computerInfo: { platform: '', os: '', ip: '' },
   isLoggedIn: false,
+  signUpInfo: {},
 };
 
 const authSlice = createSlice({
@@ -97,6 +98,10 @@ const authSlice = createSlice({
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
     },
+    //Set Signup info
+    setSignUpInfo :(state , action) =>  {
+      state.signUpInfo = action.payload
+    },
   },
 });
 
@@ -116,6 +121,7 @@ export const {
   setSession,
   setComputerInfo,
   setIsLoggedIn,
+  setSignUpInfo
 } = authSlice.actions;
 
 export default authSlice.reducer;

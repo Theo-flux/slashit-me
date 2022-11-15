@@ -5,7 +5,7 @@ export const validateThis = (formDetails) => {
   if (!formDetails?.email) {
     errors['email'] = "Email can't be empty!";
   } else if (!formDetails?.email.match(mailformat)) {
-    errors['email'] = 'Inavlid email!';
+    errors['email'] = 'Invalid email!';
   }
 
   if (!formDetails?.password) {

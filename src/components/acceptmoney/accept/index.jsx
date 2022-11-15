@@ -10,13 +10,38 @@ import {
   Row,
   IconCheck,
 } from './acceptmoneyStyles';
+import { setComputerInfo } from '../../../store/reducers/auth';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 function Accept() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [selectStore, setSelectStore] = useState(false);
+
+  if (typeof window !== 'undefined') {
+    let platform = window.navigator.platform;
+    let os = window.navigator.appVersion;
+    os = os.split(' ');
+    os = `${os[2]} ${os[3]}`;
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  }
 
   function handleSelectStore() {
     setSelectStore(!selectStore);
   }
+
+  async function GetComputerIp() {
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
+  }
+
+  useEffect(() => {
+    GetComputerIp();
+  }, []);
 
   return (
     <Section>
@@ -50,7 +75,7 @@ function Accept() {
             </Text>
           </SelectStoreContainer>
 
-          <LinkButton href="acceptmoney/login" isDisabled={selectStore}>
+          <LinkButton  href="acceptmoney/login" isDisabled={selectStore}>
             Continue
           </LinkButton>
         </AcceptContainer>

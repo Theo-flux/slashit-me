@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import { InputContainer, SelectContainer, Button } from '../../../shared';
+import { setSignUpInfo } from '../../../store/reducers/auth';
 import { FormContainer, Wrapper, Column, StyledTitle, A } from '../formStyles';
 
 const business_item = [
@@ -8,6 +10,7 @@ const business_item = [
     legend: 'Buisness Name',
     placeholder: 'business name',
     id: 'business_name',
+    name: 'businessName',
   },
 
   {
@@ -20,6 +23,8 @@ const business_item = [
 ];
 
 function BusinessForm({ handleActive }) {
+  const dispatch = useDispatch();
+  const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
   return (
     <FormContainer>
       <Wrapper>
@@ -27,7 +32,7 @@ function BusinessForm({ handleActive }) {
 
         <Column>
           {business_item.map((reg, index) => {
-            const { type, legend, placeholder, id, options } = reg;
+            const { type, legend, placeholder, id, options, name } = reg;
             return (
               <>
                 {type !== 'select' ? (
@@ -37,6 +42,12 @@ function BusinessForm({ handleActive }) {
                     legend={legend}
                     placeholder={placeholder}
                     id={id}
+                    name={name}
+                    onChange={(e) =>
+                      dispatch(
+                        setSignUpInfo({ ...signUpInfo, [e.name]: e.event }),
+                      )
+                    }
                   />
                 ) : (
                   <SelectContainer
@@ -45,6 +56,7 @@ function BusinessForm({ handleActive }) {
                     placeholder={placeholder}
                     id={id}
                     options={options}
+                    //TODO Create onSelect event  dispatch(setSignUpInfo({ ...signUpInfo, category: selected }),       )
                   />
                 )}
               </>

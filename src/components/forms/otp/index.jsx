@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  FetchUserById,
+  SaveLoginCredentials,
+  VerifyEmail,
+} from '../../../api/userAPI';
 import { OtpInputContainer } from '../../../shared';
+import { setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import {
   FormContainer,
   Wrapper,
@@ -42,7 +49,12 @@ const otp_item = [
 ];
 
 function OtpForm() {
+  let toastMsg = '';
+  const dispatch = useDispatch();
   const [otpData, setOtpData] = useState(['']);
+  const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
+  const computerInfo = useSelector((state) => state.userAuth.computerInfo);
+  const [showToast, setShowToast] = useState(false);
 
   function handleOtpOnChange(event, index) {
     const { value } = event.target;
@@ -70,11 +82,43 @@ function OtpForm() {
     }
   }
 
+  async function verify() {
+    let sendReq = await VerifyEmail(
+      signUpInfo.email,
+      //TODO -Declare otp here,
+      false,
+      computerInfo,
+      (platform = 'web'),
+    );
+    if (sendReq.success) {
+      SaveLoginCredentials(JSON.stringify({ token: sendReq.token }));
+      const userReq = await FetchUserById();
+      if (userReq.success) {
+        dispatch(setUser(userReq.user));
+      }
+      dispatch(setIsLoggedIn(true));
+      //TODO - Link to "Sign up 11" Preparing your brand new dashboard
+    } else {
+      toastMsg = sendReq.message;
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (otpData.length === 0) {
       document.getElementById(`otp_digit_0`).focus();
     }
+    //Verify Code
+    if (otpData.length === 4) {
+    }
   }, [otpData]);
+
+  useEffect(() => {
+    if (toastMsg) {
+      setShowToast(true);
+    }
+    setTimeout(() => setShowToast(false), 5000);
+  }, [toastMsg]);
 
   return (
     <FormContainer>

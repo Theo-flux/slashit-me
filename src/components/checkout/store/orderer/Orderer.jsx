@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AmountSeparator } from '../../../../helpers/numberValidation';
 import { InputContainer, TextAreaContainer } from '../../../../shared';
 import {
   EnvelopeCover,
@@ -88,6 +90,8 @@ const orderedItems = [
 ];
 
 function Orderer({ openOrder, handleOrdererOnchange, error }) {
+  const orderDetails = useSelector((state) => state.transaction.orderDetails);
+
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -164,17 +168,28 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
                 <SubTotalContainer>
                   <SubTotal>
                     <SubtotalText>Subtotal</SubtotalText>
-                    <SubtotalPrice>NGN 32,000.00</SubtotalPrice>
+                    <SubtotalPrice>
+                      {orderDetails.currency}
+                      {AmountSeparator(
+                        orderDetails.amount - orderDetails.shippingCost,
+                      )}
+                    </SubtotalPrice>
                   </SubTotal>
                   <Shipping>
                     <ShippingText>Shipping</ShippingText>
-                    <ShippingPrice>NGN 32,000.00</ShippingPrice>
+                    <ShippingPrice>
+                      {orderDetails.currency}
+                      {AmountSeparator(orderDetails.shippingCost)}
+                    </ShippingPrice>
                   </Shipping>
                 </SubTotalContainer>
 
                 <Total>
                   <TotalText>Total</TotalText>
-                  <TotalPrice>NGN 32,000.00</TotalPrice>
+                  <TotalPrice>
+                    {orderDetails.currency}
+                    {AmountSeparator(orderDetails.amount)}
+                  </TotalPrice>
                 </Total>
               </Orders>
             )}

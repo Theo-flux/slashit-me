@@ -17,6 +17,10 @@ import {
   LinkInfo,
 } from './generatePaymentLinkStyles';
 import { paymentDetailsValidator } from '../../../helpers';
+import {
+  CreatePaymentLink,
+  SharePaymentLink,
+} from '../../../api/transactionAPI';
 
 const paymentItem = [
   {
@@ -24,12 +28,12 @@ const paymentItem = [
     id: 'amount-to-collect',
     type: 'text',
     prefix: 'NGN',
-    placeholder: '2000',
+    placeholder: '20000',
     name: 'amount',
   },
 
   {
-    legend: 'Your mail',
+    legend: 'Your email',
     id: 'your-mail',
     type: 'email',
     placeholder: 'youremail@gmail.com',
@@ -46,6 +50,8 @@ const paymentItem = [
 ];
 
 function GeneratePaymentLink({ id }) {
+  let toastMsg = '';
+  const [showToast, setShowToast] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
     amount: '',
     mail: '',
@@ -53,6 +59,7 @@ function GeneratePaymentLink({ id }) {
   });
   const [errors, setErrors] = useState({});
   const [isValidated, setIsValidated] = useState(false);
+  const [link, setLink] = useState('');
 
   function handlePaymentDetailsChange(event) {
     const { name, value } = event.target;
@@ -65,11 +72,60 @@ function GeneratePaymentLink({ id }) {
     if (res.amount || res.mail) {
       setErrors(res);
     } else {
-      setIsValidated(!isValidated);
-      setErrors({});
+      //setIsValidated(!isValidated);
+      //setErrors({});
+      //Create payment link when there are no form errors //amount and mail are present
+      createLink();
     }
   }
-  console.log(isValidated);
+
+  async function createLink() {
+    let sendReq = await CreatePaymentLink(
+      (currency = 'NGN'),
+      paymentDetails.amount,
+      paymentDetails.mail,
+      paymentDetails.note,
+    );
+
+    if (sendReq.success) {
+      setIsValidated(true);
+      setLink(sendReq.result);
+    } else {
+      toastMsg = sendReq.message;
+    }
+  }
+
+  async function shareLink() {
+    let sendReq = await SharePaymentLink(
+      //TODO - receiver email
+      link,
+    );
+    if (sendReq.success) {
+      toastMsg = 'Payment link has been sent';
+    } else {
+      toastMsg = sendReq.message;
+    }
+  }
+
+  function resetBox() {
+    setIsValidated(false);
+    setPaymentDetails({
+      amount: '',
+      mail: '',
+      note: '',
+    });
+  }
+
+  useEffect(() => {
+    if (toastMsg) {
+      setShowToast(true);
+    }
+    setTimeout(() => setShowToast(false), 5000);
+  }, [toastMsg]);
+
+  useEffect(() => {
+    return () => resetBox();
+  }, []);
 
   return (
     <GenerateLinkForm>
@@ -96,7 +152,7 @@ function GeneratePaymentLink({ id }) {
             <Icon className="ri-information-fill"></Icon>
             <p>
               By creating link, you agree to Slashit’s terms of use and privacy
-              policy. We’ll also create a Merchant account for you on Slashit.
+              policy.
             </p>
           </InfoBox>
 
@@ -115,10 +171,7 @@ function GeneratePaymentLink({ id }) {
         <LinkSection>
           <Row>
             <p></p>
-            <CloseIcon
-              onClick={() => setIsValidated(false)}
-              className="ri-close-fill"
-            />
+            <CloseIcon onClick={() => resetBox()} className="ri-close-fill" />
           </Row>
 
           <Center>
@@ -128,7 +181,8 @@ function GeneratePaymentLink({ id }) {
               Copy and share link now to collect your money with Slashit
             </LinkInfo>
             <Button width={`100%`} bg={`var(--violet)`}>
-              copy link
+              {/* {TODO - Copy Link url to clipboard  = ${process.env.APP_URL}/paymentLink/${link}} */}
+              Copy link
             </Button>
             <LinkInfo>or</LinkInfo>
             Send link to cutomers’ email
@@ -136,9 +190,12 @@ function GeneratePaymentLink({ id }) {
               <MailInput
                 name={'receiver-mail'}
                 type={'email'}
-                placeholder={`Receiver's Email`}
+                placeholder={`Customer's Email`}
               />
-              <ArrowIcon className={'ri-arrow-right-circle-fill'} />
+              <ArrowIcon
+                //onClick={() =>} //TODO - Validate receiver field and shareLink()
+                className={'ri-arrow-right-circle-fill'}
+              />
             </MailContainer>
           </Center>
         </LinkSection>

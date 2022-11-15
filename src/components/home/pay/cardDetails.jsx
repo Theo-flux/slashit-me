@@ -129,11 +129,6 @@ function CardDetails(props) {
         setdisabled(true);
       }
     }
-
-    if (mode == 'REDIRECT') {
-      //TODO - Link to "Redirecting"
-    }
-
     if (mode == 'NEW_WINDOW') {
       //TODO - Open data?.meta?.authorization?.redirect in another window
     }

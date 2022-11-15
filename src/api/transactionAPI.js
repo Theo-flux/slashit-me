@@ -289,6 +289,136 @@ export const PayAnyone = async (currency, amount, recipient, source) => {
   return msg;
 };
 
+export const CreatePaymentLink = async (currency, amount, sender, note) => {
+  let msg;
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        mutation($currency: String! , $amount: Float, $sender: String!, $note: String){
+          NewPaymentLink(currency: $currency, amount: $amount , sender:$sender, note: $note){
+              code,
+              message,
+              success,  
+              result        
+              }
+          }`,
+      variables: {
+        currency,
+        amount,
+        sender,
+        note,
+      },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      if (res) {
+        console.log(res.data);
+        if (res.data.NewPaymentLink) {
+          msg = res.data.NewPaymentLink;
+        }
+      }
+    });
+
+  return msg;
+};
+
+export const CreateOrder = async (orderInput, method, link) => {
+  let msg;
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+        mutation($orderInput: orderInput, $method: orderMethod!, $link: ID,){
+        CreateOrder(orderInput: $orderInput, method: $method , link: $link){
+              code,
+              message,
+              success,  
+              order        
+              }
+          }`,
+      variables: {
+        orderInput,
+        method,
+        link,
+      },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      if (res) {
+        console.log(res.data);
+        if (res.data.CreateOrder) {
+          msg = res.data.CreateOrder;
+        }
+      }
+    });
+
+  return msg;
+};
+
+export const SharePaymentLink = async (email, link) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+        mutation($email: String!, $link:ID!){
+          SharePaymentLink(email: $email, link: $link){
+              code,
+              message,
+              success,          
+              }
+          }`,
+      variables: {
+        email,
+        link,
+      },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      if (res) {
+        console.log(res.data);
+        if (res.data.SharePaymentLink) {
+          msg = res.data.SharePaymentLink;
+        }
+      }
+    });
+
+  return msg;
+};
+
 export const FetchOrders = async ({ offset, limit, filter }) => {
   let msg;
   /* Retrieve Token From Local Storage */

@@ -114,7 +114,7 @@ function JoinClique() {
     if (!memberForm.email) {
       errors.email = "Email can't be empty!";
     } else if (!memberForm.email.match(mailformat)) {
-      errors.email = 'Inavlid email!';
+      errors.email = 'Invalid email!';
     } else {
       errors = {};
     }
