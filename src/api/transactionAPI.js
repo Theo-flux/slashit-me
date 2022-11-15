@@ -347,8 +347,45 @@ export const CreateOrder = async (orderInput, method, link) => {
               code,
               message,
               success,  
-              order        
-              }
+              order{
+                _id,
+                orderId,
+                status,
+                customerEmail,
+                businessAvatar,
+                businessName,
+                businessEmail,
+                createdAt,
+                currency,
+                amount,
+                shippingCost,
+                myPackageCourier,
+                misc,
+                note,
+                attachment,
+                isBillPayLater,
+                isLink,
+                isPayAnyone,
+                isCreatedFromAPI,
+                shippingAddress{
+                  city,
+                  country,
+                  state,
+                  postalCode,
+                  street
+                },
+                products{
+                  _id,
+                  title,
+                  description,
+                  attachment,
+                  price,
+                  quantity,
+                  currency
+                }
+                orderEmail,     
+            }      
+           }
           }`,
       variables: {
         orderInput,

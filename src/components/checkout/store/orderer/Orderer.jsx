@@ -146,23 +146,31 @@ function Orderer({ openOrder, handleOrdererOnchange, error }) {
             {openOrder && (
               <Orders>
                 <OrderItems>
-                  {orderedItems.map((orderedItem, index) => {
-                    const { name, qty, price } = orderedItem;
-                    return (
-                      <OrderedItem key={index}>
-                        <ItemName>{name}</ItemName>
-                        <ItemQty>{qty}</ItemQty>
-                        <ItemPrice>{price}</ItemPrice>
-                      </OrderedItem>
-                    );
-                  })}
-                  <OrderedItem>
-                    <TextAreaContainer
-                      legend={'Note'}
-                      placeholder={'Pay me on Slashit 🙏'}
-                      rows={3}
-                    />
-                  </OrderedItem>
+                  {orderDetails?.isCreatedFromAPI ? (
+                    orderDetails?.products.map((orderedItem, index) => {
+                      const { title, quantity, price, _id, currrency } =
+                        orderedItem;
+                      return (
+                        <OrderedItem key={_id}>
+                          <ItemName>{title}</ItemName>
+                          <ItemQty>{quantity}</ItemQty>
+                          <ItemPrice>
+                            {getSymbolFromCurre currrency}
+                            {AmountSeparator(price)}
+                          </ItemPrice>
+                        </OrderedItem>
+                      );
+                    })
+                  ) : (
+                    <OrderedItem>
+                      <TextAreaContainer
+                        legend={'Note'}
+                        placeholder={orderDetails?.note || ''}
+                        rows={3}
+                        disabled
+                      />
+                    </OrderedItem>
+                  )}
                 </OrderItems>
 
                 <SubTotalContainer>

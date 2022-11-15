@@ -5,6 +5,7 @@ import { store } from '../store/store';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { useEffect } from 'react';
 import { FetchUserById } from '../api/userAPI';
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 
@@ -13,21 +14,7 @@ function MyApp({ Component, pageProps }) {
     uri: API_ENDPOINT,
     cache: new InMemoryCache(),
   });
-
-  const fetchUser = async () => {
-    const fetchData = await FetchUserById();
-    if (fetchData.success) {
-      console.log(fetchData.user);
-    } else {
-      console.log(fetchData);
-    }
-    return;
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
+console.log(getSymbolFromCurrency('AED'))
   return (
     <>
       <Provider store={store}>

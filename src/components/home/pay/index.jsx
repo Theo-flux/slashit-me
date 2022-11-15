@@ -162,7 +162,7 @@ function Pay(props) {
     return;
   }
 
-  if ((mode = 'CARD_DETAILS'))
+  if ((mode == 'CARD_DETAILS'))
     return (
       <CardDetails
         mode={mode}
@@ -172,7 +172,7 @@ function Pay(props) {
       />
     ); //CARD DETAILS UI
 
-  if ((mode = 'VERIFY_EMAIL'))
+  if ((mode == 'VERIFY_EMAIL'))
     return (
       <CardDetails
         mode={mode}
@@ -182,7 +182,7 @@ function Pay(props) {
       />
     ); //VERIFY EMAIL
 
-  if ((mode = 'VERIFY_EMAIL_NEXT'))
+  if ((mode == 'VERIFY_EMAIL_NEXT'))
     return (
       <CardDetails
         mode={mode}

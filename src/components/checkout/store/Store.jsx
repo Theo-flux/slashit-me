@@ -117,7 +117,10 @@ function Store() {
       <StoreWrapper>
         <ProfileContainer>
           <Profile>
-            <ProfileImg src="/images/profile.png" alt="profile" />
+            <ProfileImg
+              src={orderDetails?.businessAvatar || '/images/profile.png'}
+              alt="merchant-logo"
+            />
 
             <ProfileInfo>
               <ProfileName>{orderDetails.businessName || ''}</ProfileName>
