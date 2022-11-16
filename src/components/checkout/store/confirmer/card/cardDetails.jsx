@@ -1,38 +1,54 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchCards, GetAuthorisationAddCard } from '../../api/transactionAPI';
-import { CliqueAccept, FetchUserById } from '../../api/userAPI';
+import {
+  FetchCards,
+  GetAuthorisationAddCard,
+} from '../../../../../api/transactionAPI';
+import {
+  CliqueAccept,
+  FetchUserById,
+  NewRegister,
+} from '../../../../../api/userAPI';
 import {
   EncryptData,
   FormatCardNumber,
   FormatExpirationDate,
-} from '../../helpers/debitCardValidator';
-import { setUser } from '../../store/reducers/auth';
-import { setPreferredCard } from '../../store/reducers/transaction';
-import { AddCard as AddCardAPI } from '../../api/transactionAPI';
+} from '../../../../../helpers/debitCardValidator';
+import { setUser } from '../../../../../store/reducers/auth';
+import {
+  setCards,
+  setPreferredCard,
+} from '../../../../../store/reducers/transaction';
+import { AddCard } from '../../../../../api/transactionAPI';
+import { setAnyTab, setCardData } from '../../../../../store/reducers/helper';
+import { Button } from '../../../../../shared';
+import { ButtonWrapper } from '../../storeStyle';
+import statusCode from '../../../../../api/statusCode';
 
-function AddCard() {
+function CardDetails() {
   let toastMsg = '';
   const dispatch = useDispatch();
+  const [data, setData] = useState('');
+  const [PIN, setPIN] = useState();
+  const [OTP, setOTP] = useState();
+  const [description, setDescription] = useState('Enter your card details');
+  const cardData = useSelector((state) => state.helper.cardData);
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const preferredCard = useSelector((state) => state.transaction.preferredCard);
+  const user = useSelector((state) => state.userAuth.user);
+  const email = useSelector((state) => state.userAuth.userEmail);
+  let currencyShortCode = user?.currencyShortCode;
+  const [disabled, setdisabled] = useState(true);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const [expiration, setExpiration] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [CVV, setCVV] = useState('');
-  const [disabled, setdisabled] = useState(true);
-  const [buttonTitle, setbuttonTitle] = useState('Add Card');
-  const [cardData, setCardData] = useState('');
-  const [data, setData] = useState('');
-  const [PIN, setPIN] = useState();
-  const [OTP, setOTP] = useState();
-  const [mode, setMode] = useState('DETAILS');
-  const [description, setDescription] = useState('Enter your card details');
-  const preferredCard = useSelector((state) => state.transaction.preferredCard);
-
-  const user = useSelector((state) => state.userAuth.user);
-  let currencyShortCode = user?.currencyShortCode;
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [mode, setMode] = useState('');
 
   useEffect(() => {
     if (toastMsg) {
@@ -49,38 +65,8 @@ function AddCard() {
     setPIN('');
     setOTP('');
     setdisabled(true);
-    setbuttonTitle('Add Card');
+    dispatch(setCardData());
   }
-
-  async function fetchUser() {
-    const fetchData = await FetchUserById();
-    if (fetchData.success) {
-      dispatch(setUser(fetchData.user));
-    }
-    if (!preferredCard) {
-      let cardReq = await FetchCards(true);
-      if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
-        dispatch(
-          setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
-        );
-      }
-    }
-    return;
-  }
-
-  async function formatExpirationDate(string) {
-    setExpiration(FormatExpirationDate(string));
-    return;
-  }
-
-  async function formatCardNumber(number) {
-    setCardNumber(FormatCardNumber(number));
-    return;
-  }
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   useEffect(() => {
     if (cardNumber && expiration && CVV) {
@@ -90,10 +76,8 @@ function AddCard() {
         CVV.length >= 3
       ) {
         setdisabled(false);
-        setbuttonTitle('Add Card');
       } else {
         setdisabled(true);
-        setbuttonTitle('Add Card');
       }
     }
   }, [expiration, cardNumber, CVV]);
@@ -113,20 +97,44 @@ function AddCard() {
     if (mode == 'OTP') {
       if (OTP && OTP.length >= 4) {
         setdisabled(false);
-        setbuttonTitle('Confirm OTP');
       } else {
         setdisabled(true);
       }
     }
-
-    if (mode == 'REDIRECT') {
-      //TODO - Link to "Redirecting"
-    }
-
     if (mode == 'NEW_WINDOW') {
       //TODO - Open data?.meta?.authorization?.redirect in another window
     }
   }, [PIN, OTP, mode]);
+
+  function formatExpirationDate(string) {
+    setExpiration(FormatExpirationDate(string));
+    return;
+  }
+
+  function formatCardNumber(number) {
+    setCardNumber(FormatCardNumber(number));
+    return;
+  }
+
+  //async functions
+  async function fetchUser() {
+    if (!user.country) {
+      const fetchData = await FetchUserById();
+      if (fetchData.success) {
+        dispatch(setUser(fetchData.user));
+      }
+    }
+    if (!preferredCard) {
+      let cardReq = await FetchCards(true);
+      if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
+        dispatch(setCards(cardReq.result));
+        dispatch(
+          setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
+        );
+      }
+    }
+    return;
+  }
 
   async function ValidateCard() {
     setLoading(true);
@@ -148,7 +156,7 @@ function AddCard() {
       redirect_url: 'https://shoplens.herokuapp.com/success', //Change on production
     };
 
-    setCardData(cardData);
+    dispatch(setCardData(cardData));
 
     const encrypted = EncryptData(
       process.env.FLUTTERWAVE_KEY,
@@ -168,26 +176,22 @@ function AddCard() {
         if (res.meta.authorization.mode === 'pin') {
           setData(res);
           setMode('PIN');
-          toastMsg = 'Enter your Card PIN to continue.';
+          setDescription('Enter your Card PIN and press continue.');
         }
         if (res.meta.authorization.mode === 'redirect') {
           setData(res);
           setMode('REDIRECT');
-          setTimeout(() => {
-            setMode('NEW_WINDOW');
-          }, 2500);
         }
       } else {
-        let join = await CliqueAccept(router.query?.CAT);
-        if (join.success) {
-          if (join.code == statusCode.OK) {
-            //TODO - Link to "Add to Clique "Success""
-          } else if (join.code == statusCode.ADD_YOUR_CARD) {
-            //TODO - Link to "Add to Clique "CARD1""
-          }
-        } else {
-          toastMsg = join?.message || '';
-        }
+        fetchUser();
+        dispatch(
+          setAnyTab({
+            page: 'Confirmer',
+            params: {
+              code: statusCode.OK,
+            },
+          }),
+        );
         cleanUp();
       }
     } else {
@@ -229,21 +233,17 @@ function AddCard() {
         if (res?.meta?.authorization?.mode === 'redirect') {
           setData(res);
           setMode('REDIRECT');
-          setTimeout(() => {
-            setScreen('NEW_WINDOW');
-          }, 2500);
         }
       } else {
-        let join = await CliqueAccept(router.query?.CAT);
-        if (join.success) {
-          if (join.code == statusCode.OK) {
-            //TODO - Link to "Add to Clique "Success""
-          } else if (join.code == statusCode.ADD_YOUR_CARD) {
-            //TODO - Link to "Add to Clique "CARD1""
-          }
-        } else {
-          toastMsg = join?.message || '';
-        }
+        fetchUser();
+        dispatch(
+          setAnyTab({
+            page: 'Confirmer',
+            params: {
+              code: statusCode.OK,
+            },
+          }),
+        );
         cleanUp();
       }
     } else {
@@ -256,19 +256,17 @@ function AddCard() {
 
   async function ValidateOTP() {
     setLoading(true);
-    const msg = await AddCardAPI(data?.initiateChargeId, OTP);
+    const msg = await AddCard(data?.initiateChargeId, OTP);
     if (msg.success) {
-      //Clique Accept
-      let join = await CliqueAccept(router.query?.CAT);
-      if (join.success) {
-        if (join.code == statusCode.OK) {
-          //TODO - Link to "Add to Clique "Success""
-        } else if (join.code == statusCode.ADD_YOUR_CARD) {
-          //TODO - Link to "Add to Clique "CARD1""
-        }
-      } else {
-        toastMsg = join?.message || '';
-      }
+      fetchUser();
+      dispatch(
+        setAnyTab({
+          page: 'Confirmer',
+          params: {
+            code: statusCode.OK,
+          },
+        }),
+      );
       cleanUp();
     } else {
       toastMsg = msg.message || '';
@@ -277,9 +275,33 @@ function AddCard() {
     return;
   }
 
+  async function createAccount() {
+    let register = await NewRegister({
+      firstname,
+      lastname,
+      country: 'NG',
+      email,
+      role: 'shopper',
+      ipAddress: computerInfo?.ip,
+      deviceId: `${computerInfo.platform} ${computerInfo.os}`,
+      ipAddress: computerInfo.ip,
+    });
+    if (register.success) {
+      dispatch(setAnyTab({ page: 'VerifyEmailNext', params: {} }));
+    } else {
+      toastMsg = register.message;
+    }
+  }
+
   function btnPress() {
     if (!user.country) {
+      fetchUser();
       toastMsg = 'Please refresh this page';
+      return;
+    }
+
+    if (!isLoggedIn) {
+      createAccount();
       return;
     }
 
@@ -296,7 +318,16 @@ function AddCard() {
     return;
   }
 
-  return <div>AddCard</div>;
+  return (
+    <>
+      <div>Card details</div>
+      <ButtonWrapper>
+        <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
+          Continue
+        </Button>
+      </ButtonWrapper>
+    </>
+  );
 }
 
-export default AddCard;
+export default CardDetails;

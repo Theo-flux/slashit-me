@@ -9,6 +9,7 @@ import {
   ShopperExist,
   VerifyEmail,
 } from '../../../api/userAPI';
+import { addDays } from '../../../helpers/dates';
 import { Button, InputContainer } from '../../../shared';
 import { setEmail, setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import { setAnyAction } from '../../../store/reducers/helper';
@@ -162,7 +163,7 @@ function Pay(props) {
     return;
   }
 
-  if ((mode == 'CARD_DETAILS'))
+  if (mode == 'CARD_DETAILS')
     return (
       <CardDetails
         mode={mode}
@@ -172,7 +173,7 @@ function Pay(props) {
       />
     ); //CARD DETAILS UI
 
-  if ((mode == 'VERIFY_EMAIL'))
+  if (mode == 'VERIFY_EMAIL')
     return (
       <CardDetails
         mode={mode}
@@ -182,7 +183,7 @@ function Pay(props) {
       />
     ); //VERIFY EMAIL
 
-  if ((mode == 'VERIFY_EMAIL_NEXT'))
+  if (mode == 'VERIFY_EMAIL_NEXT')
     return (
       <CardDetails
         mode={mode}
@@ -231,6 +232,25 @@ function Pay(props) {
         resetBox={resetBox}
       />
     ); //SUCCESS UI
+
+  const scheduleIn4 = [
+    {
+      amount: (form.amount / 4).toFixed(2),
+      date: `Due today`,
+    },
+    {
+      amount: (form.amount / 4).toFixed(2),
+      date: `Due ${addDays(14, 'MMM DD')}`,
+    },
+    {
+      amount: (form.amount / 4).toFixed(2),
+      date: `Due ${addDays(28, 'MMM DD')}`,
+    },
+    {
+      amount: (form.amount / 4).toFixed(2),
+      date: `Due ${addDays(42, 'MMM DD')}`,
+    },
+  ];
 
   return (
     <PayForm>

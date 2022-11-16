@@ -12,8 +12,13 @@ import {
   FormatExpirationDate,
 } from '../../../helpers/debitCardValidator';
 import { setUser } from '../../../store/reducers/auth';
-import { setPreferredCard } from '../../../store/reducers/transaction';
+import {
+  setCards,
+  setPreferredCard,
+} from '../../../store/reducers/transaction';
 import { AddCard } from '../../../api/transactionAPI';
+import { ButtonWrapper } from '../../checkout/store/storeStyle';
+import { Button } from '../../../shared';
 
 function CardDetails(props) {
   let toastMsg = '';
@@ -22,7 +27,7 @@ function CardDetails(props) {
   const setMode = props.setMode;
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [showToast, setShowToast] = useState(false);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [expiration, setExpiration] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [CVV, setCVV] = useState('');
@@ -52,7 +57,7 @@ function CardDetails(props) {
     setCVV('');
     setCardNumber('');
     setExpiration('');
-    setloading(false);
+    setLoading(false);
     setPIN('');
     setOTP('');
     setdisabled(true);
@@ -71,6 +76,7 @@ function CardDetails(props) {
     if (!preferredCard) {
       let cardReq = await FetchCards(true);
       if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
+        dispatch(setCards(cardReq.result));
         dispatch(
           setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
         );
@@ -79,12 +85,12 @@ function CardDetails(props) {
     return;
   }
 
-  async function formatExpirationDate(string) {
+  function formatExpirationDate(string) {
     setExpiration(FormatExpirationDate(string));
     return;
   }
 
-  async function formatCardNumber(number) {
+  function formatCardNumber(number) {
     setCardNumber(FormatCardNumber(number));
     return;
   }
@@ -135,7 +141,7 @@ function CardDetails(props) {
   }, [PIN, OTP, mode]);
 
   async function ValidateCard() {
-    setloading(true);
+    setLoading(true);
 
     let expiry_array = expiration.split('/');
 
@@ -162,7 +168,7 @@ function CardDetails(props) {
     );
     console.log('encrypted', encrypted);
     await Authorisation(encrypted);
-    setloading(false);
+    setLoading(false);
     return;
   }
 
@@ -197,7 +203,7 @@ function CardDetails(props) {
     if (!user.country) {
       return;
     }
-    setloading(true);
+    setLoading(true);
     let PINData = {
       ...cardData,
       authorization: {
@@ -238,12 +244,12 @@ function CardDetails(props) {
       setData(res);
       toastMsg = res?.message || '';
     }
-    setloading(false);
+    setLoading(false);
     return;
   }
 
   async function ValidateOTP() {
-    setloading(true);
+    setLoading(true);
     const msg = await AddCard(data?.initiateChargeId, OTP);
     if (msg.success) {
       fetchUser();
@@ -251,7 +257,7 @@ function CardDetails(props) {
     } else {
       toastMsg = msg.message || '';
     }
-    setloading(false);
+    setLoading(false);
     return;
   }
 
@@ -275,6 +281,7 @@ function CardDetails(props) {
 
   function btnPress() {
     if (!user.country) {
+      fetchUser();
       toastMsg = 'Please refresh this page';
       return;
     }
@@ -302,7 +309,12 @@ function CardDetails(props) {
       {/* {Card number} */}
       {/* {Card expiry} */}
       {/* {Card cvv} */}
-      {/* {if isLoggedIn, hide firstname, lastname field and hide "We'll use your name to create an account for you on Slashit, so be real"} */}
+      {/* {if isLoggedIn, hide firstname, lastname field and hide this text "We'll use your name to create an account for you on Slashit, so be real"} */}
+      <ButtonWrapper>
+        <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
+          {buttonTitle}
+        </Button>
+      </ButtonWrapper>
     </div>
   );
 }

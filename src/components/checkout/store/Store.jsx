@@ -19,14 +19,29 @@ import Scheduler from './scheduler/Scheduler';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setComputerInfo, setEmail } from '../../../store/reducers/auth';
+import {
+  setComputerInfo,
+  setEmail,
+  setIsLoggedIn,
+  setUser,
+} from '../../../store/reducers/auth';
 import { AmountSeparator } from '../../../helpers/numberValidation';
-import { CreateOrder } from '../../../api/transactionAPI';
-import { setOrderDetails } from '../../../store/reducers/transaction';
-import { ShopperExist } from '../../../api/userAPI';
+import { CreateOrder, FetchCards } from '../../../api/transactionAPI';
+import {
+  setOrderDetails,
+  setPreferredCard,
+} from '../../../store/reducers/transaction';
+import {
+  Login,
+  SaveLoginCredentials,
+  ShopperExist,
+} from '../../../api/userAPI';
 import statusCode from '../../../api/statusCode';
-
-const orderMethods = ['API', 'LINK'];
+import { setAnyTab } from '../../../store/reducers/helper';
+import CardDetails from './confirmer/card/cardDetails';
+import Success from './confirmer/success';
+import VerifyEmailNext from './confirmer/card/verifyEmail';
+import VerifyEmail from './orderer/otp';
 
 function Store() {
   const router = useRouter();
@@ -35,15 +50,9 @@ function Store() {
   const dispatch = useDispatch();
   const [openOrder, setOpenOrder] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [orderer, setOrderer] = useState({
-    email: '',
-    password: '',
-  });
-  const [pass, setPass] = useState('');
-  const [error, setError] = useState({});
+  const activeTab = useSelector((state) => state.helper.anyTab);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
-  const [isMailValidated, setIsMailValidated] = useState(false);
 
   if (typeof window !== 'undefined') {
     let platform = window.navigator.platform;
@@ -51,29 +60,6 @@ function Store() {
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
     dispatch(setComputerInfo({ ...computerInfo, platform, os }));
-  }
-
-  function handleOrdererOnchange(event) {
-    const { name, value } = event.target;
-    setOrderer({ ...orderer, [name]: value });
-  }
-
-  function handleEmailContinue() {
-    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-    if (!orderer.email) {
-      setError({ ...error, email: 'Email is empty!' });
-    } else if (!orderer.email.match(mailformat)) {
-      setError({ ...error, email: 'Invalid Email!' });
-    } else {
-      setError({});
-    }
-
-    if (error?.email) {
-      // setShowPass(false);
-    } else {
-      setShowPass(true);
-    }
   }
 
   useEffect(() => {
@@ -85,28 +71,12 @@ function Store() {
     return () => {
       setLoading(false);
       dispatch(setOrderDetails());
+      dispatch(setAnyTab());
     };
   }, []);
 
   //async functions
-  async function validateShopper() {
-    setLoading(true);
-    dispatch(setEmail(orderer.email)); //Store email in global state
-    let sendReq = await ShopperExist(orderer.email);
-    if (sendReq.success) {
-      if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        setPass(statusCode.COMPLETE_REGISTRATION);
-      } else if (sendReq.code == statusCode.OK) {
-        setPass(statusCode.OK);
-      }
-    } else {
-      setPass(statusCode.UNAUTHORIZED);
-    }
-    setIsMailValidated(true);
-    setLoading(false);
-    return;
-  }
-
+  //Create Order or Fetch Order details on component render
   async function createOrder() {
     let sendReq = await CreateOrder(
       router.query?.orderMethod == 'API'
@@ -116,7 +86,12 @@ function Store() {
       router.query?.link || '6305313baea30a002c977d3f', //router.query.link or a constant to prevent server type errors
     );
     if (sendReq.success) {
-      dispatch(setOrderDetails(sendReq.order));
+      dispatch(
+        setOrderDetails({
+          ...sendReq.order,
+          paymentMethods: sendReq.paymentMethods,
+        }),
+      );
     } else {
       toastMsg = '';
     }
@@ -126,14 +101,6 @@ function Store() {
     const res = await fetch('https://api.ipify.org?format=json');
     const data = await res.json();
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
-  }
-
-  function resetOrderer() {
-    setOrderer({
-      email: '',
-      password: '',
-    });
-    setIsMailValidated(false);
   }
 
   if (!orderDetails)
@@ -164,20 +131,16 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          <Orderer
-            openOrder={openOrder}
-            error={error}
-            handleOrdererOnchange={handleOrdererOnchange}
-            orderer={orderer}
-            isMailValidated={isMailValidated}
-            resetOrderer={resetOrderer}
-            pass={pass}
-          />
-          <Scheduler />
-          <Confirmer />
+          {!activeTab && <Orderer openOrder={openOrder} />}
+          {activeTab?.page == 'Scheduler' && <Scheduler />}
+          {activeTab?.page == 'Confirmer' && <Confirmer />}
+          {activeTab?.page == 'VerifyEmail' && <VerifyEmail />}
+          {activeTab?.page == 'VerifyEmailNext' && <VerifyEmailNext />}
+          {activeTab?.page == 'Card' && <CardDetails />}
+          {activeTab?.page == 'Success' && <Success />}
         </ProcessWrapper>
 
-        <ButtonWrapper>
+        {/* <ButtonWrapper>
           {openOrder || (
             <Button onClick={() => setOpenOrder(true)} width={`100%`}>
               Pay now
@@ -185,11 +148,16 @@ function Store() {
           )}
 
           {openOrder && (
-            <Button onClick={() => handleEmailContinue()} width={`100%`}>
+            <Button
+              onClick={() =>
+                isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
+              }
+              width={`100%`}
+            >
               Continue
             </Button>
           )}
-        </ButtonWrapper>
+        </ButtonWrapper> */}
       </StoreWrapper>
     </StoreContainer>
   );

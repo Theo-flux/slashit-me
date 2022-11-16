@@ -22,9 +22,15 @@ export const GetAppButton = ({ data }) => {
   );
 };
 
-export const Button = ({ onClick, width, bg, type, children }) => {
+export const Button = ({ onClick, width, bg, type, children, disabled }) => {
   return (
-    <StyledButton onClick={onClick} width={width} bg={bg} type={type}>
+    <StyledButton
+      disabled={disabled}
+      onClick={onClick}
+      width={width}
+      bg={bg}
+      type={type}
+    >
       {children}
     </StyledButton>
   );

@@ -347,6 +347,7 @@ export const CreateOrder = async (orderInput, method, link) => {
               code,
               message,
               success,  
+              paymentMethods,
               order{
                 _id,
                 orderId,
@@ -831,5 +832,130 @@ export const AddCard = async (initiateChargeId, otp) => {
       msg = resData;
     });
 
+  return msg;
+};
+
+export const FetchVirtualAccount = async (amount) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+            query($amount: Float!) {
+              FetchVirtualAccountNoShopper(amount:$amount){
+                    success,      
+                    message,
+                    code,
+                    result
+                }
+            }`,
+      variables: { amount: amount },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res, 'Fetchvirtualaccount');
+      if (res.data.FetchVirtualAccountNoShopper) {
+        msg = res.data.FetchVirtualAccountNoShopper;
+      }
+    });
+  return msg;
+};
+
+export const UpdateShippingAddress = async (shippingInput, order) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+            mutation($shippingInput: ShippingAddressInput, $order: ID) {
+            UpdateShippingAddress(shippingInput: $shippingInput , order: $order){
+                    success,      
+                    message,
+                    code,
+                    result
+                }
+            }`,
+      variables: { shippingInput, order },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res, 'UpdateShippingAddress');
+      if (res.data.UpdateShippingAddress) {
+        msg = res.data.UpdateShippingAddress;
+      }
+    });
+  return msg;
+};
+
+export const PayNow = async (props) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem('userAuth');
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+            mutation($order: ID!, $paymentOption: PaymentOption!, $source: paymentSource!, $card: ID) {
+            PayNow(order: $order, paymentOption: $paymentOption, source: $source,  card: $card){
+                    success,      
+                    message,
+                    code,
+                }
+            }`,
+      variables: { ...props },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res, 'PayNow');
+      if (res.data.PayNow) {
+        msg = res.data.PayNow;
+      }
+    });
   return msg;
 };

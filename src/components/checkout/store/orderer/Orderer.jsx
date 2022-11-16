@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AmountSeparator } from '../../../../helpers/numberValidation';
-import { InputContainer, TextAreaContainer } from '../../../../shared';
+import { Button, InputContainer, TextAreaContainer } from '../../../../shared';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -11,6 +11,7 @@ import {
   Top,
   Row,
   Text,
+  ButtonWrapper,
 } from '../storeStyle';
 import {
   OrderContent,
@@ -39,6 +40,22 @@ import {
 } from './orderStyles';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
+import {
+  Login,
+  SaveLoginCredentials,
+  ShopperExist,
+} from '../../../../api/userAPI';
+import {
+  setEmail,
+  setIsLoggedIn,
+  setUser,
+} from '../../../../store/reducers/auth';
+import { FetchCards } from '../../../../api/transactionAPI';
+import {
+  setCards,
+  setPreferredCard,
+} from '../../../../store/reducers/transaction';
+import { setAnyTab } from '../../../../store/reducers/helper';
 
 // const orderedItems = [
 //   {
@@ -91,17 +108,124 @@ import statusCode from '../../../../api/statusCode';
 //   },
 // ];
 
-function Orderer({
-  openOrder,
-  handleOrdererOnchange,
-  error,
-  orderer,
-  isMailValidated,
-  resetOrderer,
-  pass,
-}) {
+function Orderer() {
+  let toastMsg = '';
+
+  const [openOrder, setOpenOrder] = useState(false);
+  const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const [isMailValidated, setIsMailValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [pass, setPass] = useState('');
+  const computerInfo = useSelector((state) => state.userAuth.computerInfo);
+  const cards = useSelector((state) => state.transaction.cards);
+  const [error, setError] = useState({});
+  const [orderer, setOrderer] = useState({
+    email: '',
+    password: '',
+  });
+
+  function resetOrderer() {
+    setOrderer({
+      email: '',
+      password: '',
+    });
+    setIsMailValidated(false);
+  }
+
+  function handleOrdererOnchange(event) {
+    const { name, value } = event.target;
+    setOrderer({ ...orderer, [name]: value });
+  }
+
+  function handleEmailContinue() {
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!orderer.email) {
+      setError({ ...error, email: 'Email is empty!' });
+    } else if (!orderer.email.match(mailformat)) {
+      setError({ ...error, email: 'Invalid Email!' });
+    } else {
+      setError({});
+    }
+
+    if (error?.email) {
+      // setShowPass(false);
+    } else {
+      validateShopper();
+    }
+  }
+
+  function handlePasswordSubmit() {
+    let errors = {};
+
+    if (!form.password) {
+      errors.password = 'Enter password!';
+    } else {
+      errors = {};
+    }
+
+    if (errors.password) {
+      setError(errors);
+    } else {
+      login();
+    }
+  }
+
+  //async functions
+  async function login() {
+    setLoading(true);
+    let userInfo = {
+      email: orderer.email,
+      password: orderer.password,
+      platform: 'web',
+      deviceId: `${computerInfo.platform} ${computerInfo.os}`,
+      ipAddress: computerInfo.ip,
+    };
+
+    let sendReq = await Login(userInfo);
+    if (sendReq.success) {
+      SaveLoginCredentials(
+        JSON.stringify({ ...userInfo, token: sendReq.token }),
+      );
+      dispatch(setIsLoggedIn(true));
+      dispatch(setUser(sendReq.user));
+      let cardReq = await FetchCards((showFew = true));
+      if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
+        dispatch(setCards(cardReq.result));
+        dispatch(
+          setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
+        );
+      }
+      dispatch(setAnyTab({ page: 'Scheduler', params: '' }));
+    } else {
+      toastMsg = sendReq.message;
+    }
+    setLoading(false);
+    return;
+  }
+
+  async function validateShopper() {
+    setLoading(true);
+    dispatch(setEmail(orderer.email)); //Store email in global state
+    let sendReq = await ShopperExist(orderer.email);
+    if (sendReq.success) {
+      if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
+        setPass(statusCode.COMPLETE_REGISTRATION);
+        dispatch(setAnyTab({ page: 'VerifyEmail', params: {} }));
+      } else if (sendReq.code == statusCode.OK) {
+        setPass(statusCode.OK);
+      }
+    } else {
+      setPass(statusCode.NOT_FOUND);
+    }
+    setIsMailValidated(true);
+    setLoading(false);
+    return;
+  }
+
+  //dispatch(setAnyTab());
 
   return (
     <ProcessContent>
@@ -167,14 +291,12 @@ function Orderer({
                       </>
                     )}
 
-                    {isMailValidated && pass == statusCode.UNAUTHORIZED && (
+                    {isMailValidated && pass == statusCode.NOT_FOUND && (
                       <>{/* {"TODO -  "Your Order 8 UI" } */}</>
                     )}
                   </>
                 ) : (
-                  <>
-                    {/*TODO-Show "Your Order 7 UI" user?.avatar or the first letter of user?lastname and user?firstname*/}{' '}
-                  </>
+                  <>{/*TODO-Show "Your Order 6 or 7 UI"*/} </>
                 )}
               </Details>
             )}
@@ -249,6 +371,31 @@ function Orderer({
             )}
           </OrderSummary>
         </OrderContent>
+        <ButtonWrapper>
+          {/* {openOrder || (
+            <Button
+              onClick={() =>
+                !isLoggedIn
+                  ? setOpenOrder(true)
+                  : dispatch(setAnyTab({ page: 'Scheduler', params: '' }))
+              }
+              width={`100%`}
+            >
+              Pay now
+            </Button>
+          )} */}
+
+          {/* {openOrder && ( */}
+          <Button
+            onClick={() =>
+              isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
+            }
+            width={`100%`}
+          >
+            Confirm
+          </Button>
+          {/* )} */}
+        </ButtonWrapper>
       </EnvelopeCover>
     </ProcessContent>
   );
@@ -256,4 +403,4 @@ function Orderer({
 
 export default Orderer;
 
-//TODO - If ismailvalidated &  pass is UNAUTHORIZED, don't show password field instead show only the orderer.email "Your Order 8"
+//TODO - If ismailvalidated &  pass is NOT_FOUND, don't show password field instead show only the orderer.email "Your Order 8"
