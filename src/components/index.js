@@ -1,4 +1,5 @@
 export { Accept, LoginComponent } from './acceptmoney';
+export { CreateAccount } from './account';
 export { default as JoinThisClique } from './addtoclique';
 export { CardHero } from './card';
 export { default as CareerHero } from './careers';
