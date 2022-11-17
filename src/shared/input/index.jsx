@@ -46,11 +46,25 @@ export const InputContainer = ({
   );
 };
 
-export const TextAreaContainer = ({ id, legend, placeholder, rows, cols, disabled }) => {
+export const TextAreaContainer = ({
+  id,
+  legend,
+  placeholder,
+  rows,
+  cols,
+  disabled,
+}) => {
   return (
     <Box>
       <Label htmlFor={id}>{legend}</Label>
-      <Textarea disabled rows={rows ? rows : 10} resi cols={cols ? cols : 5} id={id} placeholder={placeholder} />
+      <Textarea
+        disabled
+        rows={rows ? rows : 10}
+        resi
+        cols={cols ? cols : 5}
+        id={id}
+        placeholder={placeholder}
+      />
     </Box>
   );
 };

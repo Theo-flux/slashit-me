@@ -25,6 +25,7 @@ const business_item = [
 function BusinessForm({ handleActive }) {
   const dispatch = useDispatch();
   const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
+  
   return (
     <FormContainer>
       <Wrapper>
