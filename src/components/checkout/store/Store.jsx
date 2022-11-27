@@ -140,7 +140,7 @@ function Store() {
           {activeTab?.page == 'Success' && <Success />}
         </ProcessWrapper>
 
-        {/* <ButtonWrapper>
+        <ButtonWrapper>
           {openOrder || (
             <Button onClick={() => setOpenOrder(true)} width={`100%`}>
               Pay now
@@ -157,7 +157,7 @@ function Store() {
               Continue
             </Button>
           )}
-        </ButtonWrapper> */}
+        </ButtonWrapper>
       </StoreWrapper>
     </StoreContainer>
   );

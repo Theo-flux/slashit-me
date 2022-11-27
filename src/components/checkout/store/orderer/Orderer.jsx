@@ -108,10 +108,9 @@ import { setAnyTab } from '../../../../store/reducers/helper';
 //   },
 // ];
 
-function Orderer() {
+function Orderer({ openOrder }) {
   let toastMsg = '';
 
-  const [openOrder, setOpenOrder] = useState(false);
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
