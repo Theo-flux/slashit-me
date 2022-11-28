@@ -5,7 +5,7 @@ import { Cmpt } from './cmptStyle';
 function CheckoutCmpt() {
   return (
     <Cmpt>
-      {/* <Store /> */}
+      <Store />
       <Aside />
     </Cmpt>
   );

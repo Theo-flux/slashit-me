@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   cards: null,
   preferredCard: null,
-  orderDetails: [],
+  orderDetails: null,
 };
 
 const transactionSlice = createSlice({

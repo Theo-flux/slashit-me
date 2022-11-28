@@ -94,12 +94,14 @@ function JoinClique() {
   const [isMailValidated, setIsMailValidated] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
 
+  let platform;
+  let os;
+
   if (typeof window !== 'undefined') {
-    let platform = window.navigator.platform;
-    let os = window.navigator.appVersion;
+    platform = window.navigator.platform;
+    os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
-    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
   }
 
   function handleMemberFormOnchange(event) {
@@ -226,6 +228,10 @@ function JoinClique() {
     const data = await res.json();
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
+
+  useEffect(() => {
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  }, [platform, os]);
 
   useEffect(() => {
     verifyCliqueAccessToken(router.query?.token);

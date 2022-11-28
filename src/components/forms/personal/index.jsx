@@ -52,12 +52,14 @@ function PersonalForm({ handleActive }) {
   const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
 
+  let platform;
+  let os;
+
   if (typeof window !== 'undefined') {
-    let platform = window.navigator.platform;
-    let os = window.navigator.appVersion;
+    platform = window.navigator.platform;
+    os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
-    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
   }
 
   async function GetComputerIp() {
@@ -69,6 +71,11 @@ function PersonalForm({ handleActive }) {
   useEffect(() => {
     GetComputerIp();
   }, []);
+
+
+  useEffect(() => {
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  }, [platform, os]);
 
   return (
     <FormContainer>

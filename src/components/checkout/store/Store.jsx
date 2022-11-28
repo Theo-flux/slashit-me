@@ -53,19 +53,19 @@ function Store() {
   const activeTab = useSelector((state) => state.helper.anyTab);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
+  let platform;
+  let os;
 
   if (typeof window !== 'undefined') {
-    let platform = window.navigator.platform;
-    let os = window.navigator.appVersion;
+    platform = window.navigator.platform;
+    os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
-    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
   }
 
   useEffect(() => {
-    createOrder();
-    GetComputerIp();
-  }, [router.query]);
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  }, [platform, os]);
 
   useEffect(() => {
     return () => {
@@ -104,9 +104,10 @@ function Store() {
   }
 
   if (!orderDetails)
-    return {
-      /* <>{Return circular loader}</> */
-    };
+  return (
+    <div></div>
+    /* <>{Return circular loader}</> */
+  );
 
   return (
     <StoreContainer>
@@ -114,19 +115,18 @@ function Store() {
         <ProfileContainer>
           <Profile>
             <ProfileImg
-              src={orderDetails?.businessAvatar || '/images/profile.png'}
+              src={orderDetails?.businessAvatar}
               alt="merchant-logo"
             />
-
             <ProfileInfo>
-              <ProfileName>{orderDetails.businessName || ''}</ProfileName>
-              <ProfileMail>{orderDetails.businessEmail || ''}</ProfileMail>
+              <ProfileName>{orderDetails?.businessName || ''}</ProfileName>
+              <ProfileMail>{orderDetails?.businessEmail || ''}</ProfileMail>
             </ProfileInfo>
           </Profile>
 
           <OrderPrice>
             <sup>{orderDetails?.currency}</sup>{' '}
-            {AmountSeparator(orderDetails.amount)}
+            {AmountSeparator(orderDetails?.amount)}
           </OrderPrice>
         </ProfileContainer>
 
@@ -141,12 +141,6 @@ function Store() {
         </ProcessWrapper>
 
         <ButtonWrapper>
-          {openOrder || (
-            <Button onClick={() => setOpenOrder(true)} width={`100%`}>
-              Pay now
-            </Button>
-          )}
-
           {openOrder && (
             <Button
               onClick={() =>

@@ -20,13 +20,15 @@ function Accept() {
   const router = useRouter();
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [selectStore, setSelectStore] = useState(false);
+  let platform;
+  let os;
 
   if (typeof window !== 'undefined') {
-    let platform = window.navigator.platform;
-    let os = window.navigator.appVersion;
+    platform = window.navigator.platform;
+    os = window.navigator.appVersion;
     os = os.split(' ');
     os = `${os[2]} ${os[3]}`;
-    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  
   }
 
   function handleSelectStore() {
@@ -42,6 +44,11 @@ function Accept() {
   useEffect(() => {
     GetComputerIp();
   }, []);
+
+
+  useEffect(() => {
+    dispatch(setComputerInfo({ ...computerInfo, platform, os }));
+  }, [platform, os]);
 
   return (
     <Section>
