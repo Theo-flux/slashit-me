@@ -35,8 +35,8 @@ function PaymentLink() {
             </SmallText>
 
             <Text>
-              Create a payment link, share it with anyone - they'll pay us
-              in installments and we will pay you in full instantly.
+              {`Create a payment link, share it with anyone - they'll pay us
+              in installments and we will pay you in full instantly.`}
             </Text>
 
             <Button onClick={() => handleFocus()}>

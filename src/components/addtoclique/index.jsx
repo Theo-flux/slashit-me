@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { UAParser } from 'ua-parser-js';
 
 import Image from 'next/image';
 import {
@@ -77,10 +78,13 @@ const details = [
 ];
 
 function JoinClique() {
-  let toastMsg = '';
+  let [toastMsg, setToastMsg] = useState('');
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const parser = new UAParser();
+  const { vendor, model, type } = parser.getDevice();
+  const { name, version } = parser.getOS();
   const [memberForm, setMemberForm] = useState({
     email: '',
     password: '',
@@ -94,15 +98,8 @@ function JoinClique() {
   const [isMailValidated, setIsMailValidated] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
 
-  let platform;
-  let os;
-
-  if (typeof window !== 'undefined') {
-    platform = window.navigator.platform;
-    os = window.navigator.appVersion;
-    os = os.split(' ');
-    os = `${os[2]} ${os[3]}`;
-  }
+  let platform = `${vendor} ${model}, ${type}`;
+  let os = `${name} ${version}`;
 
   function handleMemberFormOnchange(event) {
     const { name, value } = event.target;
@@ -125,6 +122,7 @@ function JoinClique() {
       setError(errors);
     } else {
       validateShopper();
+      // setIsMailValidated(true);
     }
   }
 
@@ -150,13 +148,21 @@ function JoinClique() {
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        toastMsg =
-          'Please complete your profile on the Slashit app, then come back to add a friend to your Clique.';
+        setToastMsg(
+          'Please complete your profile on the Slashit app, then come back to add a friend to your Clique.',
+        );
       } else if (sendReq.code == statusCode.OK) {
         setIsMailValidated(true);
       }
     } else {
       //TODO - Link to "Add to Clique 03"
+      console.log(sendReq);
+      if (sendReq.message === 'User not found') {
+        setToastMsg(
+          "We couldn't find this email in our database, redirecting you to create an account with us!",
+        );
+        setTimeout(() => router.push('/account/create-account'), 5000);
+      }
     }
     setLoading(false);
     return;
@@ -189,10 +195,10 @@ function JoinClique() {
             //TODO - Link to "Add to Clique "CARD1""
           }
         } else {
-          toastMsg = join.message;
+          setToastMsg(join.message);
         }
       } else {
-        toastMsg = sendReq.message;
+        setToastMsg(sendReq.message);
       }
     } else {
       //Join Clique
@@ -204,7 +210,7 @@ function JoinClique() {
           //TODO - Link to "Add to Clique "CARD1""
         }
       } else {
-        toastMsg = join.message;
+        setToastMsg(join.message);
       }
     }
     setLoading(false);
@@ -256,16 +262,16 @@ function JoinClique() {
     }
   }, [isMailValidated]);
 
-  if (!inviter)
-    return (
-      <Section>
-        <Div>
-          <LoaderContainer>
-            <Loader />
-          </LoaderContainer>
-        </Div>
-      </Section>
-    );
+  // if (!inviter)
+  //   return (
+  //     <Section>
+  //       <Div>
+  //         <LoaderContainer>
+  //           <Loader />
+  //         </LoaderContainer>
+  //       </Div>
+  //     </Section>
+  //   );
 
   return (
     <Section>
@@ -321,37 +327,31 @@ function JoinClique() {
                       type={type}
                       legend={legend}
                       id={id}
-                      // onChange={(e) => handleMemberFormOnchange(e)}
+                      onChange={(e) => handleMemberFormOnchange(e)}
                       error={error?.[`${name}`]}
                     />
                   );
                 })}
 
                 <Button
-                  // onClick={() => handleEmailSubmit()}
+                  onClick={() => handlePasswordSubmit()}
                   width={'100%'}
                   bg={`var(--violet)`}
                   type="filled"
                 >
-                  Join now
+                  Confirm
                 </Button>
               </Details>
             ) : (
               <Details>
-                {details.slice(0, 1).map((detail, index) => {
-                  const { id, name, type, legend } = detail;
-                  return (
-                    <InputContainer
-                      key={index}
-                      name={name}
-                      type={type}
-                      legend={legend}
-                      id={id}
-                      onChange={(e) => handleMemberFormOnchange(e)}
-                      error={error?.[`${name}`]}
-                    />
-                  );
-                })}
+                <InputContainer
+                  name="email"
+                  type="email"
+                  legend="Enter your Email"
+                  id="email"
+                  onChange={(e) => handleMemberFormOnchange(e)}
+                  error={error?.email}
+                />
 
                 <Checker
                   content={`
@@ -365,15 +365,13 @@ function JoinClique() {
                 />
                 <Button
                   onClick={() => {
-                    !isMailValidated
-                      ? handleEmailSubmit()
-                      : handlePasswordSubmit();
+                    handleEmailSubmit();
                   }}
                   width={'100%'}
                   bg={`var(--violet)`}
                   type="filled"
                 >
-                  Continue
+                  Join now
                 </Button>
               </Details>
             )}
