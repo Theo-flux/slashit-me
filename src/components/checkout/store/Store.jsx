@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button } from '../../../shared';
+import { UAParser } from 'ua-parser-js';
+import { Button, LoaderContainer, Loader } from '../../../shared';
 import {
   StoreContainer,
   StoreWrapper,
@@ -12,6 +13,7 @@ import {
   OrderPrice,
   ProcessWrapper,
   ButtonWrapper,
+  LoaderWrapper,
 } from './storeStyle';
 import Confirmer from './confirmer/Confirmer';
 import Orderer from './orderer/Orderer';
@@ -46,6 +48,9 @@ import VerifyEmail from './orderer/otp';
 const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
 
 function Store() {
+  const parser = new UAParser();
+  const { vendor, model, type } = parser.getDevice();
+  const { name, version } = parser.getOS();
   const router = useRouter();
   let toastMsg = '';
 
@@ -61,15 +66,8 @@ function Store() {
   const anySuccess = useSelector((state) => state.helper.anySuccess);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
-  let platform;
-  let os;
-
-  if (typeof window !== 'undefined') {
-    platform = window.navigator.platform;
-    os = window.navigator.appVersion;
-    os = os.split(' ');
-    os = `${os[2]} ${os[3]}`;
-  }
+  let platform = `${vendor} ${model}, ${type}`;
+  let os = `${name} ${version}`;
 
   useEffect(() => {
     dispatch(setComputerInfo({ ...computerInfo, platform, os }));
