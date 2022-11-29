@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '../../../shared';
+import { Button, LoaderContainer, Loader } from '../../../shared';
 import {
   StoreContainer,
   StoreWrapper,
@@ -12,6 +12,7 @@ import {
   OrderPrice,
   ProcessWrapper,
   ButtonWrapper,
+  LoaderWrapper,
 } from './storeStyle';
 import Confirmer from './confirmer/Confirmer';
 import Orderer from './orderer/Orderer';
@@ -104,10 +105,13 @@ function Store() {
   }
 
   if (!orderDetails)
-  return (
-    <div></div>
-    /* <>{Return circular loader}</> */
-  );
+    return (
+      <StoreContainer>
+        <LoaderWrapper>
+          <Loader />
+        </LoaderWrapper>
+      </StoreContainer>
+    );
 
   return (
     <StoreContainer>
