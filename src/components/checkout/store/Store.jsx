@@ -132,7 +132,9 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {!activeTab && <Orderer openOrder={openOrder} />}
+          {!activeTab && (
+            <Orderer openOrder={openOrder} setOpenOrder={setOpenOrder} />
+          )}
           {activeTab?.page == 'Scheduler' && <Scheduler />}
           {activeTab?.page == 'Confirmer' && <Confirmer />}
           {activeTab?.page == 'VerifyEmail' && <VerifyEmail />}
