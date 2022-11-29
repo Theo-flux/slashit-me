@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button } from '../../../shared';
+import { UAParser } from 'ua-parser-js';
+import { Button, LoaderContainer, Loader } from '../../../shared';
 import {
   StoreContainer,
   StoreWrapper,
@@ -12,6 +13,7 @@ import {
   OrderPrice,
   ProcessWrapper,
   ButtonWrapper,
+  LoaderWrapper,
 } from './storeStyle';
 import Confirmer from './confirmer/Confirmer';
 import Orderer from './orderer/Orderer';
@@ -44,6 +46,9 @@ import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 
 function Store() {
+  let parser = new UAParser();
+  const { vendor, model, type } = parser.getDevice();
+  const { name, version } = parser.getOS();
   const router = useRouter();
   let toastMsg = '';
 
@@ -53,15 +58,8 @@ function Store() {
   const activeTab = useSelector((state) => state.helper.anyTab);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
-  let platform;
-  let os;
-
-  if (typeof window !== 'undefined') {
-    platform = window.navigator.platform;
-    os = window.navigator.appVersion;
-    os = os.split(' ');
-    os = `${os[2]} ${os[3]}`;
-  }
+  let platform = `${vendor} ${model}, ${type}`;
+  let os = `${name} ${version}`;
 
   useEffect(() => {
     dispatch(setComputerInfo({ ...computerInfo, platform, os }));
@@ -103,11 +101,14 @@ function Store() {
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
 
-  if (!orderDetails)
-  return (
-    <div></div>
-    /* <>{Return circular loader}</> */
-  );
+  // if (!orderDetails)
+  //   return (
+  //     <StoreContainer>
+  //       <LoaderWrapper>
+  //         <Loader />
+  //       </LoaderWrapper>
+  //     </StoreContainer>
+  //   );
 
   return (
     <StoreContainer>
@@ -131,7 +132,9 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {!activeTab && <Orderer openOrder={openOrder} />}
+          {!activeTab && (
+            <Orderer openOrder={openOrder} setOpenOrder={setOpenOrder} />
+          )}
           {activeTab?.page == 'Scheduler' && <Scheduler />}
           {activeTab?.page == 'Confirmer' && <Confirmer />}
           {activeTab?.page == 'VerifyEmail' && <VerifyEmail />}

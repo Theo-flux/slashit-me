@@ -149,3 +149,11 @@ export const ButtonWrapper = styled.div`
   margin: 0 auto;
   max-width: 500px;
 `;
+
+export const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
