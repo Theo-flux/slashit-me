@@ -46,7 +46,7 @@ import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 
 function Store() {
-  let parser = new UAParser();
+  const parser = new UAParser();
   const { vendor, model, type } = parser.getDevice();
   const { name, version } = parser.getOS();
   const router = useRouter();
