@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Section, Div, LinkButton } from '../../../shared';
 import {
@@ -11,8 +11,7 @@ import {
   IconCheck,
 } from './acceptmoneyStyles';
 import { setComputerInfo } from '../../../store/reducers/auth';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 function Accept() {
