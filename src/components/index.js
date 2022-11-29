@@ -10,3 +10,4 @@ export { default as Faq } from './faq';
 export { Banner, OnCredit, Sell, PaymentLink } from './getPaid';
 export { Shopper, Business, Hero } from './home';
 export { Price, FreeplanRegistration, ThriveplanRegistration } from './pricing';
+export { default as SuccessCmp } from './success';
