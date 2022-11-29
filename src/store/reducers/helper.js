@@ -16,6 +16,8 @@ const initialState = {
   anyAmount: '',
   anyAction: false,
   anyTab: '',
+  anySuccess: '',
+  extraTab: '',
   cardData: null,
 };
 
@@ -58,6 +60,14 @@ const helperSlice = createSlice({
     setAnyTab: (state, action) => {
       state.anyTab = action.payload;
     },
+    //Set Any Success
+    setAnySuccess: (state, action) => {
+      state.anySuccess = action.payload;
+    },
+    //Set Extra Tab
+    setExtraTab: (state, action) => {
+      state.extraTab = action.payload;
+    },
     //Set Card Data
     setCardData: (state, action) => {
       state.cardData = action.payload;
@@ -74,7 +84,9 @@ export const {
   setAnyAmount,
   setAnyTab,
   setAnyAction,
+  setAnySuccess,
   setCardData,
+  setExtraTab,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

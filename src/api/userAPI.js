@@ -20,6 +20,8 @@ export const FetchUserById = async () => {
     token = auth.token;
   }
 
+  console.log(process.env.GRAPHQL_ENDPOINT, 'is')
+
   await fetch(API_ENDPOINT, {
     method: 'POST',
     headers: {
