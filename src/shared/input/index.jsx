@@ -10,8 +10,6 @@ import {
   Box,
   BoxRow,
   Prefix,
-  FormGroup,
-  FormCheck,
   Label,
 } from './inputStyles';
 

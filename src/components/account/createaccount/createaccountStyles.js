@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Title } from '../../../shared';
 import { device } from '../../../utils/device';
 
-export const CAcctContainer = styled.div``;
-
 export const Column = styled.div`
   width: 100%;
   max-width: 500px;
