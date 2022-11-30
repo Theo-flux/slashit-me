@@ -21,7 +21,6 @@ import {
   Loader,
   ProgressBar,
 } from '../../shared';
-import { validateThis } from '../../helpers';
 import {
   CliqueDiv,
   SmallText,
@@ -155,8 +154,6 @@ function JoinClique() {
         setIsMailValidated(true);
       }
     } else {
-      //TODO - Link to "Add to Clique 03"
-      console.log(sendReq);
       if (sendReq.message === 'User not found') {
         setToastMsg(
           "We couldn't find this email in our database, redirecting you to create an account with us!",

@@ -1,9 +1,9 @@
+import { Fragment, useState } from 'react';
 import { setSignUpInfo } from '../../../store/reducers/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import React from 'react';
+import { validateThis } from '../../../helpers';
 import { Section, Div, InputContainer, Button } from '../../../shared';
 import {
-  CAcctContainer,
   RowLink,
   Row,
   Column,
@@ -25,7 +25,7 @@ const acct_items = [
     type: 'text',
     legend: 'Last Name',
     placeholder: 'Last name',
-    id: 'first_name',
+    id: 'last_name',
     name: 'lastname',
   },
 
@@ -39,11 +39,11 @@ const acct_items = [
 
   {
     type: 'phone',
-    prefix: '234',
+    prefix: '+234',
     legend: 'Phone Number',
     placeholder: '081 2345 6789',
     id: 'phone_number',
-    name: 'mobile',
+    name: 'phonenumber',
   },
 
   {
@@ -59,18 +59,41 @@ const acct_items = [
     legend: 'Password',
     placeholder: 'password',
     id: 'password',
-    name: 'pass',
+    name: 'password',
   },
 ];
 
 function CreateAccount() {
+  let [signUpDetails, setSignUpDetails] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    phonenumber: '',
+    birthday: '',
+    password: '',
+  });
   const dispatch = useDispatch();
   const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
+  let [error, setError] = useState();
+
+  function handleOnchange(event) {
+    const { name, value } = event.target;
+
+    setSignUpDetails({ ...signUpDetails, [name]: value });
+  }
+
+  function handleSubmit() {
+    const res = validateThis(signUpDetails);
+    console.log(res);
+    setError(res);
+  }
+
+  console.log(error);
 
   return (
     <Section>
       <Div>
-        <CAcctContainer>
+        <Fragment>
           <Column>
             <RowLink onClick={() => history.back()}>
               <i class="ri-arrow-left-s-line" />
@@ -93,11 +116,8 @@ function CreateAccount() {
                       placeholder={placeholder}
                       id={id}
                       name={name}
-                      onChange={(e) =>
-                        dispatch(
-                          setSignUpInfo({ ...signUpInfo, [e.name]: e.event }),
-                        )
-                      }
+                      onChange={(e) => handleOnchange(e)}
+                      error={error?.[`${name}`]}
                     />
                   );
                 })}
@@ -114,20 +134,21 @@ function CreateAccount() {
                     placeholder={placeholder}
                     id={id}
                     name={name}
-                    onChange={(e) =>
-                      dispatch(
-                        setSignUpInfo({ ...signUpInfo, [e.name]: e.event }),
-                      )
-                    }
+                    onChange={(e) => handleOnchange(e)}
+                    error={error?.[`${name}`]}
                   />
                 );
               })}
-              <Button width={`100%`} bg={`var(--violet)`}>
+              <Button
+                onClick={() => handleSubmit()}
+                width={`100%`}
+                bg={`var(--violet)`}
+              >
                 Create account
               </Button>
             </ColItem>
           </Column>
-        </CAcctContainer>
+        </Fragment>
       </Div>
     </Section>
   );

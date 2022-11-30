@@ -28,19 +28,19 @@ export const Input = styled.input`
   outline: 0px;
   height: 100%;
 
-  &[type='date']::-webkit-datetime-edit-text,
+  /* &[type='date']::-webkit-datetime-edit-text,
   &[type='date']::-webkit-datetime-edit-month-field,
   &[type='date']::-webkit-datetime-edit-day-field,
   &[type='date']::-webkit-datetime-edit-year-field {
-    color: #888;
+    color: var(--silver);
   }
 
   &[type='date'].date-input--has-value::-webkit-datetime-edit-text,
   &[type='date'].date-input--has-value::-webkit-datetime-edit-month-field,
   &[type='date'].date-input--has-value::-webkit-datetime-edit-day-field,
   &[type='date'].date-input--has-value::-webkit-datetime-edit-year-field {
-    color: #f8f9fa;
-  }
+    color: var(--silver);
+  } */
 
   /* &:focus {
     outline: 1px solid var(--violet);
