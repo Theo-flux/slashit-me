@@ -9,7 +9,11 @@ import {
 } from '../../../../api/transactionAPI';
 import { FetchUserById } from '../../../../api/userAPI';
 import { setUser } from '../../../../store/reducers/auth';
-import { setAnyTab } from '../../../../store/reducers/helper';
+import {
+  setAnyAction,
+  setAnySuccess,
+  setAnyTab,
+} from '../../../../store/reducers/helper';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -22,17 +26,18 @@ import {
 function Confirmer(props) {
   let toastMsg = '';
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const cards = useSelector((state) => state.transaction.cards);
   const user = useSelector((state) => state.userAuth.user);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const [fetchingBank, setFetchingBank] = useState(false);
   const [bankDetails, setBankDetails] = useState();
-  const [shippingDetails, setShipingDetails] = useState({});
+  const [shippingDetails, setShipingDetails] = useState();
   const [selectedOrderMethod, setSelectedOrderMethod] = useState('Card'); //Card or Balance
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState(preferredCard);
-  const anyTab = useSelector((state) => state.helper.anyTab);
+  const activeTab = useSelector((state) => state.helper.anyTab);
 
   //async functions
   async function getAccountNumber() {
@@ -64,28 +69,21 @@ function Confirmer(props) {
     if (selectedOrderMethod == 'Card') {
       payload = {
         order: orderDetails._id,
-        paymentOption: anyTab?.scheduleSelected,
+        paymentOption: activeTab?.scheduleSelected,
         source: 'Card',
         card: selectedCard._id,
       };
     } else {
       payload = {
         order: orderDetails._id,
-        paymentOption: anyTab?.scheduleSelected,
+        paymentOption: activeTab?.scheduleSelected,
         source: 'Balance',
       };
     }
     let sendReq = await PayNow(payload);
     if (sendReq.success) {
-      dispatch(
-        setAnyTab({
-          page: 'Success',
-          params: {
-            message: 'Your order has been confirmed',
-            code: statusCode.OK,
-          },
-        }),
-      );
+      dispatch(setAnySuccess(true));
+      toastMsg = 'Your order has been confirmed';
     } else {
       toastMsg = sendReq.message;
     }
@@ -93,9 +91,11 @@ function Confirmer(props) {
   }
 
   async function fetchUser() {
-    const fetchData = await FetchUserById();
-    if (fetchData.success) {
-      dispatch(setUser(fetchData.user));
+    if (isLoggedIn) {
+      const fetchData = await FetchUserById();
+      if (fetchData.success) {
+        dispatch(setUser(fetchData.user));
+      }
     }
   }
 
@@ -103,7 +103,21 @@ function Confirmer(props) {
     if (!user.country) {
       fetchUser();
     }
-  }, [user]);
+  }, []);
+
+  async function CtrlConfirmer() {
+    payNow();
+  }
+
+  useEffect(() => {
+    if (activeTab == 'Confirmer') {
+      dispatch(
+        setAnyAction({
+          action: CtrlConfirmer,
+        }),
+      );
+    }
+  });
 
   return (
     <ProcessContent>
@@ -118,8 +132,8 @@ function Confirmer(props) {
 
           {/* 
           //TODOS
-          //What you'll pay today - anyTab.scheduleSelected[0].amount
-          //How you'll pay - preferredCard / spending balance
+          //What you'll pay today -activeTab.scheduleSelected[0].amount
+          //How you'll pay - preferredCard or spending balance
           // Preferred card is selected by default [if change is tapped, list all the cards available : onClick of a list item, setSelectedCard to item]
           //If spending balance is selected - Fetch virtual account number
 

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDays } from '../../../../helpers/dates';
 import { Button } from '../../../../shared';
-import { setAnyTab } from '../../../../store/reducers/helper';
+import { setAnyAction, setAnyTab } from '../../../../store/reducers/helper';
 import {
   Top,
   EnvelopeCover,
@@ -19,6 +19,7 @@ function Scheduler() {
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const [scheduleSelected, setScheduleSelected] = useState('PayIn4'); //"PayIn4", "PayIn3"
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
+  const activeTab = useSelector((state) => state.helper.anyTab);
 
   const scheduleIn4 = [
     {
@@ -54,6 +55,28 @@ function Scheduler() {
     },
   ];
 
+  async function CtrlSchedule() {
+    dispatch(
+      setAnyTab({
+        page: 'Confirmer',
+        params: {
+          scheduleSelected,
+          schedule: scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
+        },
+      }),
+    );
+  }
+
+  useEffect(() => {
+    if (activeTab == 'Scheduler') {
+      dispatch(
+        setAnyAction({
+          action: CtrlSchedule,
+        }),
+      );
+    }
+  });
+
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -75,9 +98,9 @@ function Scheduler() {
             Continue Button - onClick, If preferredCard show ConfirmOrder1 else show Enter card details
            */}
         </Top>
-        <ButtonWrapper>
+        {/* <ButtonWrapper>
           <Button
-            disabled={scheduleSelected}
+            disabled={!scheduleSelected}
             onClick={() =>
               dispatch(
                 setAnyTab({
@@ -94,7 +117,7 @@ function Scheduler() {
           >
             Confirm
           </Button>
-        </ButtonWrapper>
+        </ButtonWrapper> */}
       </EnvelopeCover>
     </ProcessContent>
   );

@@ -45,6 +45,8 @@ import Success from './confirmer/success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 
+const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
+
 function Store() {
   const parser = new UAParser();
   const { vendor, model, type } = parser.getDevice();
@@ -55,7 +57,13 @@ function Store() {
   const dispatch = useDispatch();
   const [openOrder, setOpenOrder] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const inputEmail = useSelector((state) => state.userAuth.email);
   const activeTab = useSelector((state) => state.helper.anyTab);
+  const extraTab = useSelector((state) => state.helper.extraTab);
+  const anyAction = useSelector((state) => state.helper.anyAction);
+  const anySuccess = useSelector((state) => state.helper.anySuccess);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   let platform = `${vendor} ${model}, ${type}`;
@@ -74,12 +82,10 @@ function Store() {
   }, []);
 
   //async functions
-  //Create Order or Fetch Order details on component render
+  //Create Order plus Fetch Order details on component render
   async function createOrder() {
     let sendReq = await CreateOrder(
-      router.query?.orderMethod == 'API'
-        ? router.query?.orderInput
-        : { amount: '', currency: '' }, //router.query.orderInput or a dummy object to prevent server type errors
+      router.query?.orderInput,
       router.query?.orderMethod,
       router.query?.link || '6305313baea30a002c977d3f', //router.query.link or a constant to prevent server type errors
     );
@@ -101,14 +107,43 @@ function Store() {
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
 
-  // if (!orderDetails)
-  //   return (
-  //     <StoreContainer>
-  //       <LoaderWrapper>
-  //         <Loader />
-  //       </LoaderWrapper>
-  //     </StoreContainer>
-  //   );
+  async function CtrlStore() {
+    //If not activeTab
+    if (!activeTab) {
+      dispatch(
+        setAnyTab({
+          page: 'Orderer',
+        }),
+      );
+      return;
+    }
+
+    //Navigate to Scheduler if activeTab.page is Orderer
+    if (activeTab?.page == 'Orderer') {
+      if (inputEmail) {
+        dispatch(
+          setAnyTab({
+            page: 'Scheduler',
+          }),
+        );
+        return;
+      } else {
+        anyAction?.action();
+        return;
+      }
+    }
+    //Navigate to Confimer if activeTab.page is Scheduler
+    if (activeTab?.page == 'Scheduler') {
+      dispatch(
+        setAnyTab({
+          page: 'Confirmer',
+        }),
+      );
+      return;
+    }
+  }
+
+  console.log(activeTab);
 
   return (
     <StoreContainer>
@@ -132,30 +167,33 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {!activeTab && (
-            <Orderer openOrder={openOrder} setOpenOrder={setOpenOrder} />
+          {!extraTab ? (
+            <>
+              <Orderer />
+              <Scheduler />
+              <Confirmer />
+            </>
+          ) : (
+            <>
+              {extraTab?.page == 'VerifyEmail' && <VerifyEmail />}
+              {extraTab?.page == 'VerifyEmailNext' && <VerifyEmailNext />}
+              {extraTab?.page == 'Card' && <CardDetails />}
+              {extraTab?.page == 'Success' && <Success />}
+            </>
           )}
-          {activeTab?.page == 'Scheduler' && <Scheduler />}
-          {activeTab?.page == 'Confirmer' && <Confirmer />}
-          {activeTab?.page == 'VerifyEmail' && <VerifyEmail />}
-          {activeTab?.page == 'VerifyEmailNext' && <VerifyEmailNext />}
-          {activeTab?.page == 'Card' && <CardDetails />}
-          {activeTab?.page == 'Success' && <Success />}
         </ProcessWrapper>
 
         <ButtonWrapper>
-          {openOrder && (
-            <Button
-              onClick={() =>
-                isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
-              }
-              width={`100%`}
-            >
-              Continue
+          {!extraTab && (
+            <Button onClick={CtrlStore} width={`100%`}>
+              Confirm
             </Button>
           )}
         </ButtonWrapper>
       </StoreWrapper>
+      {
+        // anySuccess && <>{lottie}</>
+      }
     </StoreContainer>
   );
 }

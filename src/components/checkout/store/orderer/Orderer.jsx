@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AmountSeparator } from '../../../../helpers/numberValidation';
 import { Button, InputContainer, TextAreaContainer } from '../../../../shared';
@@ -55,7 +55,7 @@ import {
   setCards,
   setPreferredCard,
 } from '../../../../store/reducers/transaction';
-import { setAnyTab } from '../../../../store/reducers/helper';
+import { setAnyAction, setAnyTab } from '../../../../store/reducers/helper';
 
 // const orderedItems = [
 //   {
@@ -108,10 +108,11 @@ import { setAnyTab } from '../../../../store/reducers/helper';
 //   },
 // ];
 
-function Orderer({ openOrder }) {
+function Orderer({}) {
   let toastMsg = '';
 
   const dispatch = useDispatch();
+  const activeTab = useSelector((state) => state.helper.anyTab);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [isMailValidated, setIsMailValidated] = useState(false);
@@ -150,7 +151,7 @@ function Orderer({ openOrder }) {
     }
 
     if (error?.email) {
-      // setShowPass(false);
+      //You can do anything here
     } else {
       validateShopper();
     }
@@ -207,24 +208,38 @@ function Orderer({ openOrder }) {
 
   async function validateShopper() {
     setLoading(true);
-    dispatch(setEmail(orderer.email)); //Store email in global state
+
     let sendReq = await ShopperExist(orderer.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
         setPass(statusCode.COMPLETE_REGISTRATION);
         dispatch(setAnyTab({ page: 'VerifyEmail', params: {} }));
       } else if (sendReq.code == statusCode.OK) {
+        dispatch(setEmail(orderer.email)); //Store user email in global state
         setPass(statusCode.OK);
       }
     } else {
       setPass(statusCode.NOT_FOUND);
+      dispatch(setEmail(orderer.email)); //Store user email in global state
     }
     setIsMailValidated(true);
     setLoading(false);
     return;
   }
 
-  //dispatch(setAnyTab());
+  async function CtrlOrder() {
+    isMailValidated ? handlePasswordSubmit() : handleEmailContinue();
+  }
+
+  useEffect(() => {
+    if (activeTab == 'Orderer') {
+      dispatch(
+        setAnyAction({
+          action: CtrlOrder,
+        }),
+      );
+    }
+  });
 
   return (
     <ProcessContent>
@@ -235,7 +250,13 @@ function Orderer({ openOrder }) {
             <ItemText>Your order</ItemText>
           </ItemPod>
 
-          <Icon className="ri-arrow-down-s-line" />
+          <Icon
+            className={
+              activeTab?.page == 'Orderer'
+                ? 'ri-arrow-down-s-line'
+                : 'ri-arrow-up-s-line'
+            }
+          />
         </Top>
 
         <OrderContent>
@@ -243,12 +264,14 @@ function Orderer({ openOrder }) {
             <Row>
               <Text>Your details</Text>{' '}
               <Icon
-                className={`${
-                  openOrder ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
-                }`}
+                className={
+                  activeTab?.page == 'Orderer'
+                    ? 'ri-arrow-down-s-line'
+                    : 'ri-arrow-up-s-line'
+                }
               />
             </Row>
-            {openOrder && (
+            {activeTab?.page == 'Orderer' && (
               <Details>
                 {!isLoggedIn ? (
                   <>
@@ -305,12 +328,14 @@ function Orderer({ openOrder }) {
             <Row>
               <Text>Order Summary</Text>
               <Icon
-                className={`${
-                  openOrder ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
-                }`}
+                className={
+                  activeTab?.page == 'Orderer'
+                    ? 'ri-arrow-down-s-line'
+                    : 'ri-arrow-up-s-line'
+                }
               />
             </Row>
-            {openOrder && (
+            {activeTab?.page == 'Orderer' && (
               <Orders>
                 <OrderItems>
                   {orderDetails?.isCreatedFromAPI ? (
@@ -344,17 +369,17 @@ function Orderer({ openOrder }) {
                   <SubTotal>
                     <SubtotalText>Subtotal</SubtotalText>
                     <SubtotalPrice>
-                      {getSymbolFromCurrency(orderDetails.currency)}
+                      {getSymbolFromCurrency(orderDetails?.currency)}
                       {AmountSeparator(
-                        orderDetails.amount - orderDetails.shippingCost,
+                        orderDetails?.amount - orderDetails?.shippingCost,
                       )}
                     </SubtotalPrice>
                   </SubTotal>
                   <Shipping>
                     <ShippingText>Shipping</ShippingText>
                     <ShippingPrice>
-                      {getSymbolFromCurrency(orderDetails.currency)}
-                      {AmountSeparator(orderDetails.shippingCost)}
+                      {getSymbolFromCurrency(orderDetails?.currency)}
+                      {AmountSeparator(orderDetails?.shippingCost)}
                     </ShippingPrice>
                   </Shipping>
                 </SubTotalContainer>
@@ -362,8 +387,8 @@ function Orderer({ openOrder }) {
                 <Total>
                   <TotalText>Total</TotalText>
                   <TotalPrice>
-                    {getSymbolFromCurrency(orderDetails.currency)}
-                    {AmountSeparator(orderDetails.amount)}
+                    {getSymbolFromCurrency(orderDetails?.currency)}
+                    {AmountSeparator(orderDetails?.amount)}
                   </TotalPrice>
                 </Total>
               </Orders>
@@ -385,14 +410,14 @@ function Orderer({ openOrder }) {
           )} */}
 
           {/* {openOrder && ( */}
-          <Button
+          {/* <Button
             onClick={() =>
               isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
             }
             width={`100%`}
           >
             Confirm
-          </Button>
+          </Button> */}
           {/* )} */}
         </ButtonWrapper>
       </EnvelopeCover>
