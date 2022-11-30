@@ -154,9 +154,9 @@ function JoinClique() {
         setIsMailValidated(true);
       }
     } else {
-      if (sendReq.message === 'User not found') {
+      if (sendReq.code === statusCode.NOT_FOUND) {
         setToastMsg(
-          "We couldn't find this email in our database, redirecting you to create an account with us!",
+          "We couldn't find a user with this email, redirecting you to create an account with us!",
         );
         setTimeout(() => router.push('/account/create-account'), 5000);
       }
