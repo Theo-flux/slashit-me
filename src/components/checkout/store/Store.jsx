@@ -167,7 +167,7 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {/* {!extraTab ? (
+          {!extraTab ? (
             <>
               <Orderer />
               <Scheduler />
@@ -180,17 +180,16 @@ function Store() {
               {extraTab?.page == 'Card' && <CardDetails />}
               {extraTab?.page == 'Success' && <Success />}
             </>
-          )} */}
-          <Success />
+          )}
         </ProcessWrapper>
 
-        {/* <ButtonWrapper>
+        <ButtonWrapper>
           {!extraTab && (
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
           )}
-        </ButtonWrapper> */}
+        </ButtonWrapper>
       </StoreWrapper>
       {
         // anySuccess && <>{lottie}</>
