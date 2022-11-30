@@ -85,7 +85,7 @@ export const ProcessWrapper = styled.div`
   margin: 2rem 0rem 8rem 0;
   border-radius: 0.375rem;
   overflow: hidden;
-  border: 1px solid #d9d9d950;
+  /* border: 1px solid #d9d9d950; */
 
   @media ${device.lg} {
     border: none;
