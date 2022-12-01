@@ -59,7 +59,7 @@ export const Amount = styled.p`
 
 export const Date = styled.p`
   text-align: center;
-  color: var(--silver);
+  color: var(--gray);
   font-weight: 600;
   font-size: 0.75rem;
 `;

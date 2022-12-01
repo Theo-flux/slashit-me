@@ -14,6 +14,7 @@ import {
   ProcessWrapper,
   ButtonWrapper,
   LoaderWrapper,
+  PlayerWrapper,
 } from './storeStyle';
 import Confirmer from './confirmer/Confirmer';
 import Orderer from './orderer/Orderer';
@@ -39,11 +40,12 @@ import {
   ShopperExist,
 } from '../../../api/userAPI';
 import statusCode from '../../../api/statusCode';
-import { setAnyTab } from '../../../store/reducers/helper';
+import { setAnyAction, setAnyTab } from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
 import Success from './success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
 
@@ -128,7 +130,10 @@ function Store() {
         );
         return;
       } else {
-        anyAction?.action();
+        dispatch(setAnyAction(true));
+        setTimeout(() => {
+          dispatch(setAnyAction(false));
+        }, 50);
         return;
       }
     }
@@ -177,25 +182,30 @@ function Store() {
             <>
               {extraTab?.page == 'VerifyEmail' && <VerifyEmail />}
               {extraTab?.page == 'VerifyEmailNext' && <VerifyEmailNext />}
-              {extraTab?.page == 'Card' && <CardDetails />}
+              {extraTab?.page == 'CardDetails' && <CardDetails />}
               {extraTab?.page == 'Success' && <Success />}
             </>
           )}
-
-          {/* <Confirmer /> */}
         </ProcessWrapper>
 
-        {/* <ButtonWrapper>
+        <ButtonWrapper>
           {!extraTab && (
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
           )}
-        </ButtonWrapper> */}
+        </ButtonWrapper>
       </StoreWrapper>
-      {
-        // anySuccess && <>{lottie}</>
-      }
+
+      <PlayerWrapper>
+        <Player
+          src={require('../../../../public/lottieFiles/confetti.json')}
+          speed={0.5}
+          autoPlay
+          loop={false}
+          style={{ height: '300px', width: '300px' }}
+        />
+      </PlayerWrapper>
     </StoreContainer>
   );
 }
