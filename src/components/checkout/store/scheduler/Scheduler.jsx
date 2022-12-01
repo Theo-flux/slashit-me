@@ -220,7 +220,7 @@ function Scheduler() {
           {scheduleSelected === 'PayIn3' && (
             <RowWrap>
               {scheduleIn3?.map((schedule, index) => {
-                return <Card width={'32%'} key={index} data={schedule} />;
+                return <Card width={'30%'} key={index} data={schedule} />;
               })}
             </RowWrap>
           )}

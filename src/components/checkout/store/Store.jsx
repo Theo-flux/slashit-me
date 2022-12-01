@@ -42,7 +42,7 @@ import {
 import statusCode from '../../../api/statusCode';
 import { setAnyAction, setAnyTab } from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
-import Success from './confirmer/success/Success';
+import Success from './success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 import { Player } from '@lottiefiles/react-lottie-player';

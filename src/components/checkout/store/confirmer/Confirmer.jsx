@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import statusCode from '../../../../api/statusCode';
 import {
@@ -22,6 +22,42 @@ import {
   Icon,
   Top,
 } from '../storeStyle';
+import {
+  ContentBox,
+  InnerContent,
+  AmountContainer,
+  PaymentMethodContainer,
+  PaymentMethod,
+  PaymentMethodInner,
+  PaymentIcon,
+  StyledTitle,
+  PayTitle,
+  Wrapper,
+  Row,
+  Column,
+  ChangeBtn,
+  NewTag,
+  ExtraText,
+  Bottom,
+  BottomRow,
+} from './confirmerStyles';
+
+const Card = ({ onClick }) => {
+  return (
+    <BottomRow onClick={onClick}>
+      <PaymentIcon color={'white'} className="ri-checkbox-blank-circle-line" />
+      <Row>
+        <Image
+          src={'/images/mastercard logo.svg'}
+          height={40}
+          width={40}
+          alt="card_issuer"
+        />
+        <PayTitle> •••• 1050 12/2025</PayTitle>
+      </Row>
+    </BottomRow>
+  );
+};
 
 function Confirmer(props) {
   let toastMsg = '';
@@ -38,6 +74,8 @@ function Confirmer(props) {
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState(preferredCard);
   const activeTab = useSelector((state) => state.helper.anyTab);
+
+  const [showCardList, setShowCardList] = useState(false);
 
   //async functions
   async function getAccountNumber() {
@@ -139,6 +177,80 @@ function Confirmer(props) {
 
           */}
         </Top>
+        <Wrapper>
+          <ContentBox>
+            <InnerContent>
+              <StyledTitle>What you will pay</StyledTitle>
+              <AmountContainer>NGN 3,000</AmountContainer>
+            </InnerContent>
+          </ContentBox>
+
+          <ContentBox>
+            <InnerContent>
+              <StyledTitle>How you will pay</StyledTitle>
+
+              <PaymentMethodContainer>
+                <PaymentMethodInner>
+                  <PaymentMethod>
+                    <Row>
+                      <PaymentIcon
+                        className={`${
+                          selectedOrderMethod === 'Card'
+                            ? 'ri-checkbox-circle-fill'
+                            : 'ri-checkbox-blank-circle-line'
+                        } `}
+                      />
+                      <Row>
+                        <Image
+                          src={'/images/mastercard logo.svg'}
+                          height={40}
+                          width={40}
+                          alt="card_issuer"
+                        />
+                        <PayTitle> •••• 1050 12/2025</PayTitle>
+                      </Row>
+                    </Row>
+                    {showCardList || (
+                      <ChangeBtn onClick={() => setShowCardList(!showCardList)}>
+                        Change
+                      </ChangeBtn>
+                    )}
+                  </PaymentMethod>
+
+                  {showCardList && (
+                    <Bottom>
+                      <Card onClick={() => setShowCardList(!showCardList)} />
+                      <Card />
+                      <Card />
+                      <Card />
+                      <Card />
+                    </Bottom>
+                  )}
+                </PaymentMethodInner>
+
+                <PaymentMethodInner>
+                  <PaymentMethod>
+                    <Row>
+                      <PaymentIcon
+                        className={`${
+                          selectedOrderMethod !== 'Card'
+                            ? 'ri-checkbox-circle-fill'
+                            : 'ri-checkbox-blank-circle-line'
+                        } `}
+                      />
+                      <Column>
+                        <PayTitle>Spending balance</PayTitle>
+                        <ExtraText>NGN 120,000.00</ExtraText>
+                      </Column>
+                    </Row>
+                    <NewTag>New</NewTag>
+                  </PaymentMethod>
+                  <>Bottom</>
+                </PaymentMethodInner>
+              </PaymentMethodContainer>
+            </InnerContent>
+          </ContentBox>
+        </Wrapper>
       </EnvelopeCover>
     </ProcessContent>
   );

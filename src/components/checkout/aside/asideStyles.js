@@ -17,7 +17,6 @@ export const AsideContainer = styled.aside`
     align-items: center;
     justify-content: center;
   }
-
 `;
 
 export const AsideWrapper = styled.div`
@@ -34,9 +33,7 @@ export const ItemPod = styled.div`
   border-radius: 0.375rem;
   cursor: pointer;
 
-  &:first-of-type {
-    background-color: #ffffff40;
-  }
+  ${(props) => props.activeTab === props.tab && `background-color: #ffffff40;`}
 
   &:hover {
     background-color: #ffffff40;

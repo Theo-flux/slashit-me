@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Title, Text } from '../../../../../shared/typography';
+import { Title, Text } from '../../../../shared/typography';
 
 export const SuccessContainer = styled.div``;
 

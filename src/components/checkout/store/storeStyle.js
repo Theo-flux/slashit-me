@@ -17,11 +17,13 @@ export const StoreContainer = styled.aside`
 
 export const StoreWrapper = styled.div`
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
   border: 1px solid #d9d9d950;
   border-radius: 0.375rem;
   padding: 1rem;
+  height: 90vh;
+  overflow: scroll;
 `;
 
 export const ProfileContainer = styled.div`
