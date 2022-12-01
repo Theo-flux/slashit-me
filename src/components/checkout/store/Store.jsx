@@ -41,7 +41,7 @@ import {
 import statusCode from '../../../api/statusCode';
 import { setAnyTab } from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
-import Success from './confirmer/success';
+import Success from './confirmer/success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 
@@ -167,7 +167,7 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {!extraTab ? (
+          {/* {!extraTab ? (
             <>
               <Orderer />
               <Scheduler />
@@ -180,16 +180,17 @@ function Store() {
               {extraTab?.page == 'Card' && <CardDetails />}
               {extraTab?.page == 'Success' && <Success />}
             </>
-          )}
+          )} */}
+          <Scheduler />
         </ProcessWrapper>
 
-        <ButtonWrapper>
+        {/* <ButtonWrapper>
           {!extraTab && (
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
           )}
-        </ButtonWrapper>
+        </ButtonWrapper> */}
       </StoreWrapper>
       {
         // anySuccess && <>{lottie}</>
