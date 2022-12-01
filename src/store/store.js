@@ -9,4 +9,8 @@ export const store = configureStore({
     transaction: transaction,
     helper: helper,
   },
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });

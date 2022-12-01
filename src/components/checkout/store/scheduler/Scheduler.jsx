@@ -7,7 +7,11 @@ import 'react-circular-progressbar/dist/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDays } from '../../../../helpers/dates';
 import { Button } from '../../../../shared';
-import { setAnyAction, setAnyTab } from '../../../../store/reducers/helper';
+import {
+  setAnyAction,
+  setAnyTab,
+  setExtraTab,
+} from '../../../../store/reducers/helper';
 import {
   Top,
   EnvelopeCover,
@@ -52,7 +56,6 @@ const Card = ({ width, data }) => {
             strokeWidth={5}
             styles={buildStyles({
               strokeLinecap: 'round',
-
               pathColor: `#1d1d1d`,
               trailColor: 'white',
             })}
@@ -85,7 +88,8 @@ function Scheduler() {
   const [scheduleSelected, setScheduleSelected] = useState('PayIn4'); //"PayIn4", "PayIn3"
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
   const activeTab = useSelector((state) => state.helper.anyTab);
-
+  const anyAction = useSelector((state) => state.helper.anyAction);
+  
   const scheduleIn4 = [
     {
       text: '1',
@@ -113,32 +117,6 @@ function Scheduler() {
     },
   ];
 
-  // const scheduleIn4 = [
-  //   {
-  //     text: '1',
-  //     value: 25,
-  //     amount: '#3,000',
-  //     date: `Due today`,
-  //   },
-  //   {
-  //     text: '2',
-  //     value: 50,
-  //     amount: '#3,000',
-  //     date: `Due Oct 11`,
-  //   },
-  //   {
-  //     text: '3',
-  //     value: 75,
-  //     amount: '#3,000',
-  //     date: `Due Oct 25`,
-  //   },
-  //   {
-  //     text: '4',
-  //     value: 100,
-  //     amount: '#3,000',
-  //     date: `Due Nov 8`,
-  //   },
-  // ];
   const scheduleIn3 = [
     {
       text: '1',
@@ -160,48 +138,33 @@ function Scheduler() {
     },
   ];
 
-  // const scheduleIn3 = [
-  //   {
-  //     text: '1',
-  //     value: 33,
-  //     amount: '#4,000',
-  //     date: `Due today`,
-  //   },
-  //   {
-  //     text: '2',
-  //     value: 66,
-  //     amount: '#4,000',
-  //     date: `Due Oct 11`,
-  //   },
-  //   {
-  //     text: '3',
-  //     value: 100,
-  //     amount: '#4,000',
-  //     date: `Due Dec 11`,
-  //   },
-  // ];
-
-  async function CtrlSchedule() {
-    dispatch(
-      setAnyTab({
-        page: 'Confirmer',
-        params: {
-          scheduleSelected,
-          schedule: scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
-        },
-      }),
-    );
-  }
-
-  useEffect(() => {
-    if (activeTab == 'Scheduler') {
+  async function CtrlScheduler() {
+    if (preferredCard) {
       dispatch(
-        setAnyAction({
-          action: CtrlSchedule,
+        setAnyTab({
+          page: 'Confirmer',
+          params: {
+            scheduleSelected,
+            schedule: scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
+          },
+        }),
+      );
+    } else {
+      dispatch(
+        setExtraTab({
+          page: 'CardDetails',
         }),
       );
     }
-  });
+  }
+
+  useEffect(() => {
+    if (activeTab?.page == 'Scheduler') {
+      if (anyAction) {
+        CtrlScheduler();
+      }
+    }
+  },[]);
 
   return (
     <ProcessContent>
@@ -213,16 +176,6 @@ function Scheduler() {
           </ItemPod>
 
           <Icon className="ri-arrow-down-s-line" />
-          {/* 
-          //TODO - Payment dates UI
-          //Pay 4 times - Map through scheduleIn4
-          //Pay 3 times - Map through scheduleIn3 
-          //TDOD - If orderDetails.paymentMethods.includes('PayIn3') then show Pay 3 times schedule, else hide it.
-          */}
-
-          {/* 
-            Continue Button - onClick, If preferredCard show ConfirmOrder1 else show Enter card details
-           */}
         </Top>
         <Wrapper>
           <Row>
@@ -240,19 +193,21 @@ function Scheduler() {
               <ChoiceText>Pay 4 times</ChoiceText>
             </Choice>
 
-            <Choice
-              scheduleSelected={scheduleSelected}
-              onClick={() => setScheduleSelected('PayIn3')}
-            >
-              <ChoiceIcon
-                className={
-                  scheduleSelected === 'PayIn3'
-                    ? `ri-checkbox-circle-fill`
-                    : `ri-checkbox-blank-circle-line`
-                }
-              />
-              <ChoiceText>Pay 3 times</ChoiceText>
-            </Choice>
+            {orderDetails?.paymentMethods.includes('PayIn3') && (
+              <Choice
+                scheduleSelected={scheduleSelected}
+                onClick={() => setScheduleSelected('PayIn3')}
+              >
+                <ChoiceIcon
+                  className={
+                    scheduleSelected === 'PayIn3'
+                      ? `ri-checkbox-circle-fill`
+                      : `ri-checkbox-blank-circle-line`
+                  }
+                />
+                <ChoiceText>Pay 3 times</ChoiceText>
+              </Choice>
+            )}
           </Row>
 
           {scheduleSelected === 'PayIn4' && (
@@ -270,31 +225,9 @@ function Scheduler() {
             </RowWrap>
           )}
         </Wrapper>
-        <ButtonWrapper>
-          {/* <Button
-            disabled={!scheduleSelected}
-            onClick={() =>
-              dispatch(
-                setAnyTab({
-                  page: 'Confirmer',
-                  params: {
-                    scheduleSelected,
-                    schedule:
-                      scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
-                  },
-                }),
-              )
-            }
-            width={`100%`}
-          >
-            Confirm
-          </Button> */}
-        </ButtonWrapper>
       </EnvelopeCover>
     </ProcessContent>
   );
 }
 
 export default Scheduler;
-
-//      dispatch(setAnyTab({ page: 'Scheduler', params: '' }));
