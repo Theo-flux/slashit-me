@@ -677,6 +677,7 @@ export const FetchCards = async (showFew, isVirtualCard) => {
     auth = JSON.parse(auth);
     token = auth.token;
   }
+  console.log(token, 'token');
 
   await fetch(API_ENDPOINT, {
     method: 'POST',

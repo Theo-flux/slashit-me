@@ -55,7 +55,11 @@ import {
   setCards,
   setPreferredCard,
 } from '../../../../store/reducers/transaction';
-import { setAnyAction, setAnyTab } from '../../../../store/reducers/helper';
+import {
+  setAnyAction,
+  setAnyTab,
+  setExtraTab,
+} from '../../../../store/reducers/helper';
 
 // const orderedItems = [
 //   {
@@ -113,11 +117,14 @@ function Orderer({}) {
 
   const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.helper.anyTab);
+  const anyAction = useSelector((state) => state.helper.anyAction);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [isMailValidated, setIsMailValidated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pass, setPass] = useState('');
+  const [showDetails, setShowDetails] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const cards = useSelector((state) => state.transaction.cards);
   const [error, setError] = useState({});
@@ -141,35 +148,37 @@ function Orderer({}) {
 
   function handleEmailContinue() {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
     if (!orderer.email) {
       setError({ ...error, email: 'Email is empty!' });
+      return;
     } else if (!orderer.email.match(mailformat)) {
       setError({ ...error, email: 'Invalid Email!' });
-    } else {
-      setError({});
+      return;
     }
-
-    if (error?.email) {
-      //You can do anything here
-    } else {
-      validateShopper();
-    }
+    validateShopper();
   }
 
   function handlePasswordSubmit() {
     let errors = {};
-
-    if (!form.password) {
-      errors.password = 'Enter password!';
-    } else {
-      errors = {};
-    }
-
-    if (errors.password) {
-      setError(errors);
+    if (!orderer.password) {
+      setError({ ...errors, password: 'Enter password!' });
     } else {
       login();
+    }
+  }
+
+  function topPress() {
+    if (activeTab?.page == 'Orderer') {
+      dispatch(setAnyTab());
+      setShowDetails(false);
+      setShowSummary(false);
+    } else {
+      dispatch(
+        setAnyTab({
+          page: 'Orderer',
+        }),
+      );
+      setShowDetails(true);
     }
   }
 
@@ -182,6 +191,7 @@ function Orderer({}) {
       platform: 'web',
       deviceId: `${computerInfo.platform} ${computerInfo.os}`,
       ipAddress: computerInfo.ip,
+      isBusiness: false,
     };
 
     let sendReq = await Login(userInfo);
@@ -191,7 +201,8 @@ function Orderer({}) {
       );
       dispatch(setIsLoggedIn(true));
       dispatch(setUser(sendReq.user));
-      let cardReq = await FetchCards((showFew = true));
+      let showFew = true;
+      let cardReq = await FetchCards(showFew);
       if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
         dispatch(setCards(cardReq.result));
         dispatch(
@@ -206,6 +217,8 @@ function Orderer({}) {
     return;
   }
 
+  console.log(orderer.email, 'email', isMailValidated, activeTab);
+
   async function validateShopper() {
     setLoading(true);
 
@@ -213,7 +226,7 @@ function Orderer({}) {
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
         setPass(statusCode.COMPLETE_REGISTRATION);
-        dispatch(setAnyTab({ page: 'VerifyEmail', params: {} }));
+        dispatch(setExtraTab({ page: 'VerifyEmail', params: {} }));
       } else if (sendReq.code == statusCode.OK) {
         dispatch(setEmail(orderer.email)); //Store user email in global state
         setPass(statusCode.OK);
@@ -228,18 +241,19 @@ function Orderer({}) {
   }
 
   async function CtrlOrder() {
+    setShowDetails(true); //Open User Details Form
     isMailValidated ? handlePasswordSubmit() : handleEmailContinue();
   }
 
   useEffect(() => {
-    if (activeTab == 'Orderer') {
-      dispatch(
-        setAnyAction({
-          action: CtrlOrder,
-        }),
-      );
+    if (activeTab?.page == 'Orderer') {
+      if (anyAction) {
+        CtrlOrder();
+      }
     }
-  });
+  }, [anyAction, isMailValidated]);
+
+  console.log(activeTab, orderer);
 
   return (
     <ProcessContent>
@@ -251,10 +265,11 @@ function Orderer({}) {
           </ItemPod>
 
           <Icon
+            onClick={() => topPress()}
             className={
               activeTab?.page == 'Orderer'
-                ? 'ri-arrow-down-s-line'
-                : 'ri-arrow-up-s-line'
+                ? 'ri-arrow-up-s-line'
+                : 'ri-arrow-down-s-line'
             }
           />
         </Top>
@@ -262,16 +277,15 @@ function Orderer({}) {
         <OrderContent>
           <OrderDetails>
             <Row>
-              <Text>Your details</Text>{' '}
+              <Text>Your details</Text>
               <Icon
+                onClick={() => setShowDetails(!showDetails)}
                 className={
-                  activeTab?.page == 'Orderer'
-                    ? 'ri-arrow-down-s-line'
-                    : 'ri-arrow-up-s-line'
+                  showDetails ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                 }
               />
             </Row>
-            {activeTab?.page == 'Orderer' && (
+            {showDetails && (
               <Details>
                 {!isLoggedIn ? (
                   <>
@@ -328,14 +342,13 @@ function Orderer({}) {
             <Row>
               <Text>Order Summary</Text>
               <Icon
+                onClick={() => setShowSummary(!showSummary)}
                 className={
-                  activeTab?.page == 'Orderer'
-                    ? 'ri-arrow-down-s-line'
-                    : 'ri-arrow-up-s-line'
+                  showSummary ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                 }
               />
             </Row>
-            {activeTab?.page == 'Orderer' && (
+            {showSummary && (
               <Orders>
                 <OrderItems>
                   {orderDetails?.isCreatedFromAPI ? (
