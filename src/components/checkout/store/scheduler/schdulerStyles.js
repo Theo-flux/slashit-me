@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Text } from '../storeStyle';
+import { device } from '../../../../utils';
 
 export const Wrapper = styled.div`
   padding: 1rem;
@@ -9,8 +10,12 @@ export const CardContainer = styled.div`
   border: 1px solid #d9d9d950;
   border-radius: 0.375rem;
   padding: 1rem;
-  ${(props) => props.width && `width: ${props.width};`}
+  width: 47%;
   margin-bottom: 1rem;
+
+  @media ${device.md} {
+    ${(props) => props.width && `width: ${props.width};`}
+  }
 `;
 
 export const Row = styled.div`

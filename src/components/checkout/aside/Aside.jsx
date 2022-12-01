@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import {
   AsideContainer,
   AsideWrapper,
@@ -15,28 +16,33 @@ const sideItems = [
     id: '1',
     icon: 'ri-shopping-bag-2-line',
     text: 'Your order',
+    tab: 'Orderer',
   },
   {
     id: '2',
     icon: 'ri-time-line',
     text: 'Schedule',
+    tab: 'Scheduler',
   },
 
   {
     id: '3',
     icon: 'ri-checkbox-circle-line',
     text: 'Confirm order',
+    tab: 'Confirmer',
   },
 ];
 
 function Aside() {
+  const activeTab = useSelector((state) => state.helper.anyTab);
+
   return (
     <AsideContainer>
       <AsideWrapper>
         {sideItems.map((item, index) => {
-          const { text, icon } = item;
+          const { text, icon, tab } = item;
           return (
-            <ItemPod key={index}>
+            <ItemPod activeTab={activeTab?.page} tab={tab} key={index}>
               <Icon className={`${icon}`} />
               <ItemText>{text}</ItemText>
             </ItemPod>
