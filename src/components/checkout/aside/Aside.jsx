@@ -1,12 +1,8 @@
-<<<<<<< HEAD
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAnyTab } from '../../../store/reducers/helper';
 import { device } from '../../../utils';
 import { useWindowSize } from '../../../utils/window';
-=======
-import { useSelector, useDispatch } from 'react-redux';
->>>>>>> main
 import {
   AsideContainer,
   AsideWrapper,
@@ -18,7 +14,6 @@ import {
   SmallText,
   Terms,
 } from './asideStyles';
-import { setAnyTab } from '../../../store/reducers/helper';
 
 const sideItems = [
   {
@@ -46,7 +41,6 @@ function Aside() {
   const [width, height] = useWindowSize();
   const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.helper.anyTab);
-<<<<<<< HEAD
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const inputEmail = useSelector((state) => state.userAuth.email);
 
@@ -80,9 +74,6 @@ function Aside() {
       }
     }
   }
-=======
-  const dispatch = useDispatch();
->>>>>>> main
 
   return (
     <AsideContainer>
@@ -91,13 +82,7 @@ function Aside() {
           const { text, icon, tab } = item;
           return (
             <ItemPod
-<<<<<<< HEAD
               onClick={() => CtrlAside(tab)}
-=======
-              onClick={() => {
-                dispatch(setAnyTab({ page: tab }));
-              }}
->>>>>>> main
               activeTab={activeTab?.page}
               tab={tab}
               key={index}

@@ -274,33 +274,19 @@ function Orderer({}) {
           />
         </Top>
 
-<<<<<<< HEAD
-        {activeTab?.page == 'Orderer' && (
-          <OrderContent>
-            <OrderDetails>
-              <Row>
-                <Text>Your details</Text>
-                <Icon
-                  onClick={() => setShowDetails(!showDetails)}
-=======
         {activeTab?.page === 'Orderer' && (
           <OrderContent>
             <OrderDetails>
               <Row onClick={() => setShowDetails(!showDetails)}>
                 <Text>Your details</Text>
                 <Icon
->>>>>>> main
                   className={
                     showDetails ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                   }
                 />
               </Row>
-<<<<<<< HEAD
-              {showDetails && (
-=======
 
               {showDetails || (
->>>>>>> main
                 <Details>
                   {!isLoggedIn ? (
                     <>
@@ -347,40 +333,25 @@ function Orderer({}) {
                       )}
                     </>
                   ) : (
-<<<<<<< HEAD
                     <>
                       {/*TODO-Show "Your Order 6 (logged in user with user?.avatar ) or 7 UI - logged in user without avatar"*/}{' '}
                     </>
-=======
-                    <>{/*TODO-Show "Your Order 6 or 7 UI"*/} </>
->>>>>>> main
                   )}
                 </Details>
               )}
             </OrderDetails>
 
             <OrderSummary>
-<<<<<<< HEAD
-              <Row>
-                <Text>Order Summary</Text>
-                <Icon
-                  onClick={() => setShowSummary(!showSummary)}
-=======
               <Row onClick={() => setShowSummary(!showSummary)}>
                 <Text>Order Summary</Text>
                 <Icon
->>>>>>> main
                   className={
                     showSummary ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                   }
                 />
               </Row>
-<<<<<<< HEAD
-              {showSummary && (
-=======
 
               {showSummary || (
->>>>>>> main
                 <Orders>
                   <OrderItems>
                     {orderDetails?.isCreatedFromAPI ? (
@@ -441,8 +412,6 @@ function Orderer({}) {
             </OrderSummary>
           </OrderContent>
         )}
-<<<<<<< HEAD
-=======
         <ButtonWrapper>
           {/* {openOrder || (
             <Button
@@ -468,7 +437,6 @@ function Orderer({}) {
           </Button> */}
           {/* )} */}
         </ButtonWrapper>
->>>>>>> main
       </EnvelopeCover>
     </ProcessContent>
   );

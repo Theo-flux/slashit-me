@@ -117,15 +117,11 @@ function Store() {
           page: 'Orderer',
         }),
       );
-<<<<<<< HEAD
       dispatch(setAnyAction(true));
       setTimeout(() => {
         dispatch(setAnyAction(false));
       }, 50);
       return;
-=======
-      // return;
->>>>>>> main
     }
 
     //Navigate to Scheduler if activeTab.page is Orderer

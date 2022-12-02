@@ -177,11 +177,8 @@ function Scheduler() {
       }
     }
   }, []);
-<<<<<<< HEAD
 
   console.log(activeTab, 'scheduler');
-=======
->>>>>>> main
 
   return (
     <ProcessContent>
@@ -201,12 +198,8 @@ function Scheduler() {
             }
           />
         </Top>
-<<<<<<< HEAD
 
         {activeTab?.page == 'Scheduler' && (
-=======
-        {activeTab?.page === 'Scheduler' && (
->>>>>>> main
           <Wrapper>
             <Row>
               <Choice
