@@ -16,6 +16,8 @@ export const AsideContainer = styled.aside`
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    right: 0px;
   }
 `;
 

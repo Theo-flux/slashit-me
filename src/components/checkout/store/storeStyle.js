@@ -9,6 +9,7 @@ export const StoreContainer = styled.aside`
   justify-content: start;
   align-items: center;
   padding-top: 3rem;
+  /* border: 1px solid magenta; */
 
   @media ${device.lg} {
     width: 60%;
@@ -22,8 +23,8 @@ export const StoreWrapper = styled.div`
   border: 1px solid #d9d9d950;
   border-radius: 0.375rem;
   padding: 1rem;
-  height: 90vh;
-  overflow: scroll;
+  /* height: 90vh;
+  overflow: scroll; */
 `;
 
 export const ProfileContainer = styled.div`

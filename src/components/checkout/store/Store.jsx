@@ -109,7 +109,7 @@ function Store() {
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
 
-  async function CtrlStore() {
+  function CtrlStore() {
     //If not activeTab
     if (!activeTab) {
       dispatch(
@@ -117,11 +117,15 @@ function Store() {
           page: 'Orderer',
         }),
       );
+<<<<<<< HEAD
       dispatch(setAnyAction(true));
       setTimeout(() => {
         dispatch(setAnyAction(false));
       }, 50);
       return;
+=======
+      // return;
+>>>>>>> main
     }
 
     //Navigate to Scheduler if activeTab.page is Orderer
@@ -132,13 +136,13 @@ function Store() {
             page: 'Scheduler',
           }),
         );
-        return;
+        // return;
       } else {
         dispatch(setAnyAction(true));
         setTimeout(() => {
           dispatch(setAnyAction(false));
         }, 50);
-        return;
+        // return;
       }
     }
     //Navigate to Confimer if activeTab.page is Scheduler
@@ -148,11 +152,19 @@ function Store() {
           page: 'Confirmer',
         }),
       );
-      return;
+      // return;
     }
   }
 
-  console.log(activeTab);
+  useEffect(() => {
+    dispatch(
+      setAnyTab({
+        page: 'Orderer',
+      }),
+    );
+  }, []);
+
+  console.log('activeTab', activeTab);
 
   return (
     <StoreContainer>
@@ -190,11 +202,12 @@ function Store() {
               {extraTab?.page == 'Success' && <Success />}
             </>
           )}
+          {/* <Confirmer /> */}
         </ProcessWrapper>
 
         <ButtonWrapper>
-          {!extraTab && (
-            <Button onClick={CtrlStore} width={`100%`}>
+          {activeTab?.page === 'Orderer' && (
+            <Button onClick={() => CtrlStore()} width={`100%`}>
               Confirm
             </Button>
           )}
