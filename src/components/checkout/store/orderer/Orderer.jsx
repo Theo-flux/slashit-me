@@ -274,140 +274,142 @@ function Orderer({}) {
           />
         </Top>
 
-        <OrderContent>
-          <OrderDetails>
-            <Row>
-              <Text>Your details</Text>
-              <Icon
-                onClick={() => setShowDetails(!showDetails)}
-                className={
-                  showDetails ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
-                }
-              />
-            </Row>
-            {showDetails && (
-              <Details>
-                {!isLoggedIn ? (
-                  <>
-                    {!isMailValidated && !pass && (
-                      <>
-                        <InputContainer
-                          id={'orderer-email'}
-                          type={'email'}
-                          name={'email'}
-                          legend={'Enter email address'}
-                          onChange={(e) => handleOrdererOnchange(e)}
-                          error={error?.email}
-                        />
-                        <InfoBox>
-                          <Icon className="fa-solid fa-circle-info"></Icon>
-                          <InfoText>
-                            Use your Slashit email address if you have a Slashit
-                            account
-                          </InfoText>
-                        </InfoBox>
-                      </>
-                    )}
+        {activeTab?.page === 'Orderer' && (
+          <OrderContent>
+            <OrderDetails>
+              <Row onClick={() => setShowDetails(!showDetails)}>
+                <Text>Your details</Text>
+                <Icon
+                  className={
+                    showDetails ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                  }
+                />
+              </Row>
 
-                    {isMailValidated && pass == statusCode.OK && (
-                      <>
-                        <InputContainer
-                          id={'orderer-password'}
-                          type={'text'}
-                          name={'password'}
-                          legend={'Enter your password'}
-                          onChange={(e) => handleOrdererOnchange(e)}
-                          error={error?.password}
-                        />
-                        <InfoBox>
-                          <Icon className="fa-solid fa-circle-info"></Icon>
-                          <InfoText>{orderer?.email}</InfoText>
-                          {/* {"TODO - Not you button - onClick resetOrderer"} */}
-                        </InfoBox>
-                      </>
-                    )}
-
-                    {isMailValidated && pass == statusCode.NOT_FOUND && (
-                      <>{/* {"TODO -  "Your Order 8 UI" } */}</>
-                    )}
-                  </>
-                ) : (
-                  <>{/*TODO-Show "Your Order 6 or 7 UI"*/} </>
-                )}
-              </Details>
-            )}
-          </OrderDetails>
-
-          <OrderSummary>
-            <Row>
-              <Text>Order Summary</Text>
-              <Icon
-                onClick={() => setShowSummary(!showSummary)}
-                className={
-                  showSummary ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
-                }
-              />
-            </Row>
-            {showSummary && (
-              <Orders>
-                <OrderItems>
-                  {orderDetails?.isCreatedFromAPI ? (
-                    orderDetails?.products.map((orderedItem, index) => {
-                      const { title, quantity, price, _id, currrency } =
-                        orderedItem;
-                      return (
-                        <OrderedItem key={_id}>
-                          <ItemName>{title}</ItemName>
-                          <ItemQty>{quantity}</ItemQty>
-                          <ItemPrice>
-                            {getSymbolFromCurrency(currrency)}
-                            {AmountSeparator(price)}
-                          </ItemPrice>
-                        </OrderedItem>
-                      );
-                    })
-                  ) : (
-                    <OrderedItem>
-                      <TextAreaContainer
-                        legend={'Note'}
-                        placeholder={orderDetails?.note || ''}
-                        rows={3}
-                        disabled
-                      />
-                    </OrderedItem>
-                  )}
-                </OrderItems>
-
-                <SubTotalContainer>
-                  <SubTotal>
-                    <SubtotalText>Subtotal</SubtotalText>
-                    <SubtotalPrice>
-                      {getSymbolFromCurrency(orderDetails?.currency)}
-                      {AmountSeparator(
-                        orderDetails?.amount - orderDetails?.shippingCost,
+              {showDetails || (
+                <Details>
+                  {!isLoggedIn ? (
+                    <>
+                      {!isMailValidated && !pass && (
+                        <>
+                          <InputContainer
+                            id={'orderer-email'}
+                            type={'email'}
+                            name={'email'}
+                            legend={'Enter email address'}
+                            onChange={(e) => handleOrdererOnchange(e)}
+                            error={error?.email}
+                          />
+                          <InfoBox>
+                            <Icon className="fa-solid fa-circle-info"></Icon>
+                            <InfoText>
+                              Use your Slashit email address if you have a
+                              Slashit account
+                            </InfoText>
+                          </InfoBox>
+                        </>
                       )}
-                    </SubtotalPrice>
-                  </SubTotal>
-                  <Shipping>
-                    <ShippingText>Shipping</ShippingText>
-                    <ShippingPrice>
-                      {getSymbolFromCurrency(orderDetails?.currency)}
-                      {AmountSeparator(orderDetails?.shippingCost)}
-                    </ShippingPrice>
-                  </Shipping>
-                </SubTotalContainer>
 
-                <Total>
-                  <TotalText>Total</TotalText>
-                  <TotalPrice>
-                    {getSymbolFromCurrency(orderDetails?.currency)}
-                    {AmountSeparator(orderDetails?.amount)}
-                  </TotalPrice>
-                </Total>
-              </Orders>
-            )}
-          </OrderSummary>
-        </OrderContent>
+                      {isMailValidated && pass == statusCode.OK && (
+                        <>
+                          <InputContainer
+                            id={'orderer-password'}
+                            type={'text'}
+                            name={'password'}
+                            legend={'Enter your password'}
+                            onChange={(e) => handleOrdererOnchange(e)}
+                            error={error?.password}
+                          />
+                          <InfoBox>
+                            <Icon className="fa-solid fa-circle-info"></Icon>
+                            <InfoText>{orderer?.email}</InfoText>
+                            {/* {"TODO - Not you button - onClick resetOrderer"} */}
+                          </InfoBox>
+                        </>
+                      )}
+
+                      {isMailValidated && pass == statusCode.NOT_FOUND && (
+                        <>{/* {"TODO -  "Your Order 8 UI" } */}</>
+                      )}
+                    </>
+                  ) : (
+                    <>{/*TODO-Show "Your Order 6 or 7 UI"*/} </>
+                  )}
+                </Details>
+              )}
+            </OrderDetails>
+
+            <OrderSummary>
+              <Row onClick={() => setShowSummary(!showSummary)}>
+                <Text>Order Summary</Text>
+                <Icon
+                  className={
+                    showSummary ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                  }
+                />
+              </Row>
+
+              {showSummary || (
+                <Orders>
+                  <OrderItems>
+                    {orderDetails?.isCreatedFromAPI ? (
+                      orderDetails?.products.map((orderedItem, index) => {
+                        const { title, quantity, price, _id, currrency } =
+                          orderedItem;
+                        return (
+                          <OrderedItem key={_id}>
+                            <ItemName>{title}</ItemName>
+                            <ItemQty>{quantity}</ItemQty>
+                            <ItemPrice>
+                              {getSymbolFromCurrency(currrency)}
+                              {AmountSeparator(price)}
+                            </ItemPrice>
+                          </OrderedItem>
+                        );
+                      })
+                    ) : (
+                      <OrderedItem>
+                        <TextAreaContainer
+                          legend={'Note'}
+                          placeholder={orderDetails?.note || ''}
+                          rows={3}
+                          disabled
+                        />
+                      </OrderedItem>
+                    )}
+                  </OrderItems>
+
+                  <SubTotalContainer>
+                    <SubTotal>
+                      <SubtotalText>Subtotal</SubtotalText>
+                      <SubtotalPrice>
+                        {getSymbolFromCurrency(orderDetails?.currency)}
+                        {AmountSeparator(
+                          orderDetails?.amount - orderDetails?.shippingCost,
+                        )}
+                      </SubtotalPrice>
+                    </SubTotal>
+                    <Shipping>
+                      <ShippingText>Shipping</ShippingText>
+                      <ShippingPrice>
+                        {getSymbolFromCurrency(orderDetails?.currency)}
+                        {AmountSeparator(orderDetails?.shippingCost)}
+                      </ShippingPrice>
+                    </Shipping>
+                  </SubTotalContainer>
+
+                  <Total>
+                    <TotalText>Total</TotalText>
+                    <TotalPrice>
+                      {getSymbolFromCurrency(orderDetails?.currency)}
+                      {AmountSeparator(orderDetails?.amount)}
+                    </TotalPrice>
+                  </Total>
+                </Orders>
+              )}
+            </OrderSummary>
+          </OrderContent>
+        )}
         <ButtonWrapper>
           {/* {openOrder || (
             <Button
