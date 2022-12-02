@@ -138,6 +138,18 @@ function Scheduler() {
     },
   ];
 
+  function topPress() {
+    if (activeTab?.page == 'Scheduler') {
+      dispatch(setAnyTab());
+    } else {
+      dispatch(
+        setAnyTab({
+          page: 'Scheduler',
+        }),
+      );
+    }
+  }
+
   async function CtrlScheduler() {
     if (preferredCard) {
       dispatch(
@@ -166,6 +178,8 @@ function Scheduler() {
     }
   }, []);
 
+  console.log(activeTab, 'scheduler');
+
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -175,9 +189,17 @@ function Scheduler() {
             <ItemText>Schedule</ItemText>
           </ItemPod>
 
-          <Icon className="ri-arrow-down-s-line" />
+          <Icon
+            onClick={() => topPress()}
+            className={
+              activeTab?.page == 'Scheduler'
+                ? 'ri-arrow-up-s-line'
+                : 'ri-arrow-down-s-line'
+            }
+          />
         </Top>
-        {activeTab?.page === 'Scheduler' && (
+
+        {activeTab?.page == 'Scheduler' && (
           <Wrapper>
             <Row>
               <Choice

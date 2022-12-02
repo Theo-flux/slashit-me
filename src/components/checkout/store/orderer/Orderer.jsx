@@ -333,7 +333,9 @@ function Orderer({}) {
                       )}
                     </>
                   ) : (
-                    <>{/*TODO-Show "Your Order 6 or 7 UI"*/} </>
+                    <>
+                      {/*TODO-Show "Your Order 6 (logged in user with user?.avatar ) or 7 UI - logged in user without avatar"*/}{' '}
+                    </>
                   )}
                 </Details>
               )}
@@ -441,5 +443,3 @@ function Orderer({}) {
 }
 
 export default Orderer;
-
-//TODO - If ismailvalidated &  pass is NOT_FOUND, don't show password field instead show only the orderer.email "Your Order 8"

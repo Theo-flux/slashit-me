@@ -48,6 +48,8 @@ import {
   CoptyBtn,
   DeliveryContent,
 } from './confirmerStyles';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import { AmountSeparator } from '../../../../helpers/numberValidation';
 
 const deliveryInfo = [
   {
@@ -123,8 +125,21 @@ function Confirmer(props) {
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState(preferredCard);
   const activeTab = useSelector((state) => state.helper.anyTab);
-
+  const anyAction = useSelector((state) => state.helper.anyAction);
   const [showCardList, setShowCardList] = useState(false);
+
+  function topPress() {
+    if (!isLoggedIn) return;
+    if (activeTab?.page == 'Confirmer') {
+      dispatch(setAnyTab());
+    } else {
+      dispatch(
+        setAnyTab({
+          page: 'Confirmer',
+        }),
+      );
+    }
+  }
 
   //async functions
   async function getAccountNumber() {
@@ -216,13 +231,11 @@ function Confirmer(props) {
 
   useEffect(() => {
     if (activeTab == 'Confirmer') {
-      dispatch(
-        setAnyAction({
-          action: CtrlConfirmer,
-        }),
-      );
+      if (anyAction) {
+        CtrlConfirmer();
+      }
     }
-  });
+  }, []);
 
   return (
     <ProcessContent>
@@ -233,7 +246,14 @@ function Confirmer(props) {
             <ItemText>Confirm Order</ItemText>
           </ItemPod>
 
-          <Icon className="ri-arrow-down-s-line" />
+          <Icon
+            onClick={() => topPress()}
+            className={
+              activeTab?.page == 'Confirmer'
+                ? 'ri-arrow-up-s-line'
+                : 'ri-arrow-down-s-line'
+            }
+          />
 
           {/* 
           //TODOS
@@ -244,12 +264,17 @@ function Confirmer(props) {
 
           */}
         </Top>
-        {activeTab?.page === 'Confirmer' && (
+        {activeTab?.page == 'Confirmer' && (
           <Wrapper>
             <ContentBox>
               <InnerContent>
                 <StyledTitle>What you will pay</StyledTitle>
-                <AmountContainer>NGN 3,000</AmountContainer>
+                <AmountContainer>
+                  {getSymbolFromCurrency(orderDetails?.currency || 'NGN')}
+                  {activeTab && activeTab.scheduleSelected
+                    ? activeTab?.scheduleSelected[0].amount
+                    : 0}
+                </AmountContainer>
               </InnerContent>
             </ContentBox>
 
@@ -259,11 +284,10 @@ function Confirmer(props) {
 
                 <PaymentMethodContainer>
                   <PaymentMethodInner>
-                    <PaymentMethod
-                      onClick={() => setSelectedOrderMethod('Card')}
-                    >
+                    <PaymentMethod>
                       <Row>
                         <PaymentIcon
+                          onClick={() => setSelectedOrderMethod('Card')}
                           className={`${
                             selectedOrderMethod === 'Card'
                               ? 'ri-checkbox-circle-fill'
@@ -272,12 +296,19 @@ function Confirmer(props) {
                         />
                         <Row>
                           <Image
-                            src={'/images/mastercard logo.svg'}
+                            src={
+                              preferredCard?.cardLogo ||
+                              '/images/mastercard logo.svg' //TODO - Replace the mastercard logo on this line with any transparent image to prevent type errors
+                            }
                             height={40}
                             width={40}
-                            alt="card_issuer"
+                            alt="card_brand"
                           />
-                          <PayTitle> •••• 1050 12/2025</PayTitle>
+                          <PayTitle>
+                            {'  '}
+                            •••• {preferredCard?.last_4digits}{' '}
+                            {preferredCard?.expiry}
+                          </PayTitle>
                         </Row>
                       </Row>
                       {showCardList || (
@@ -291,21 +322,29 @@ function Confirmer(props) {
 
                     {showCardList && (
                       <Bottom>
-                        <Card onClick={() => setShowCardList(!showCardList)} />
-                        <Card />
-                        <Card />
-                        <Card />
-                        <Card />
+                        {cards &&
+                          cards.length > 0 &&
+                          cards.map((item) => {
+                            <Card
+                              key={item._id}
+                              onClick={() => {
+                                setSelectedCard(item);
+                                setShowCardList(!showCardList);
+                              }}
+                            />;
+                          })}
                       </Bottom>
                     )}
                   </PaymentMethodInner>
 
                   <PaymentMethodInner>
-                    <PaymentMethod
-                      onClick={() => setSelectedOrderMethod('Balance')}
-                    >
+                    <PaymentMethod>
                       <Row>
                         <PaymentIcon
+                          onClick={() => {
+                            getAccountNumber();
+                            setSelectedOrderMethod('Balance');
+                          }}
                           className={`${
                             selectedOrderMethod == 'Balance'
                               ? 'ri-checkbox-circle-fill'
@@ -314,37 +353,14 @@ function Confirmer(props) {
                         />
                         <Column>
                           <PayTitle>Spending balance</PayTitle>
-                          <ExtraText>NGN 120,000.00</ExtraText>
+                          <ExtraText>
+                            {getSymbolFromCurrency(user?.currencyShortCode)}
+                            {AmountSeparator(user?.shopper?.availableBalance)}
+                          </ExtraText>
                         </Column>
                       </Row>
                       <NewTag>New</NewTag>
                     </PaymentMethod>
-
-                    {selectedOrderMethod === 'Balance' && (
-                      <Slip>
-                        <SlipInner>
-                          <StyledTitle>
-                            You can fund your Spending balance instantly and pay
-                            from it
-                          </StyledTitle>
-                        </SlipInner>
-
-                        <SlipInner>
-                          <DetailsRow>
-                            <AccountDetails ref={acctEl}>
-                              Sterling Bank, 123456789 John Micheal
-                            </AccountDetails>
-                          </DetailsRow>
-                          <CoptyBtn ref={copyBtn} onClick={() => copyNum()}>
-                            Copy
-                          </CoptyBtn>
-                        </SlipInner>
-
-                        <SlipInner>
-                          <Button width={`100%`}>Confirm</Button>
-                        </SlipInner>
-                      </Slip>
-                    )}
                   </PaymentMethodInner>
                 </PaymentMethodContainer>
               </InnerContent>
