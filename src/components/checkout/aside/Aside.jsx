@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   AsideContainer,
   AsideWrapper,
@@ -10,6 +10,7 @@ import {
   SmallText,
   Terms,
 } from './asideStyles';
+import { setAnyTab } from '../../../store/reducers/helper';
 
 const sideItems = [
   {
@@ -35,6 +36,7 @@ const sideItems = [
 
 function Aside() {
   const activeTab = useSelector((state) => state.helper.anyTab);
+  const dispatch = useDispatch();
 
   return (
     <AsideContainer>
@@ -42,7 +44,14 @@ function Aside() {
         {sideItems.map((item, index) => {
           const { text, icon, tab } = item;
           return (
-            <ItemPod activeTab={activeTab?.page} tab={tab} key={index}>
+            <ItemPod
+              onClick={() => {
+                dispatch(setAnyTab({ page: tab }));
+              }}
+              activeTab={activeTab?.page}
+              tab={tab}
+              key={index}
+            >
               <Icon className={`${icon}`} />
               <ItemText>{text}</ItemText>
             </ItemPod>

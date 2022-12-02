@@ -89,7 +89,7 @@ function Scheduler() {
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
   const activeTab = useSelector((state) => state.helper.anyTab);
   const anyAction = useSelector((state) => state.helper.anyAction);
-  
+
   const scheduleIn4 = [
     {
       text: '1',
@@ -164,7 +164,7 @@ function Scheduler() {
         CtrlScheduler();
       }
     }
-  },[]);
+  }, []);
 
   return (
     <ProcessContent>
@@ -177,54 +177,56 @@ function Scheduler() {
 
           <Icon className="ri-arrow-down-s-line" />
         </Top>
-        <Wrapper>
-          <Row>
-            <Choice
-              scheduleSelected={scheduleSelected}
-              onClick={() => setScheduleSelected('PayIn4')}
-            >
-              <ChoiceIcon
-                className={
-                  scheduleSelected === 'PayIn4'
-                    ? `ri-checkbox-circle-fill`
-                    : `ri-checkbox-blank-circle-line`
-                }
-              />
-              <ChoiceText>Pay 4 times</ChoiceText>
-            </Choice>
-
-            {orderDetails?.paymentMethods.includes('PayIn3') && (
+        {activeTab?.page === 'Scheduler' && (
+          <Wrapper>
+            <Row>
               <Choice
                 scheduleSelected={scheduleSelected}
-                onClick={() => setScheduleSelected('PayIn3')}
+                onClick={() => setScheduleSelected('PayIn4')}
               >
                 <ChoiceIcon
                   className={
-                    scheduleSelected === 'PayIn3'
+                    scheduleSelected === 'PayIn4'
                       ? `ri-checkbox-circle-fill`
                       : `ri-checkbox-blank-circle-line`
                   }
                 />
-                <ChoiceText>Pay 3 times</ChoiceText>
+                <ChoiceText>Pay 4 times</ChoiceText>
               </Choice>
-            )}
-          </Row>
 
-          {scheduleSelected === 'PayIn4' && (
-            <RowWrap>
-              {scheduleIn4?.map((schedule, index) => {
-                return <Card width={'24%'} key={index} data={schedule} />;
-              })}
-            </RowWrap>
-          )}
-          {scheduleSelected === 'PayIn3' && (
-            <RowWrap>
-              {scheduleIn3?.map((schedule, index) => {
-                return <Card width={'30%'} key={index} data={schedule} />;
-              })}
-            </RowWrap>
-          )}
-        </Wrapper>
+              {orderDetails?.paymentMethods.includes('PayIn3') && (
+                <Choice
+                  scheduleSelected={scheduleSelected}
+                  onClick={() => setScheduleSelected('PayIn3')}
+                >
+                  <ChoiceIcon
+                    className={
+                      scheduleSelected === 'PayIn3'
+                        ? `ri-checkbox-circle-fill`
+                        : `ri-checkbox-blank-circle-line`
+                    }
+                  />
+                  <ChoiceText>Pay 3 times</ChoiceText>
+                </Choice>
+              )}
+            </Row>
+
+            {scheduleSelected === 'PayIn4' && (
+              <RowWrap>
+                {scheduleIn4?.map((schedule, index) => {
+                  return <Card width={'24%'} key={index} data={schedule} />;
+                })}
+              </RowWrap>
+            )}
+            {scheduleSelected === 'PayIn3' && (
+              <RowWrap>
+                {scheduleIn3?.map((schedule, index) => {
+                  return <Card width={'30%'} key={index} data={schedule} />;
+                })}
+              </RowWrap>
+            )}
+          </Wrapper>
+        )}
       </EnvelopeCover>
     </ProcessContent>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import statusCode from '../../../../api/statusCode';
@@ -14,6 +14,7 @@ import {
   setAnySuccess,
   setAnyTab,
 } from '../../../../store/reducers/helper';
+import { Button, InputContainer } from '../../../../shared';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -40,7 +41,55 @@ import {
   ExtraText,
   Bottom,
   BottomRow,
+  Slip,
+  SlipInner,
+  AccountDetails,
+  DetailsRow,
+  CoptyBtn,
+  DeliveryContent,
 } from './confirmerStyles';
+
+const deliveryInfo = [
+  {
+    type: 'text',
+    legend: 'Full Name',
+    placeholder: 'john doe',
+    id: 'full_name',
+    name: 'fullname',
+  },
+
+  {
+    type: 'text',
+    legend: 'Street Address',
+    placeholder: '81, Maculay Str. Alagbaka',
+    id: 'street_address',
+    name: 'streetAddress',
+  },
+
+  {
+    type: 'text',
+    legend: 'Country',
+    placeholder: 'Nigeria',
+    id: 'country',
+    name: 'country',
+  },
+
+  {
+    type: 'text',
+    legend: 'State',
+    placeholder: 'Ondo',
+    id: 'state',
+    name: 'state',
+  },
+
+  {
+    type: 'text',
+    legend: 'Zipcode',
+    placeholder: '380120',
+    id: 'zipcode',
+    name: 'zipcode',
+  },
+];
 
 const Card = ({ onClick }) => {
   return (
@@ -137,6 +186,24 @@ function Confirmer(props) {
     }
   }
 
+  let acctEl = useRef(null);
+  let copyBtn = useRef(null);
+
+  async function copyNum() {
+    // console.log(acctEl.current.textContent);
+
+    try {
+      await navigator.clipboard.writeText(acctEl.current.textContent);
+      copyBtn.current.textContent = 'copied!';
+      // console.log('Content copied to clipboard');
+      setTimeout(() => {
+        copyBtn.current.textContent = 'copy';
+      }, 3000);
+    } catch (err) {
+      // console.error('Failed to copy: ', err);
+    }
+  }
+
   useEffect(() => {
     if (!user.country) {
       fetchUser();
@@ -177,80 +244,144 @@ function Confirmer(props) {
 
           */}
         </Top>
-        <Wrapper>
-          <ContentBox>
-            <InnerContent>
-              <StyledTitle>What you will pay</StyledTitle>
-              <AmountContainer>NGN 3,000</AmountContainer>
-            </InnerContent>
-          </ContentBox>
+        {activeTab?.page === 'Confirmer' && (
+          <Wrapper>
+            <ContentBox>
+              <InnerContent>
+                <StyledTitle>What you will pay</StyledTitle>
+                <AmountContainer>NGN 3,000</AmountContainer>
+              </InnerContent>
+            </ContentBox>
 
-          <ContentBox>
-            <InnerContent>
-              <StyledTitle>How you will pay</StyledTitle>
+            <ContentBox>
+              <InnerContent>
+                <StyledTitle>How you will pay</StyledTitle>
 
-              <PaymentMethodContainer>
-                <PaymentMethodInner>
-                  <PaymentMethod>
-                    <Row>
-                      <PaymentIcon
-                        className={`${
-                          selectedOrderMethod === 'Card'
-                            ? 'ri-checkbox-circle-fill'
-                            : 'ri-checkbox-blank-circle-line'
-                        } `}
-                      />
+                <PaymentMethodContainer>
+                  <PaymentMethodInner>
+                    <PaymentMethod
+                      onClick={() => setSelectedOrderMethod('Card')}
+                    >
                       <Row>
-                        <Image
-                          src={'/images/mastercard logo.svg'}
-                          height={40}
-                          width={40}
-                          alt="card_issuer"
+                        <PaymentIcon
+                          className={`${
+                            selectedOrderMethod === 'Card'
+                              ? 'ri-checkbox-circle-fill'
+                              : 'ri-checkbox-blank-circle-line'
+                          } `}
                         />
-                        <PayTitle> •••• 1050 12/2025</PayTitle>
+                        <Row>
+                          <Image
+                            src={'/images/mastercard logo.svg'}
+                            height={40}
+                            width={40}
+                            alt="card_issuer"
+                          />
+                          <PayTitle> •••• 1050 12/2025</PayTitle>
+                        </Row>
                       </Row>
-                    </Row>
-                    {showCardList || (
-                      <ChangeBtn onClick={() => setShowCardList(!showCardList)}>
-                        Change
-                      </ChangeBtn>
+                      {showCardList || (
+                        <ChangeBtn
+                          onClick={() => setShowCardList(!showCardList)}
+                        >
+                          Change
+                        </ChangeBtn>
+                      )}
+                    </PaymentMethod>
+
+                    {showCardList && (
+                      <Bottom>
+                        <Card onClick={() => setShowCardList(!showCardList)} />
+                        <Card />
+                        <Card />
+                        <Card />
+                        <Card />
+                      </Bottom>
                     )}
-                  </PaymentMethod>
+                  </PaymentMethodInner>
 
-                  {showCardList && (
-                    <Bottom>
-                      <Card onClick={() => setShowCardList(!showCardList)} />
-                      <Card />
-                      <Card />
-                      <Card />
-                      <Card />
-                    </Bottom>
-                  )}
-                </PaymentMethodInner>
+                  <PaymentMethodInner>
+                    <PaymentMethod
+                      onClick={() => setSelectedOrderMethod('Balance')}
+                    >
+                      <Row>
+                        <PaymentIcon
+                          className={`${
+                            selectedOrderMethod == 'Balance'
+                              ? 'ri-checkbox-circle-fill'
+                              : 'ri-checkbox-blank-circle-line'
+                          } `}
+                        />
+                        <Column>
+                          <PayTitle>Spending balance</PayTitle>
+                          <ExtraText>NGN 120,000.00</ExtraText>
+                        </Column>
+                      </Row>
+                      <NewTag>New</NewTag>
+                    </PaymentMethod>
 
-                <PaymentMethodInner>
-                  <PaymentMethod>
-                    <Row>
-                      <PaymentIcon
-                        className={`${
-                          selectedOrderMethod !== 'Card'
-                            ? 'ri-checkbox-circle-fill'
-                            : 'ri-checkbox-blank-circle-line'
-                        } `}
-                      />
-                      <Column>
-                        <PayTitle>Spending balance</PayTitle>
-                        <ExtraText>NGN 120,000.00</ExtraText>
-                      </Column>
-                    </Row>
-                    <NewTag>New</NewTag>
-                  </PaymentMethod>
-                  <>Bottom</>
-                </PaymentMethodInner>
-              </PaymentMethodContainer>
-            </InnerContent>
-          </ContentBox>
-        </Wrapper>
+                    {selectedOrderMethod === 'Balance' && (
+                      <Slip>
+                        <SlipInner>
+                          <StyledTitle>
+                            You can fund your Spending balance instantly and pay
+                            from it
+                          </StyledTitle>
+                        </SlipInner>
+
+                        <SlipInner>
+                          <DetailsRow>
+                            <AccountDetails ref={acctEl}>
+                              Sterling Bank, 123456789 John Micheal
+                            </AccountDetails>
+                          </DetailsRow>
+                          <CoptyBtn ref={copyBtn} onClick={() => copyNum()}>
+                            Copy
+                          </CoptyBtn>
+                        </SlipInner>
+
+                        <SlipInner>
+                          <Button width={`100%`}>Confirm</Button>
+                        </SlipInner>
+                      </Slip>
+                    )}
+                  </PaymentMethodInner>
+                </PaymentMethodContainer>
+              </InnerContent>
+            </ContentBox>
+
+            <ContentBox>
+              <Row>
+                <StyledTitle>Delivery Address</StyledTitle>
+                <Icon className={'ri-arrow-down-s-line'} />
+              </Row>
+
+              <DeliveryContent>
+                {deliveryInfo.map((data, index) => {
+                  const { type, legend, placeholder, id, name } = data;
+                  return (
+                    <InputContainer
+                      key={index}
+                      type={type}
+                      legend={legend}
+                      placeholder={placeholder}
+                      id={id}
+                      name={name}
+                    />
+                  );
+                })}
+
+                <Button width={'100%'}>Save Address</Button>
+              </DeliveryContent>
+            </ContentBox>
+
+            <ContentBox>
+              <Button disabled={true} width={'100%'}>
+                Pay NGN 3,000
+              </Button>
+            </ContentBox>
+          </Wrapper>
+        )}
       </EnvelopeCover>
     </ProcessContent>
   );
