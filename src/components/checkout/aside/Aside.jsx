@@ -1,4 +1,8 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAnyTab } from '../../../store/reducers/helper';
+import { device } from '../../../utils';
+import { useWindowSize } from '../../../utils/window';
 import {
   AsideContainer,
   AsideWrapper,
@@ -34,7 +38,42 @@ const sideItems = [
 ];
 
 function Aside() {
+  const [width, height] = useWindowSize();
+  const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.helper.anyTab);
+  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const inputEmail = useSelector((state) => state.userAuth.email);
+
+  useEffect(() => {
+    if (!activeTab) {
+      dispatch(
+        setAnyTab({
+          page: 'Orderer',
+        }),
+      );
+    }
+  }, [width, height]);
+
+  function CtrlAside(tab) {
+    //Navigate to the Tab Clicked
+    if (tab !== 'Confirmer') {
+      dispatch(
+        setAnyTab({
+          page: tab,
+        }),
+      );
+      return;
+    } else {
+      if (isLoggedIn) {
+        dispatch(
+          setAnyTab({
+            page: tab,
+          }),
+        );
+        return;
+      }
+    }
+  }
 
   return (
     <AsideContainer>
@@ -42,7 +81,12 @@ function Aside() {
         {sideItems.map((item, index) => {
           const { text, icon, tab } = item;
           return (
-            <ItemPod activeTab={activeTab?.page} tab={tab} key={index}>
+            <ItemPod
+              onClick={() => CtrlAside(tab)}
+              activeTab={activeTab?.page}
+              tab={tab}
+              key={index}
+            >
               <Icon className={`${icon}`} />
               <ItemText>{text}</ItemText>
             </ItemPod>

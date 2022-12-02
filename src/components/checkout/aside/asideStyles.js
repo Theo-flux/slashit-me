@@ -33,7 +33,10 @@ export const ItemPod = styled.div`
   border-radius: 0.375rem;
   cursor: pointer;
 
-  ${(props) => props.activeTab === props.tab && `background-color: #ffffff40;`}
+  ${(props) =>
+    props.activeTab === props.tab
+      ? `background-color: #ffffff40;`
+      : `transparent`}
 
   &:hover {
     background-color: #ffffff40;

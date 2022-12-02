@@ -117,6 +117,10 @@ function Store() {
           page: 'Orderer',
         }),
       );
+      dispatch(setAnyAction(true));
+      setTimeout(() => {
+        dispatch(setAnyAction(false));
+      }, 50);
       return;
     }
 
