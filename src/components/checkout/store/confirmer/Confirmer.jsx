@@ -55,7 +55,7 @@ const deliveryInfo = [
   {
     type: 'text',
     legend: 'Full Name',
-    placeholder: 'john doe',
+    placeholder: 'Kayla Fatima',
     id: 'full_name',
     name: 'fullname',
   },
@@ -63,7 +63,7 @@ const deliveryInfo = [
   {
     type: 'text',
     legend: 'Street Address',
-    placeholder: '81, Maculay Str. Alagbaka',
+    placeholder: '04, Main Str.',
     id: 'street_address',
     name: 'streetAddress',
   },
@@ -79,7 +79,7 @@ const deliveryInfo = [
   {
     type: 'text',
     legend: 'State',
-    placeholder: 'Ondo',
+    placeholder: '',
     id: 'state',
     name: 'state',
   },
@@ -87,30 +87,35 @@ const deliveryInfo = [
   {
     type: 'text',
     legend: 'Zipcode',
-    placeholder: '380120',
+    placeholder: '',
     id: 'zipcode',
     name: 'zipcode',
   },
 ];
 
-const Card = ({ onClick }) => {
+const Card = ({ onClick, item }) => {
   return (
     <BottomRow onClick={onClick}>
       <PaymentIcon color={'white'} className="ri-checkbox-blank-circle-line" />
       <Row>
         <Image
-          src={'/images/mastercard logo.svg'}
+          src={
+            `${item?.cardLogo}` || '/images/mastercard logo.svg' //TODO - Replace the mastercard logo on this line with any transparent image to prevent type errors
+          }
           height={40}
           width={40}
-          alt="card_issuer"
+          alt="card_brand"
         />
-        <PayTitle> •••• 1050 12/2025</PayTitle>
+        <PayTitle>
+          {' '}
+          •••• {item?.last_4digits} {item?.expiry}
+        </PayTitle>
       </Row>
     </BottomRow>
   );
 };
 
-function Confirmer(props) {
+function Confirmer({ scheduleSelected }) {
   let toastMsg = '';
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
@@ -127,6 +132,7 @@ function Confirmer(props) {
   const activeTab = useSelector((state) => state.helper.anyTab);
   const anyAction = useSelector((state) => state.helper.anyAction);
   const [showCardList, setShowCardList] = useState(false);
+  const [showAddress, setShowAddress] = useState(false);
 
   function topPress() {
     if (!isLoggedIn) return;
@@ -145,7 +151,7 @@ function Confirmer(props) {
   async function getAccountNumber() {
     setFetchingBank(true);
     let sendReq = await FetchVirtualAccount(
-      activeTab?.scheduleSelected[0].amount,
+      parseFloat(scheduleSelected[0].amount),
     );
     if (sendReq.success) {
       setBankDetails(sendReq.result);
@@ -257,15 +263,6 @@ function Confirmer(props) {
                 : 'ri-arrow-down-s-line'
             }
           />
-
-          {/* 
-          //TODOS
-          //What you'll pay today -activeTab.scheduleSelected[0].amount
-          //How you'll pay - preferredCard or spending balance
-          // Preferred card is selected by default [if change is tapped, list all the cards available : onClick of a list item, setSelectedCard to item]
-          //If spending balance is selected - Fetch virtual account number
-
-          */}
         </Top>
         {activeTab?.page == 'Confirmer' && (
           <Wrapper>
@@ -274,9 +271,9 @@ function Confirmer(props) {
                 <StyledTitle>What you will pay</StyledTitle>
                 <AmountContainer>
                   {getSymbolFromCurrency(orderDetails?.currency || 'NGN')}
-                  {activeTab && activeTab.scheduleSelected
-                    ? activeTab?.scheduleSelected[0].amount
-                    : 0}
+                  {AmountSeparator(
+                    scheduleSelected ? scheduleSelected[0].amount : 0.0,
+                  )}
                 </AmountContainer>
               </InnerContent>
             </ContentBox>
@@ -330,6 +327,7 @@ function Confirmer(props) {
                           cards.map((item) => {
                             <Card
                               key={item._id}
+                              item={item}
                               onClick={() => {
                                 setSelectedCard(item);
                                 setShowCardList(!showCardList);
@@ -372,33 +370,42 @@ function Confirmer(props) {
             <ContentBox>
               <Row>
                 <StyledTitle>Delivery Address</StyledTitle>
-                <Icon className={'ri-arrow-down-s-line'} />
+                <Icon
+                  onClick={() => setShowAddress(!showAddress)}
+                  className={
+                    showAddress ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
+                  }
+                />
               </Row>
 
-              <DeliveryContent>
-                {deliveryInfo.map((data, index) => {
-                  const { type, legend, placeholder, id, name } = data;
-                  return (
-                    <InputContainer
-                      key={index}
-                      type={type}
-                      legend={legend}
-                      placeholder={placeholder}
-                      id={id}
-                      name={name}
-                    />
-                  );
-                })}
+              {showAddress && (
+                <DeliveryContent>
+                  {deliveryInfo.map((data, index) => {
+                    const { type, legend, placeholder, id, name } = data;
+                    return (
+                      <InputContainer
+                        key={index}
+                        type={type}
+                        legend={legend}
+                        placeholder={placeholder}
+                        id={id}
+                        name={name}
+                      />
+                    );
+                  })}
 
-                <Button width={'100%'}>Save Address</Button>
-              </DeliveryContent>
+                  <Button onClick={() => updateAddress()} width={'100%'}>
+                    Save Address
+                  </Button>
+                </DeliveryContent>
+              )}
             </ContentBox>
 
-            <ContentBox>
+            {/* <ContentBox>
               <Button disabled={true} width={'100%'}>
                 Pay NGN 3,000
               </Button>
-            </ContentBox>
+            </ContentBox> */}
           </Wrapper>
         )}
       </EnvelopeCover>

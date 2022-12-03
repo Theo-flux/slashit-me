@@ -267,7 +267,11 @@ function Store() {
             <>
               <Orderer />
               <Scheduler />
-              <Confirmer />
+              <Confirmer
+                scheduleSelected={
+                  scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3
+                }
+              />
             </>
           ) : (
             <>
