@@ -331,7 +331,7 @@ export const CreatePaymentLink = async (currency, amount, sender, note) => {
   return msg;
 };
 
-export const CreateOrder = async (orderInput, method, link) => {
+export const CreateOrder = async (input, method, link) => {
   let msg;
 
   await fetch(API_ENDPOINT, {
@@ -342,8 +342,8 @@ export const CreateOrder = async (orderInput, method, link) => {
     },
     body: JSON.stringify({
       query: `
-        mutation($orderInput: orderInput, $method: orderMethod!, $link: ID,){
-        CreateOrder(orderInput: $orderInput, method: $method , link: $link){
+        mutation($input: OrderInput, $method: OrderMethod!, $link: ID,){
+        CreateOrder(input: $input, method: $method , link: $link){
               code,
               message,
               success,  
@@ -389,7 +389,7 @@ export const CreateOrder = async (orderInput, method, link) => {
            }
           }`,
       variables: {
-        orderInput,
+        input,
         method,
         link,
       },
@@ -400,9 +400,9 @@ export const CreateOrder = async (orderInput, method, link) => {
     })
     .then((res) => {
       if (res) {
-        console.log(res.data);
-        if (res.data.CreateOrder) {
-          msg = res.data.CreateOrder;
+        console.log(res, 'Create Order', method, link);
+        if (res?.data?.CreateOrder) {
+          msg = res?.data?.CreateOrder;
         }
       }
     });

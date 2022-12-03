@@ -217,7 +217,7 @@ function Orderer({}) {
     return;
   }
 
-  console.log(orderer.email, 'email', isMailValidated, activeTab);
+  console.log(orderer.email, 'email', isMailValidated, activeTab, showDetails);
 
   async function validateShopper() {
     setLoading(true);
@@ -256,14 +256,13 @@ function Orderer({}) {
   return (
     <ProcessContent>
       <EnvelopeCover>
-        <Top>
+        <Top onClick={() => topPress()}>
           <ItemPod>
             <Icon className="ri-shopping-bag-2-line" />
             <ItemText>Your order</ItemText>
           </ItemPod>
 
           <Icon
-            onClick={() => topPress()}
             className={
               activeTab?.page == 'Orderer'
                 ? 'ri-arrow-up-s-line'
@@ -284,7 +283,7 @@ function Orderer({}) {
                 />
               </Row>
 
-              {showDetails || (
+              {showDetails && (
                 <Details>
                   {!isLoggedIn ? (
                     <>
@@ -349,7 +348,7 @@ function Orderer({}) {
                 />
               </Row>
 
-              {showSummary || (
+              {showSummary && (
                 <Orders>
                   <OrderItems>
                     {orderDetails?.isCreatedFromAPI ? (

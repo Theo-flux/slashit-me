@@ -1,3 +1,4 @@
+import getSymbolFromCurrency from 'currency-symbol-map';
 import { useEffect, useState } from 'react';
 import {
   CircularProgressbarWithChildren,
@@ -6,11 +7,13 @@ import {
 import 'react-circular-progressbar/dist/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDays } from '../../../../helpers/dates';
+import { AmountSeparator } from '../../../../helpers/numberValidation';
 import { Button } from '../../../../shared';
 import {
   setAnyAction,
   setAnyTab,
   setExtraTab,
+  setScheduleSelected,
 } from '../../../../store/reducers/helper';
 import {
   Top,
@@ -35,6 +38,7 @@ import {
 } from './schdulerStyles';
 
 const Card = ({ width, data }) => {
+  const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const { value, text, amount, date } = data;
   return (
     <CardContainer width={width}>
@@ -75,7 +79,10 @@ const Card = ({ width, data }) => {
           </CircularProgressbarWithChildren>
         </div>
       </div>
-      <Amount>{amount}</Amount>
+      <Amount>
+        {getSymbolFromCurrency(orderDetails?.currency)}
+        {AmountSeparator(amount)}
+      </Amount>
       <Date>{date}</Date>
     </CardContainer>
   );
@@ -85,7 +92,9 @@ function Scheduler() {
   const dispatch = useDispatch();
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
-  const [scheduleSelected, setScheduleSelected] = useState('PayIn4'); //"PayIn4", "PayIn3"
+  const scheduleSelected = useSelector(
+    (state) => state.helper.scheduleSelected,
+  );
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
   const activeTab = useSelector((state) => state.helper.anyTab);
   const anyAction = useSelector((state) => state.helper.anyAction);
@@ -183,14 +192,13 @@ function Scheduler() {
   return (
     <ProcessContent>
       <EnvelopeCover>
-        <Top>
+        <Top onClick={() => topPress()}>
           <ItemPod>
             <Icon className="ri-time-line" />
             <ItemText>Schedule</ItemText>
           </ItemPod>
 
           <Icon
-            onClick={() => topPress()}
             className={
               activeTab?.page == 'Scheduler'
                 ? 'ri-arrow-up-s-line'
@@ -204,7 +212,7 @@ function Scheduler() {
             <Row>
               <Choice
                 scheduleSelected={scheduleSelected}
-                onClick={() => setScheduleSelected('PayIn4')}
+                onClick={() => dispatch(setScheduleSelected('PayIn4'))}
               >
                 <ChoiceIcon
                   className={
@@ -219,7 +227,7 @@ function Scheduler() {
               {orderDetails?.paymentMethods.includes('PayIn3') && (
                 <Choice
                   scheduleSelected={scheduleSelected}
-                  onClick={() => setScheduleSelected('PayIn3')}
+                  onClick={() => dispatch(setScheduleSelected('PayIn3'))}
                 >
                   <ChoiceIcon
                     className={

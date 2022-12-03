@@ -118,6 +118,13 @@ function GeneratePaymentLink({ id }) {
     });
   }
 
+  async function copyLink() {
+    try {
+    } catch (err) {
+      // console.error('Failed to copy: ', err);
+    }
+  }
+
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
@@ -182,7 +189,11 @@ function GeneratePaymentLink({ id }) {
             <LinkInfo>
               Copy and share link now to collect your money with Slashit
             </LinkInfo>
-            <Button width={`100%`} bg={`var(--violet)`}>
+            <Button
+              onClick={() => copyLink()}
+              width={`100%`}
+              bg={`var(--violet)`}
+            >
               {/* {TODO - Copy Link url to clipboard  = ${APP_URL}/paymentLink/${link}} */}
               Copy link
             </Button>

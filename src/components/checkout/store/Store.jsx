@@ -40,12 +40,17 @@ import {
   ShopperExist,
 } from '../../../api/userAPI';
 import statusCode from '../../../api/statusCode';
-import { setAnyAction, setAnyTab } from '../../../store/reducers/helper';
+import {
+  setAnyAction,
+  setAnyTab,
+  setExtraTab,
+} from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
 import Success from './success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { addDays } from '../../../helpers/dates';
 
 const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
 
@@ -68,8 +73,60 @@ function Store() {
   const anySuccess = useSelector((state) => state.helper.anySuccess);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
+  const scheduleSelected = useSelector(
+    (state) => state.helper.scheduleSelected,
+  );
   let platform = `${vendor} ${model}, ${type}`;
   let os = `${name} ${version}`;
+  let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
+
+  const scheduleIn4 = [
+    {
+      text: '1',
+      value: 25,
+      amount: (orderDetails?.amount / 4).toFixed(2),
+      date: `Due today`,
+    },
+    {
+      text: '2',
+      value: 50,
+      amount: (orderDetails?.amount / 4).toFixed(2),
+      date: `Due ${addDays(14, 'MMM DD')}`,
+    },
+    {
+      text: '3',
+      value: 75,
+      amount: (orderDetails?.amount / 4).toFixed(2),
+      date: `Due ${addDays(28, 'MMM DD')}`,
+    },
+    {
+      text: '4',
+      value: 100,
+      amount: (orderDetails?.amount / 4).toFixed(2),
+      date: `Due ${addDays(42, 'MMM DD')}`,
+    },
+  ];
+
+  const scheduleIn3 = [
+    {
+      text: '1',
+      value: 33.3,
+      amount: splitIn3,
+      date: `Due today`,
+    },
+    {
+      text: '2',
+      value: 66.6,
+      amount: splitIn3,
+      date: `Due ${addDays(30, 'MMM DD')}`,
+    },
+    {
+      text: '3',
+      value: 99.9,
+      amount: (orderDetails?.amount - splitIn3 * 2).toFixed(2),
+      date: `Due ${addDays(60, 'MMM DD')}`,
+    },
+  ];
 
   useEffect(() => {
     dispatch(setComputerInfo({ ...computerInfo, platform, os }));
@@ -86,20 +143,22 @@ function Store() {
   //async functions
   //Create Order plus Fetch Order details on component render
   async function createOrder() {
-    let sendReq = await CreateOrder(
-      router.query?.orderInput,
-      router.query?.orderMethod,
-      router.query?.link || '6305313baea30a002c977d3f', //router.query.link or a constant to prevent server type errors
-    );
-    if (sendReq.success) {
-      dispatch(
-        setOrderDetails({
-          ...sendReq.order,
-          paymentMethods: sendReq.paymentMethods,
-        }),
+    if (router.query?.method) {
+      let sendReq = await CreateOrder(
+        router.query?.input,
+        router.query?.method,
+        router.query?.link,
       );
-    } else {
-      toastMsg = '';
+      if (sendReq?.success) {
+        dispatch(
+          setOrderDetails({
+            ...sendReq.order,
+            paymentMethods: sendReq.paymentMethods,
+          }),
+        );
+      } else {
+        toastMsg = '';
+      }
     }
   }
 
@@ -112,16 +171,40 @@ function Store() {
   function CtrlStore() {
     //If not activeTab
     if (!activeTab) {
-      dispatch(
-        setAnyTab({
-          page: 'Orderer',
-        }),
-      );
-      dispatch(setAnyAction(true));
-      setTimeout(() => {
-        dispatch(setAnyAction(false));
-      }, 50);
-      return;
+      //If input email
+      if (inputEmail) {
+        if (isLoggedIn) {
+          dispatch(
+            setAnyTab({
+              page: 'Confirmer',
+              params: {
+                scheduleSelected,
+                schedule:
+                  scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
+              },
+            }),
+          );
+          return;
+        } else {
+          dispatch(
+            setExtraTab({
+              page: 'CardDetails',
+            }),
+          );
+          return;
+        }
+      } else {
+        dispatch(
+          setAnyTab({
+            page: 'Orderer',
+          }),
+        );
+        dispatch(setAnyAction(true));
+        setTimeout(() => {
+          dispatch(setAnyAction(false));
+        }, 50);
+        return;
+      }
     }
 
     //Navigate to Scheduler if activeTab.page is Orderer
@@ -132,13 +215,13 @@ function Store() {
             page: 'Scheduler',
           }),
         );
-        // return;
+        return;
       } else {
         dispatch(setAnyAction(true));
         setTimeout(() => {
           dispatch(setAnyAction(false));
         }, 50);
-        // return;
+        return;
       }
     }
     //Navigate to Confimer if activeTab.page is Scheduler
@@ -148,11 +231,15 @@ function Store() {
           page: 'Confirmer',
         }),
       );
-      // return;
+      return;
     }
   }
 
-  console.log(activeTab);
+  useEffect(() => {
+    createOrder();
+  }, [router?.query]);
+
+  console.log(router?.query, 'method');
 
   return (
     <StoreContainer>

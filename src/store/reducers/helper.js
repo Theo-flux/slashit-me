@@ -5,6 +5,7 @@ const initialState = {
   dateFilterParams: null,
   cliqueUserSelected: null,
   itemSelected: null,
+  scheduleSelected: 'PayIn4',
   shippingDetails: {
     shippingName: '',
     shippingAddress: '',
@@ -41,6 +42,11 @@ const helperSlice = createSlice({
     //Set item selected
     setItemSelected: (state, action) => {
       state.itemSelected = action.payload;
+    },
+
+    //Set Schedule selected
+    setScheduleSelected: (state, action) => {
+      state.scheduleSelected = action.payload;
     },
 
     //Set Shipping Details
@@ -87,6 +93,7 @@ export const {
   setAnySuccess,
   setCardData,
   setExtraTab,
+  setScheduleSelected,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

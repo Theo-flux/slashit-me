@@ -144,7 +144,9 @@ function Confirmer(props) {
   //async functions
   async function getAccountNumber() {
     setFetchingBank(true);
-    let sendReq = await FetchVirtualAccount(activeTab?.scheduleSelected[0].amount);
+    let sendReq = await FetchVirtualAccount(
+      activeTab?.scheduleSelected[0].amount,
+    );
     if (sendReq.success) {
       setBankDetails(sendReq.result);
       setFetchingBank(false);
@@ -237,19 +239,18 @@ function Confirmer(props) {
     }
   }, []);
 
-  console.log(cards, 'cards')
+  console.log(cards, 'cards');
 
   return (
     <ProcessContent>
       <EnvelopeCover>
-        <Top>
+        <Top onClick={() => topPress()}>
           <ItemPod>
             <Icon className="ri-checkbox-circle-line" />
             <ItemText>Confirm Order</ItemText>
           </ItemPod>
 
           <Icon
-            onClick={() => topPress()}
             className={
               activeTab?.page == 'Confirmer'
                 ? 'ri-arrow-up-s-line'
