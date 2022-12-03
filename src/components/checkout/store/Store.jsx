@@ -109,7 +109,7 @@ function Store() {
     dispatch(setComputerInfo({ ...computerInfo, ip: data?.ip || '' }));
   }
 
-  async function CtrlStore() {
+  function CtrlStore() {
     //If not activeTab
     if (!activeTab) {
       dispatch(
@@ -132,13 +132,13 @@ function Store() {
             page: 'Scheduler',
           }),
         );
-        return;
+        // return;
       } else {
         dispatch(setAnyAction(true));
         setTimeout(() => {
           dispatch(setAnyAction(false));
         }, 50);
-        return;
+        // return;
       }
     }
     //Navigate to Confimer if activeTab.page is Scheduler
@@ -148,11 +148,9 @@ function Store() {
           page: 'Confirmer',
         }),
       );
-      return;
+      // return;
     }
   }
-
-
 
   console.log(activeTab);
 
@@ -192,6 +190,7 @@ function Store() {
               {extraTab?.page == 'Success' && <Success />}
             </>
           )}
+          {/* <Confirmer /> */}
         </ProcessWrapper>
 
         {!extraTab && (

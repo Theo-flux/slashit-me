@@ -46,6 +46,11 @@ export const StyledButton = styled.button`
   font-size: 1.125rem;
   font-weight: 600;
   outline: 0;
+
+  &:disabled {
+    background-color: var(--solitude);
+    color: var(--silver);
+  }
 `;
 
 export const StyledLink = styled(Link)`

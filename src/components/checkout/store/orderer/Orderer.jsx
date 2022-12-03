@@ -272,19 +272,19 @@ function Orderer({}) {
           />
         </Top>
 
-        {activeTab?.page == 'Orderer' && (
+        {activeTab?.page === 'Orderer' && (
           <OrderContent>
             <OrderDetails>
-              <Row>
+              <Row onClick={() => setShowDetails(!showDetails)}>
                 <Text>Your details</Text>
                 <Icon
-                  onClick={() => setShowDetails(!showDetails)}
                   className={
                     showDetails ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                   }
                 />
               </Row>
-              {showDetails && (
+
+              {showDetails || (
                 <Details>
                   {!isLoggedIn ? (
                     <>
@@ -340,16 +340,16 @@ function Orderer({}) {
             </OrderDetails>
 
             <OrderSummary>
-              <Row>
+              <Row onClick={() => setShowSummary(!showSummary)}>
                 <Text>Order Summary</Text>
                 <Icon
-                  onClick={() => setShowSummary(!showSummary)}
                   className={
                     showSummary ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
                   }
                 />
               </Row>
-              {showSummary && (
+
+              {showSummary || (
                 <Orders>
                   <OrderItems>
                     {orderDetails?.isCreatedFromAPI ? (
@@ -410,6 +410,31 @@ function Orderer({}) {
             </OrderSummary>
           </OrderContent>
         )}
+        <ButtonWrapper>
+          {/* {openOrder || (
+            <Button
+              onClick={() =>
+                !isLoggedIn
+                  ? setOpenOrder(true)
+                  : dispatch(setAnyTab({ page: 'Scheduler', params: '' }))
+              }
+              width={`100%`}
+            >
+              Pay now
+            </Button>
+          )} */}
+
+          {/* {openOrder && ( */}
+          {/* <Button
+            onClick={() =>
+              isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
+            }
+            width={`100%`}
+          >
+            Confirm
+          </Button> */}
+          {/* )} */}
+        </ButtonWrapper>
       </EnvelopeCover>
     </ProcessContent>
   );

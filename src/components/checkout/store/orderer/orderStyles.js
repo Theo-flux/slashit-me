@@ -17,7 +17,7 @@ export const OrderSummary = styled.div`
   padding: 1rem;
 `;
 
-export const InfoBox = styled.p`
+export const InfoBox = styled.div`
   width: 100%;
   font-size: 0.75rem;
   color: var(--gray);

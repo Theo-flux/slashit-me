@@ -17,6 +17,7 @@ export default createGlobalStyle`
   --supernova: #FFC701;
   --brown: #EDEDED;
   --border : #d9d9d950;
+  --solitude : #E1EDFF;
   --gr: linear-gradient(
     180deg,
     rgba(108, 33, 255, 0.2) 0%,
