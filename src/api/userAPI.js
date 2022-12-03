@@ -1,4 +1,4 @@
-const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
+const API_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 
 export const SaveLoginCredentials = (credentials) => {
   localStorage.setItem('userAuth', credentials);
@@ -19,8 +19,6 @@ export const FetchUserById = async () => {
     auth = JSON.parse(auth);
     token = auth.token;
   }
-
-  console.log(process.env.GRAPHQL_ENDPOINT, 'is')
 
   await fetch(API_ENDPOINT, {
     method: 'POST',

@@ -253,8 +253,6 @@ function Orderer({}) {
     }
   }, [anyAction, isMailValidated]);
 
-  console.log(activeTab, orderer);
-
   return (
     <ProcessContent>
       <EnvelopeCover>

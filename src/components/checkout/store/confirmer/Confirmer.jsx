@@ -95,7 +95,7 @@ function Confirmer(props) {
   //async functions
   async function getAccountNumber() {
     setFetchingBank(true);
-    let sendReq = await FetchVirtualAccount(anyTab?.scheduleSelected[0].amount);
+    let sendReq = await FetchVirtualAccount(activeTab?.scheduleSelected[0].amount);
     if (sendReq.success) {
       setBankDetails(sendReq.result);
       setFetchingBank(false);
@@ -170,6 +170,8 @@ function Confirmer(props) {
     }
   }, []);
 
+  console.log(cards, 'cards')
+
   return (
     <ProcessContent>
       <EnvelopeCover>
@@ -230,7 +232,7 @@ function Confirmer(props) {
                         <Row>
                           <Image
                             src={
-                              preferredCard?.cardLogo ||
+                              `${preferredCard?.cardLogo}` ||
                               '/images/mastercard logo.svg' //TODO - Replace the mastercard logo on this line with any transparent image to prevent type errors
                             }
                             height={40}

@@ -152,6 +152,8 @@ function Store() {
     }
   }
 
+
+
   console.log(activeTab);
 
   return (
@@ -192,13 +194,13 @@ function Store() {
           )}
         </ProcessWrapper>
 
-        <ButtonWrapper>
-          {!extraTab && (
+        {!extraTab && (
+          <ButtonWrapper>
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
-          )}
-        </ButtonWrapper>
+          </ButtonWrapper>
+        )}
       </StoreWrapper>
 
       <PlayerWrapper>

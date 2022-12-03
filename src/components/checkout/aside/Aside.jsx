@@ -71,6 +71,9 @@ function Aside() {
           }),
         );
         return;
+      } else {
+        //Do nothing
+        return;
       }
     }
   }

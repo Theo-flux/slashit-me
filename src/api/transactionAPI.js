@@ -1,4 +1,4 @@
-const API_ENDPOINT = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+const API_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 
 export const AuthorizeCard = async (encrypted, user) => {
   let result;
@@ -672,12 +672,12 @@ export const FetchCards = async (showFew, isVirtualCard) => {
   let msg;
   /* Retrieve Token From Local Storage */
   let token;
+
   let auth = localStorage.getItem('userAuth');
   if (auth) {
     auth = JSON.parse(auth);
     token = auth.token;
   }
-  console.log(token, 'token');
 
   await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -727,10 +727,9 @@ export const FetchCards = async (showFew, isVirtualCard) => {
       return res.json();
     })
     .then((res) => {
-      console.log('fetch cards', res.data.FetchCard.result);
-      if (res.data.FetchCard) {
-        msg = res.data.FetchCard;
-      }
+      console.log('fetch cards', res);
+
+      msg = res.data.FetchCard;
     });
   return msg;
 };
