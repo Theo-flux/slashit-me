@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-const API_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
+const API_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 
 function MyApp({ Component, pageProps }) {
   const client = new ApolloClient({

@@ -42,7 +42,7 @@ function Aside() {
   const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.helper.anyTab);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
-  const inputEmail = useSelector((state) => state.userAuth.email);
+  const inputEmail = useSelector((state) => state.userAuth.userEmail);
 
   useEffect(() => {
     if (!activeTab) {
@@ -70,6 +70,9 @@ function Aside() {
             page: tab,
           }),
         );
+        return;
+      } else {
+        //Do nothing
         return;
       }
     }

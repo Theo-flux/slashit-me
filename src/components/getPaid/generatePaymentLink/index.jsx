@@ -22,6 +22,8 @@ import {
   SharePaymentLink,
 } from '../../../api/transactionAPI';
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
+
 const paymentItem = [
   {
     legend: 'Amount to collect',
@@ -116,6 +118,13 @@ function GeneratePaymentLink({ id }) {
     });
   }
 
+  async function copyLink() {
+    try {
+    } catch (err) {
+      // console.error('Failed to copy: ', err);
+    }
+  }
+
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
@@ -180,8 +189,12 @@ function GeneratePaymentLink({ id }) {
             <LinkInfo>
               Copy and share link now to collect your money with Slashit
             </LinkInfo>
-            <Button width={`100%`} bg={`var(--violet)`}>
-              {/* {TODO - Copy Link url to clipboard  = ${process.env.APP_URL}/paymentLink/${link}} */}
+            <Button
+              onClick={() => copyLink()}
+              width={`100%`}
+              bg={`var(--violet)`}
+            >
+              {/* {TODO - Copy Link url to clipboard  = ${APP_URL}/paymentLink/${link}} */}
               Copy link
             </Button>
             <LinkInfo>or</LinkInfo>
