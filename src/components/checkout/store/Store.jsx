@@ -66,7 +66,7 @@ function Store() {
   const [loading, setLoading] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
-  const inputEmail = useSelector((state) => state.userAuth.email);
+  const inputEmail = useSelector((state) => state.userAuth.userEmail);
   const activeTab = useSelector((state) => state.helper.anyTab);
   const extraTab = useSelector((state) => state.helper.extraTab);
   const anyAction = useSelector((state) => state.helper.anyAction);

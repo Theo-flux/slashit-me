@@ -133,6 +133,7 @@ function Confirmer({ scheduleSelected }) {
   const anyAction = useSelector((state) => state.helper.anyAction);
   const [showCardList, setShowCardList] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
+  const [isAddressModified, setIsAddressModified] = useState(false);
 
   function topPress() {
     if (!isLoggedIn) return;
@@ -170,6 +171,7 @@ function Confirmer({ scheduleSelected }) {
     } else {
       toastMsg = sendReq.message;
     }
+    setIsAddressModified(true);
     setLoading(false);
   }
 
@@ -238,7 +240,7 @@ function Confirmer({ scheduleSelected }) {
   }
 
   useEffect(() => {
-    if (activeTab == 'Confirmer') {
+    if (activeTab?.page == 'Confirmer') {
       if (anyAction) {
         CtrlConfirmer();
       }
@@ -268,7 +270,7 @@ function Confirmer({ scheduleSelected }) {
           <Wrapper>
             <ContentBox>
               <InnerContent>
-                <StyledTitle>What you will pay</StyledTitle>
+                <StyledTitle>What you will pay today</StyledTitle>
                 <AmountContainer>
                   {getSymbolFromCurrency(orderDetails?.currency || 'NGN')}
                   {AmountSeparator(
@@ -370,12 +372,20 @@ function Confirmer({ scheduleSelected }) {
             <ContentBox>
               <Row>
                 <StyledTitle>Delivery Address</StyledTitle>
-                <Icon
-                  onClick={() => setShowAddress(!showAddress)}
-                  className={
-                    showAddress ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'
-                  }
-                />
+                {isAddressModified ? (
+                  <ChangeBtn onClick={() => setShowAddress(!showAddress)}>
+                    Change
+                  </ChangeBtn>
+                ) : (
+                  <Icon
+                    onClick={() => setShowAddress(!showAddress)}
+                    className={
+                      showAddress
+                        ? 'ri-arrow-up-s-line'
+                        : 'ri-arrow-down-s-line'
+                    }
+                  />
+                )}
               </Row>
 
               {showAddress && (
