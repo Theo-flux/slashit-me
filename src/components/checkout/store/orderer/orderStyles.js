@@ -130,3 +130,8 @@ export const TotalPrice = styled.p`
   font-size: 1rem;
   font-weight: 600;
 `;
+
+export const SmallBtn = styled.p`
+  color: var(--violet);
+  font-weight: 600;
+`;

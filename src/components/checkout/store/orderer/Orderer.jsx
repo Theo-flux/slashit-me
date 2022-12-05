@@ -37,6 +37,7 @@ import {
   SubtotalPrice,
   ShippingPrice,
   TotalPrice,
+  SmallBtn,
 } from './orderStyles';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
@@ -320,18 +321,22 @@ function Orderer({}) {
                           <InfoBox>
                             <Icon className="fa-solid fa-circle-info"></Icon>
                             <InfoText>{orderer?.email}</InfoText>
-                            {/* {"TODO - Not you button - onClick resetOrderer"} */}
+                            <SmallBtn onClick={() => resetOrderer()}>
+                              Not you?
+                            </SmallBtn>
                           </InfoBox>
                         </>
                       )}
 
                       {isMailValidated && pass == statusCode.NOT_FOUND && (
-                        <>{/* {"TODO -  "Your Order 8 UI" } */}</>
+                        <>{'TODO -  Your Order 8 UI'}</>
                       )}
                     </>
                   ) : (
                     <>
-                      {/*TODO-Show "Your Order 6 (logged in user with user?.avatar ) or 7 UI - logged in user without avatar"*/}{' '}
+                      {
+                        'TODO-Show Your Order 6 (logged in user with user?.avatar ) or 7 UI - logged in user without avatar'
+                      }
                     </>
                   )}
                 </Details>
