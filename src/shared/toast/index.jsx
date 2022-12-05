@@ -1,16 +1,19 @@
+import React from 'react';
 import { ToastContainer, ToastIcon, ToastText } from './toastStyles';
 
-export const Toast = ({
-  showToast,
-  showIcon,
-  text,
-  backgroundColor,
-  textColor,
-  top,
-  left,
-  right,
-  bottom,
-}) => {
+export const Toast = ({ options }) => {
+  const {
+    showToast,
+    showIcon,
+    text,
+    backgroundColor,
+    textColor,
+    top,
+    left,
+    right,
+    bottom,
+  } = options;
+
   return (
     <ToastContainer
       showToast={showToast}

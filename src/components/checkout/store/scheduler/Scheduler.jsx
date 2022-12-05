@@ -8,13 +8,9 @@ import 'react-circular-progressbar/dist/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDays } from '../../../../helpers/dates';
 import { AmountSeparator } from '../../../../helpers/numberValidation';
+import { useTabs } from '../../../../hooks';
 import { Button } from '../../../../shared';
-import {
-  setAnyAction,
-  setAnyTab,
-  setExtraTab,
-  setScheduleSelected,
-} from '../../../../store/reducers/helper';
+import { setScheduleSelected } from '../../../../store/reducers/helper';
 import {
   Top,
   EnvelopeCover,
@@ -89,6 +85,16 @@ const Card = ({ width, data }) => {
 };
 
 function Scheduler() {
+  const {
+    activeTab,
+    anyAction,
+    extraTab,
+    anySuccess,
+    setActiveTab,
+    setAnyAction,
+    setExtraTab,
+  } = useTabs();
+
   const dispatch = useDispatch();
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
@@ -96,8 +102,6 @@ function Scheduler() {
     (state) => state.helper.scheduleSelected,
   );
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
-  const activeTab = useSelector((state) => state.helper.anyTab);
-  const anyAction = useSelector((state) => state.helper.anyAction);
 
   const scheduleIn4 = [
     {
@@ -149,27 +153,23 @@ function Scheduler() {
 
   function topPress() {
     if (activeTab?.page == 'Scheduler') {
-      dispatch(setAnyTab());
+      setActiveTab();
     } else {
-      dispatch(
-        setAnyTab({
-          page: 'Scheduler',
-        }),
-      );
+      setActiveTab({
+        page: 'Scheduler',
+      });
     }
   }
 
   async function CtrlScheduler() {
     if (preferredCard) {
-      dispatch(
-        setAnyTab({
-          page: 'Confirmer',
-          params: {
-            scheduleSelected,
-            schedule: scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
-          },
-        }),
-      );
+      setActiveTab({
+        page: 'Confirmer',
+        params: {
+          scheduleSelected,
+          schedule: scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
+        },
+      });
     } else {
       dispatch(
         setExtraTab({

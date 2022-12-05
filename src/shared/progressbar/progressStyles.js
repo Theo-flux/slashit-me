@@ -10,6 +10,7 @@ export const Progress = styled.div`
 export const Bar = styled.div`
   width: ${(props) => (props.meter ? `${props.meter}` : `0%`)};
   height: 100%;
-  background-color: var(--violet);
+  background-color: ${(props) =>
+    props.bgColor ? `${props.bgColor}` : `var(--violet)`};
   ${transition}
 `;

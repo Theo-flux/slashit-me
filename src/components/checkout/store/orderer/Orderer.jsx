@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AmountSeparator } from '../../../../helpers/numberValidation';
-import { Button, InputContainer, TextAreaContainer } from '../../../../shared';
+import {
+  Button,
+  InputContainer,
+  TextAreaContainer,
+  Toast,
+} from '../../../../shared';
 import {
   EnvelopeCover,
   ProcessContent,
@@ -46,11 +51,7 @@ import {
 } from './orderStyles';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
-import {
-  Login,
-  SaveLoginCredentials,
-  ShopperExist,
-} from '../../../../api/userAPI';
+import { Login, ShopperExist } from '../../../../api/userAPI';
 import {
   setEmail,
   setIsLoggedIn,
@@ -61,73 +62,24 @@ import {
   setCards,
   setPreferredCard,
 } from '../../../../store/reducers/transaction';
-import {
-  setAnyAction,
-  setAnyTab,
-  setExtraTab,
-} from '../../../../store/reducers/helper';
-
-// const orderedItems = [
-//   {
-//     id: '1',
-//     name: 'Pen',
-//     qty: '1',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '2',
-//     name: 'Pencil',
-//     qty: '10',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '3',
-//     name: 'Keyboard',
-//     qty: '109',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '4',
-//     name: 'Mouse',
-//     qty: '500',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '1',
-//     name: 'Pen',
-//     qty: '1',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '2',
-//     name: 'Pencil',
-//     qty: '10',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '3',
-//     name: 'Keyboard',
-//     qty: '109',
-//     price: 'NGN 1200.00',
-//   },
-//   {
-//     id: '4',
-//     name: 'Mouse',
-//     qty: '500',
-//     price: 'NGN 1200.00',
-//   },
-// ];
+import { useLocalStorage, useTabs, useToast } from '../../../../hooks';
 
 function Orderer({}) {
-  let toastMsg = '';
-
   const dispatch = useDispatch();
-  const activeTab = useSelector((state) => state.helper.anyTab);
-  const anyAction = useSelector((state) => state.helper.anyAction);
+
+  const {
+    activeTab,
+    anyAction,
+    extraTab,
+    setActiveTab,
+    setAnyAction,
+    setExtraTab,
+  } = useTabs();
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
-  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [isMailValidated, setIsMailValidated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { session, setSession } = useLocalStorage();
   const [pass, setPass] = useState('');
   const [showDetails, setShowDetails] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
@@ -176,15 +128,13 @@ function Orderer({}) {
 
   function topPress() {
     if (activeTab?.page == 'Orderer') {
-      dispatch(setAnyTab());
+      setActiveTab();
       setShowDetails(false);
       setShowSummary(false);
     } else {
-      dispatch(
-        setAnyTab({
-          page: 'Orderer',
-        }),
-      );
+      setActiveTab({
+        page: 'Orderer',
+      });
       setShowDetails(true);
     }
   }
@@ -203,10 +153,7 @@ function Orderer({}) {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      SaveLoginCredentials(
-        JSON.stringify({ ...userInfo, token: sendReq.token }),
-      );
-      dispatch(setIsLoggedIn(true));
+      setSession({ userInfo, token: sendReq.token });
       dispatch(setUser(sendReq.user));
       let showFew = true;
       let cardReq = await FetchCards(showFew);
@@ -216,9 +163,9 @@ function Orderer({}) {
           setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
         );
       }
-      dispatch(setAnyTab({ page: 'Scheduler', params: '' }));
+      setActiveTab({ page: 'Scheduler', params: '' });
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
     return;
@@ -233,7 +180,7 @@ function Orderer({}) {
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
         setPass(statusCode.COMPLETE_REGISTRATION);
-        dispatch(setExtraTab({ page: 'VerifyEmail', params: {} }));
+        setExtraTab({ page: 'VerifyEmail', params: {} });
       } else if (sendReq.code == statusCode.OK) {
         dispatch(setEmail(orderer.email)); //Store user email in global state
         setPass(statusCode.OK);
@@ -263,6 +210,7 @@ function Orderer({}) {
   return (
     <ProcessContent>
       <EnvelopeCover>
+        <Toast options={toastOptions} />
         <Top onClick={() => topPress()}>
           <ItemPod>
             <Icon className="ri-shopping-bag-2-line" />
@@ -292,7 +240,7 @@ function Orderer({}) {
 
               {showDetails && (
                 <Details>
-                  {!isLoggedIn ? (
+                  {!session ? (
                     <>
                       {!isMailValidated && !pass && (
                         <>
@@ -437,31 +385,6 @@ function Orderer({}) {
             </OrderSummary>
           </OrderContent>
         )}
-        <ButtonWrapper>
-          {/* {openOrder || (
-            <Button
-              onClick={() =>
-                !isLoggedIn
-                  ? setOpenOrder(true)
-                  : dispatch(setAnyTab({ page: 'Scheduler', params: '' }))
-              }
-              width={`100%`}
-            >
-              Pay now
-            </Button>
-          )} */}
-
-          {/* {openOrder && ( */}
-          {/* <Button
-            onClick={() =>
-              isMailValidated ? handlePasswordSubmit() : handleEmailContinue()
-            }
-            width={`100%`}
-          >
-            Confirm
-          </Button> */}
-          {/* )} */}
-        </ButtonWrapper>
       </EnvelopeCover>
     </ProcessContent>
   );

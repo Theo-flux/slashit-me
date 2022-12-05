@@ -1,41 +1,33 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { SaveLoginCredentials, VerifyEmail } from '../../api/userAPI';
+import {  VerifyEmail } from '../../api/userAPI';
+import { useLocalStorage, useToast } from '../../hooks';
 
 function Otp(props) {
   let toastMsg = '';
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession, sessionInfo} = useLocalStorage();
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
 
   async function verify() {
     setLoading(true);
     let sendReq = await VerifyEmail(
-      props.email,
+      props?.email,
       otp,
-      (any = false),
+      false,
       computerInfo,
-      (platform = 'web'),
+      'web',
     );
     if (sendReq.success) {
-      let userInfo = localStorage.getItem('userInfo');
-      userInfo = JSON.parse(userInfo);
-      SaveLoginCredentials(
-        JSON.stringify({ ...userInfo, token: sendReq.token }),
-      );
+      let userInfo = sessionInfo.userInfo;
+      setSession({ userInfo, token: sendReq.token });
       props?.action(); //TODO call action() passeed to the OTP modal onSuccess
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
   }

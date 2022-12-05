@@ -1,5 +1,6 @@
 import Layout from '../containers/Layout';
 import { Business, Hero, Shopper, Footer } from '../components';
+import { Toast } from '../shared';
 
 export default function Home() {
   return (

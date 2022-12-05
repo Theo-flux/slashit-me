@@ -10,6 +10,49 @@ export const RemoveLoginCredentials = () => {
   return;
 };
 
+export const Ping = async () => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem("userAuth");
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+            mutation{
+                Ping{
+                    code,
+                    success,
+                    message,
+                    role
+                }
+            }`,
+      variables: {},
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res, "PING!!");
+      if (res.data) {
+        msg = res.data.Ping;
+      }
+    });
+
+  return msg;
+};
+
 export const FetchUserById = async () => {
   let msg;
   /* Retrieve Token From Local Storage */

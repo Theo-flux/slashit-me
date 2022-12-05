@@ -6,7 +6,6 @@ import Image from 'next/image';
 import {
   CliqueAccept,
   Login,
-  SaveLoginCredentials,
   ShopperExist,
   VerifyCAT,
 } from '../../api/userAPI';
@@ -36,6 +35,7 @@ import {
 import statusCode from '../../api/statusCode';
 import { useDispatch, useSelector } from 'react-redux';
 import { setComputerInfo } from '../../store/reducers/auth';
+import { useLocalStorage, useToast } from '../../hooks';
 
 // const members = [
 //   {
@@ -77,8 +77,6 @@ const details = [
 ];
 
 function JoinClique() {
-  let [toastMsg, setToastMsg] = useState('');
-
   const dispatch = useDispatch();
   const router = useRouter();
   const parser = new UAParser();
@@ -93,7 +91,8 @@ function JoinClique() {
   const [loading, setLoading] = useState(false);
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession } = useLocalStorage();
   const [isMailValidated, setIsMailValidated] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
 
@@ -147,17 +146,19 @@ function JoinClique() {
     let sendReq = await ShopperExist(memberForm.email);
     if (sendReq.success) {
       if (sendReq.code == statusCode.COMPLETE_REGISTRATION) {
-        setToastMsg(
-          'Please complete your profile on the Slashit app, then come back to add a friend to your Clique.',
-        );
+        toast({
+          text: 'Please complete your profile on the Slashit app, then come back to add a friend to your Clique.',
+          textColor: '#fff',
+        });
       } else if (sendReq.code == statusCode.OK) {
         setIsMailValidated(true);
       }
     } else {
       if (sendReq.code === statusCode.NOT_FOUND) {
-        setToastMsg(
-          "We couldn't find a user with this email, redirecting you to create an account with us!",
-        );
+        toast({
+          text: "We couldn't find a user with this email, redirecting you to create an account with us!",
+          textColor: '#fff',
+        });
         setTimeout(() => router.push('/account/create-account'), 5000);
       }
     }
@@ -180,9 +181,7 @@ function JoinClique() {
     if (!getInfo) {
       let sendReq = await Login(userInfo);
       if (sendReq.success) {
-        SaveLoginCredentials(
-          JSON.stringify({ ...userInfo, token: sendReq.token }),
-        );
+        setSession({ userInfo, token: sendReq.token });
         //Join Clique
         let join = await CliqueAccept(router.query?.token);
         if (join.success) {
@@ -192,10 +191,10 @@ function JoinClique() {
             //TODO - Link to "Add to Clique "CARD1""
           }
         } else {
-          setToastMsg(join.message);
+          toast({ text: join.message, textColor: '#fff' });
         }
       } else {
-        setToastMsg(sendReq.message);
+        toast({ text: sendReq.message, textColor: '#fff' });
       }
     } else {
       //Join Clique
@@ -207,7 +206,7 @@ function JoinClique() {
           //TODO - Link to "Add to Clique "CARD1""
         }
       } else {
-        setToastMsg(join.message);
+        toast({ text: join.message, textColor: '#fff' });
       }
     }
     setLoading(false);
@@ -221,6 +220,13 @@ function JoinClique() {
     if (sendReq.success) {
       setInviter(sendReq.user);
       setMembers(sendReq.cliqueActive);
+    } else {
+      toast({
+        right: '30px',
+        text: sendReq.message,
+        backgroundColor: 'red',
+        textColor: '#fff',
+      });
     }
     setLoading(false);
     return;
@@ -247,28 +253,21 @@ function JoinClique() {
   }, [router.query]);
 
   useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
-
-  useEffect(() => {
     if (isMailValidated) {
-      setProgress('50%');
+      setProgress('70%');
     }
   }, [isMailValidated]);
 
-  // if (!inviter)
-  //   return (
-  //     <Section>
-  //       <Div>
-  //         <LoaderContainer>
-  //           <Loader />
-  //         </LoaderContainer>
-  //       </Div>
-  //     </Section>
-  //   );
+  if (!inviter)
+    return (
+      <Section>
+        <Div>
+          <LoaderContainer>
+            <Loader />
+          </LoaderContainer>
+        </Div>
+      </Section>
+    );
 
   return (
     <Section>
@@ -276,13 +275,7 @@ function JoinClique() {
         <ProgressBar meter={progress} />
       </PositionDiv>
       <Div>
-        <Toast
-          showToast={showToast}
-          showIcon={false}
-          right={'30px'}
-          text={toastMsg}
-          backgroundColor={'red'}
-        />
+        <Toast options={toastOptions} />
         <CliqueDiv>
           <SmallText>
             Only join this Clique if you have a close relationship with{''}

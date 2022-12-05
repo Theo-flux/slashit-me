@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  FetchUserById,
-  SaveLoginCredentials,
-  VerifyEmail,
-} from '../../../api/userAPI';
+import { FetchUserById, VerifyEmail } from '../../../api/userAPI';
 import { FetchCards, PayAnyone } from '../../../api/transactionAPI';
 import statusCode from '../../../api/statusCode';
 import { setPreferredCard } from '../../../store/reducers/transaction';
 import { setIsLoggedIn, setUser } from '../../../store/reducers/auth';
+import { useLocalStorage, useToast } from '../../../hooks';
 
 function EnterEmailCodeNext(props) {
   let toastMsg = '';
@@ -18,6 +15,8 @@ function EnterEmailCodeNext(props) {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession, sessionInfo } = useLocalStorage();
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
 
@@ -44,14 +43,14 @@ function EnterEmailCodeNext(props) {
       (platform = 'web'),
     );
     if (sendReq.success) {
-      SaveLoginCredentials(JSON.stringify({ token: sendReq.token }));
+      let userInfo = sessionInfo.userInfo;
+      setSession({ userInfo, token: sendReq.token });
       const userReq = await FetchUserById();
       if (userReq.success) {
         dispatch(setUser(userReq.user));
       }
-      dispatch(setIsLoggedIn(true));
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
   }

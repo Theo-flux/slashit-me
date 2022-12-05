@@ -9,11 +9,6 @@ import {
 } from '../../../../api/transactionAPI';
 import { FetchUserById } from '../../../../api/userAPI';
 import { setUser } from '../../../../store/reducers/auth';
-import {
-  setAnyAction,
-  setAnySuccess,
-  setAnyTab,
-} from '../../../../store/reducers/helper';
 import { Button, InputContainer } from '../../../../shared';
 import {
   EnvelopeCover,
@@ -50,6 +45,7 @@ import {
 } from './confirmerStyles';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { AmountSeparator } from '../../../../helpers/numberValidation';
+import { useTabs } from '../../../../hooks';
 
 const deliveryInfo = [
   {
@@ -116,7 +112,17 @@ const Card = ({ onClick, item }) => {
 };
 
 function Confirmer({ scheduleSelected }) {
-  let toastMsg = '';
+  const {
+    activeTab,
+    anyAction,
+    extraTab,
+    anySuccess,
+    setActiveTab,
+    setAnyAction,
+    setExtraTab,
+    setAnySuccess,
+  } = useTabs();
+
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
@@ -129,8 +135,6 @@ function Confirmer({ scheduleSelected }) {
   const [selectedOrderMethod, setSelectedOrderMethod] = useState('Card'); //Card or Balance
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState(preferredCard);
-  const activeTab = useSelector((state) => state.helper.anyTab);
-  const anyAction = useSelector((state) => state.helper.anyAction);
   const [showCardList, setShowCardList] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [isAddressModified, setIsAddressModified] = useState(false);
@@ -138,13 +142,11 @@ function Confirmer({ scheduleSelected }) {
   function topPress() {
     if (!isLoggedIn) return;
     if (activeTab?.page == 'Confirmer') {
-      dispatch(setAnyTab());
+      setActiveTab();
     } else {
-      dispatch(
-        setAnyTab({
-          page: 'Confirmer',
-        }),
-      );
+      setActiveTab({
+        page: 'Confirmer',
+      });
     }
   }
 

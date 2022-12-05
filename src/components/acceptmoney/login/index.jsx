@@ -5,9 +5,9 @@ import statusCode from '../../../api/statusCode';
 import {
   Login,
   MerchantExist,
-  SaveLoginCredentials,
   ShopperExist,
 } from '../../../api/userAPI';
+import { useLocalStorage, useToast } from '../../../hooks';
 import { Section, Div, InputContainer, Button } from '../../../shared';
 import { setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import {
@@ -20,11 +20,11 @@ import {
 } from './loginStyles';
 
 function LoginComponent() {
-  let toastMsg = '';
   const dispatch = useDispatch();
   const [isMailValidated, setIsMailValidated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession} = useLocalStorage();
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [form, setForm] = useState({
     email: '',
@@ -83,13 +83,15 @@ function LoginComponent() {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      SaveLoginCredentials(
-        JSON.stringify({ ...userInfo, token: sendReq.token }),
-      );
-      dispatch(setIsLoggedIn(true));
+      setSession({ userInfo, token: sendReq.token });
       dispatch(setUser(sendReq.user));
     } else {
-      toastMsg = sendReq.message;
+      toast({
+        text: sendReq?.message,
+        backgroundColor: 'red',
+        textColor: '#fff',
+        duration: 15000,
+      });
     }
     setLoading(false);
     return;
@@ -102,18 +104,16 @@ function LoginComponent() {
     if (sendReq.success) {
       setIsMailValidated(true);
     } else {
-      toastMsg = sendReq.message;
+      toast({
+        text: sendReq?.message,
+        backgroundColor: 'red',
+        textColor: '#fff',
+        duration: 15000,
+      });
     }
     setLoading(false);
     return;
   }
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
 
   return (
     <Section>
