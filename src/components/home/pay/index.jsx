@@ -106,7 +106,7 @@ function Pay(props) {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      setSession({ userInfo, token: sendReq.token });
+      setSession({ userInfo, token: sendReq.token, session: true });
       dispatch(setUser(sendReq.user));
       let cardReq = await FetchCards((showFew = true));
       if (cardReq.success && cardReq.result && cardReq.result.length > 0) {

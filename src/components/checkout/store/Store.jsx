@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setComputerInfo,
   setEmail,
-  setIsLoggedIn,
   setUser,
 } from '../../../store/reducers/auth';
 import { AmountSeparator } from '../../../helpers/numberValidation';
@@ -36,23 +35,19 @@ import {
 } from '../../../store/reducers/transaction';
 import { Login, ShopperExist } from '../../../api/userAPI';
 import statusCode from '../../../api/statusCode';
-import { setAnyTab } from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
 import Success from './success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addDays } from '../../../helpers/dates';
-import { useTabs } from '../../../hooks';
-
-const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
+import { useLocalStorage, useTabs } from '../../../hooks';
 
 function Store() {
   const parser = new UAParser();
   const { vendor, model, type } = parser.getDevice();
   const { name, version } = parser.getOS();
   const router = useRouter();
-  let toastMsg = '';
 
   const {
     activeTab,
@@ -66,10 +61,8 @@ function Store() {
   } = useTabs();
 
   const dispatch = useDispatch();
-  const [openOrder, setOpenOrder] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const { session, } = useLocalStorage();
   const inputEmail = useSelector((state) => state.userAuth.userEmail);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
@@ -177,7 +170,7 @@ function Store() {
     if (!activeTab) {
       //If input email
       if (inputEmail) {
-        if (isLoggedIn) {
+        if (session) {
           setActiveTab({
             page: 'Confirmer',
             params: {
@@ -192,7 +185,6 @@ function Store() {
           setExtraTab({
             page: 'CardDetails',
           });
-
           return;
         }
       } else {
@@ -207,13 +199,24 @@ function Store() {
       }
     }
 
-    //Navigate to Scheduler if activeTab.page is Orderer
+    //activeTab.page is Orderer
     if (activeTab?.page == 'Orderer') {
       if (inputEmail) {
-        setActiveTab({
-          page: 'Scheduler',
-        });
-        return;
+        if (session) {
+          setActiveTab({
+            page: 'Scheduler',
+            params: {},
+          });
+          console.log('lala')
+          return;
+        } else {
+          setAnyAction(true);
+          setTimeout(() => {
+            setAnyAction(false);
+          }, 50);
+          console.log('lal2')
+          return;
+        }
       } else {
         setAnyAction(true);
         setTimeout(() => {
@@ -235,7 +238,7 @@ function Store() {
     createOrder();
   }, [router?.query]);
 
-  console.log(router?.query, 'method');
+  console.log(inputEmail,session, 'passed store' );
 
   return (
     <StoreContainer>

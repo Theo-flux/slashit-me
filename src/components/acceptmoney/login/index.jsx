@@ -83,7 +83,7 @@ function LoginComponent() {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      setSession({ userInfo, token: sendReq.token });
+      setSession({ userInfo, token: sendReq.token , session: true});
       dispatch(setUser(sendReq.user));
     } else {
       toast({

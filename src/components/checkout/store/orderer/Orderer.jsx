@@ -54,7 +54,6 @@ import statusCode from '../../../../api/statusCode';
 import { Login, ShopperExist } from '../../../../api/userAPI';
 import {
   setEmail,
-  setIsLoggedIn,
   setUser,
 } from '../../../../store/reducers/auth';
 import { FetchCards } from '../../../../api/transactionAPI';
@@ -67,14 +66,8 @@ import { useLocalStorage, useTabs, useToast } from '../../../../hooks';
 function Orderer({}) {
   const dispatch = useDispatch();
 
-  const {
-    activeTab,
-    anyAction,
-    extraTab,
-    setActiveTab,
-    setAnyAction,
-    setExtraTab,
-  } = useTabs();
+  const { activeTab, anyAction, extraTab, setActiveTab, setExtraTab } =
+    useTabs();
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const [isMailValidated, setIsMailValidated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -85,7 +78,7 @@ function Orderer({}) {
   const [showSummary, setShowSummary] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const cards = useSelector((state) => state.transaction.cards);
-  const { avatar } = useSelector((state) => state.userAuth.user);
+  const user = useSelector((state) => state.userAuth.user);
   const [error, setError] = useState({});
   const [orderer, setOrderer] = useState({
     email: '',
@@ -97,7 +90,11 @@ function Orderer({}) {
       email: '',
       password: '',
     });
+    dispatch(setEmail());
+    dispatch(setUser({ country: null, avatar: null }));
     setIsMailValidated(false);
+    setPass()
+    setSession({session: false});
   }
 
   function handleOrdererOnchange(event) {
@@ -153,7 +150,7 @@ function Orderer({}) {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      setSession({ userInfo, token: sendReq.token });
+      setSession({ userInfo, token: sendReq.token , session: true});
       dispatch(setUser(sendReq.user));
       let showFew = true;
       let cardReq = await FetchCards(showFew);
@@ -163,7 +160,6 @@ function Orderer({}) {
           setPreferredCard(cardReq.result.filter((item) => item.preferred)[0]),
         );
       }
-      setActiveTab({ page: 'Scheduler', params: '' });
     } else {
       toast({ text: sendReq.message, textColor: '#fff' });
     }
@@ -171,7 +167,7 @@ function Orderer({}) {
     return;
   }
 
-  console.log(orderer.email, 'email', isMailValidated, activeTab, showDetails);
+  console.log(session, pass,'passed order');
 
   async function validateShopper() {
     setLoading(true);
@@ -284,29 +280,38 @@ function Orderer({}) {
 
                       {isMailValidated && pass == statusCode.NOT_FOUND && (
                         <>
-                          <InfoMailText>Johndoe@gmail.com</InfoMailText>
+                          <InfoMailText>{user?.email}</InfoMailText>
                         </>
                       )}
                     </>
                   ) : (
                     <>
                       <AvatarContainer>
-                        {avatar ? (
+                        {user.avatar ? (
                           <StyledAvatarImage
-                            src={avatar}
+                            src={user?.avatar}
                             height={50}
                             width={50}
                             alt="avatar"
                           />
                         ) : (
-                          <UserInitials>JD</UserInitials>
+                          <UserInitials>
+                            {user.lastname ? user?.lastname.substr(0, 1) : ''}
+                            {user.firstname ? user?.firstname.substr(0, 1) : ''}
+                          </UserInitials>
                         )}
 
-                        <UserName>John Doe</UserName>
+                        <UserName>
+                          {user?.lastname} {user?.firstname}
+                        </UserName>
                       </AvatarContainer>
                       <InfoBox>
+                        {/*
+                        <InfoText>{orderer?.email}</InfoText> */}
                         <Icon className="fa-solid fa-circle-info"></Icon>
-                        <InfoText>{orderer?.email}</InfoText>
+                        <SmallBtn onClick={() => resetOrderer()}>
+                          Log out
+                        </SmallBtn>
                       </InfoBox>
                     </>
                   )}

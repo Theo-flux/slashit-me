@@ -181,7 +181,7 @@ function JoinClique() {
     if (!getInfo) {
       let sendReq = await Login(userInfo);
       if (sendReq.success) {
-        setSession({ userInfo, token: sendReq.token });
+        setSession({ userInfo, token: sendReq.token, session: true });
         //Join Clique
         let join = await CliqueAccept(router.query?.token);
         if (join.success) {

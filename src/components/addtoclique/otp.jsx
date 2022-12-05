@@ -24,7 +24,7 @@ function Otp(props) {
     );
     if (sendReq.success) {
       let userInfo = sessionInfo.userInfo;
-      setSession({ userInfo, token: sendReq.token });
+      setSession({ userInfo, token: sendReq.token , session: true});
       props?.action(); //TODO call action() passeed to the OTP modal onSuccess
     } else {
       toast({ text: sendReq.message, textColor: '#fff' });

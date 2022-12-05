@@ -90,7 +90,7 @@ function OtpForm() {
     );
     if (sendReq.success) {
       let userInfo = sessionInfo.userInfo;
-      setSession({ userInfo, token: sendReq.token });
+      setSession({ userInfo, token: sendReq.token, session: true });
       const userReq = await FetchUserById();
       if (userReq.success) {
         dispatch(setUser(userReq.user));

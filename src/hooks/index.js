@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ping, SaveLoginCredentials } from '../api/userAPI';
 import {
+  setSession as setsession,
+  setSessionInfo,
+} from '../store/reducers/auth';
+import {
   setAnyTab,
   setExtraTab as setextratab,
   setAnyAction as setanyaction,
@@ -9,30 +13,31 @@ import {
 } from '../store/reducers/helper';
 
 export const useLocalStorage = () => {
-  const [session, newSession] = useState(false);
-  const [sessionInfo, newSessionInfo] = useState('');
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.userAuth.session);
+  const sessionInfo = useSelector((state) => state.userAuth.sessionInfo);
 
-  const setSession = async (props) => {
+  const setSession = (props) => {
+    dispatch(setsession(props?.session));
     if (props?.userInfo && props?.token) {
       const { userInfo, token } = props;
       SaveLoginCredentials(JSON.stringify({ ...userInfo, token }));
-      newSession(true);
     }
   };
 
   const ping = async () => {
     let req = await Ping();
     if (req.success) {
-      newSession(req.success);
+      //dispatch(setsession(req.success));
     } else {
-      newSession(req.success);
+      //dispatch(setsession(req.success));
     }
   };
 
   useEffect(() => {
     let storage = localStorage.getItem('userAuth');
     if (storage) {
-      newSessionInfo(JSON.parse(storage));
+      dispatch(setSessionInfo(JSON.parse(storage)));
     }
   }, []);
 
@@ -46,7 +51,7 @@ export const useToast = () => {
     showToast: false,
     showIcon: false,
     text: 'Invalid request',
-    duration: 10000,
+    duration: 18000,
   });
 
   function toast(option) {
