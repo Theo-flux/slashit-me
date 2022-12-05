@@ -32,7 +32,12 @@ export const InfoBox = styled.div`
   }
 `;
 
-export const InfoText = styled.p``;
+export const InfoText = styled.p`
+  margin-bottom: 1rem;
+  color: #00000070;
+  font-weight: 500;
+  font-size: 1.125rem;
+`;
 
 export const Orders = styled.div``;
 

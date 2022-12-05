@@ -329,7 +329,9 @@ function Orderer({}) {
                       )}
 
                       {isMailValidated && pass == statusCode.NOT_FOUND && (
-                        <>{'TODO -  Your Order 8 UI'}</>
+                        <>
+                          <InfoText>Johndoe@gmail.com</InfoText>
+                        </>
                       )}
                     </>
                   ) : (
