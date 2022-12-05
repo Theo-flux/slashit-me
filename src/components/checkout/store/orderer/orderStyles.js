@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Image from 'next/image';
 import { Row } from '../storeStyle';
 import { device } from '../../../../utils';
 
@@ -33,6 +34,13 @@ export const InfoBox = styled.div`
 `;
 
 export const InfoText = styled.p``;
+
+export const InfoMailText = styled.p`
+  margin-bottom: 1rem;
+  color: #00000070;
+  font-weight: 500;
+  font-size: 1.125rem;
+`;
 
 export const Orders = styled.div``;
 
@@ -128,5 +136,40 @@ export const ShippingPrice = styled.p`
 `;
 export const TotalPrice = styled.p`
   font-size: 1rem;
+  font-weight: 600;
+`;
+
+export const SmallBtn = styled.p`
+  color: var(--violet);
+  font-weight: 600;
+`;
+
+export const AvatarContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 1rem;
+`;
+
+export const UserInitials = styled.span`
+  width: 50px;
+  height: 50px;
+  background-color: #e4d8fd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1.125rem;
+  font-weight: 600;
+`;
+
+export const StyledAvatarImage = styled(Image)`
+  border-radius: 50%;
+`;
+
+export const UserName = styled.p`
+  margin-left: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
 `;

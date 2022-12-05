@@ -20,6 +20,7 @@ import {
   OrderSummary,
   InfoBox,
   InfoText,
+  InfoMailText,
   Orders,
   OrderItems,
   OrderedItem,
@@ -37,6 +38,11 @@ import {
   SubtotalPrice,
   ShippingPrice,
   TotalPrice,
+  SmallBtn,
+  AvatarContainer,
+  UserInitials,
+  StyledAvatarImage,
+  UserName,
 } from './orderStyles';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
@@ -127,6 +133,7 @@ function Orderer({}) {
   const [showSummary, setShowSummary] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const cards = useSelector((state) => state.transaction.cards);
+  const { avatar } = useSelector((state) => state.userAuth.user);
   const [error, setError] = useState({});
   const [orderer, setOrderer] = useState({
     email: '',
@@ -320,18 +327,39 @@ function Orderer({}) {
                           <InfoBox>
                             <Icon className="fa-solid fa-circle-info"></Icon>
                             <InfoText>{orderer?.email}</InfoText>
-                            {/* {"TODO - Not you button - onClick resetOrderer"} */}
+                            <SmallBtn onClick={() => resetOrderer()}>
+                              Not you?
+                            </SmallBtn>
                           </InfoBox>
                         </>
                       )}
 
                       {isMailValidated && pass == statusCode.NOT_FOUND && (
-                        <>{/* {"TODO -  "Your Order 8 UI" } */}</>
+                        <>
+                          <InfoMailText>Johndoe@gmail.com</InfoMailText>
+                        </>
                       )}
                     </>
                   ) : (
                     <>
-                      {/*TODO-Show "Your Order 6 (logged in user with user?.avatar ) or 7 UI - logged in user without avatar"*/}{' '}
+                      <AvatarContainer>
+                        {avatar ? (
+                          <StyledAvatarImage
+                            src={avatar}
+                            height={50}
+                            width={50}
+                            alt="avatar"
+                          />
+                        ) : (
+                          <UserInitials>JD</UserInitials>
+                        )}
+
+                        <UserName>John Doe</UserName>
+                      </AvatarContainer>
+                      <InfoBox>
+                        <Icon className="fa-solid fa-circle-info"></Icon>
+                        <InfoText>{orderer?.email}</InfoText>
+                      </InfoBox>
                     </>
                   )}
                 </Details>
