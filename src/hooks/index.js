@@ -10,6 +10,7 @@ import {
   setExtraTab as setextratab,
   setAnyAction as setanyaction,
   setAnySuccess as setanysuccess,
+  setLoading as setloading,
 } from '../store/reducers/helper';
 
 export const useLocalStorage = () => {
@@ -28,9 +29,9 @@ export const useLocalStorage = () => {
   const ping = async () => {
     let req = await Ping();
     if (req.success) {
-      //dispatch(setsession(req.success));
+      dispatch(setsession(req.success));
     } else {
-      //dispatch(setsession(req.success));
+      dispatch(setsession(req.success));
     }
   };
 
@@ -42,6 +43,22 @@ export const useLocalStorage = () => {
   }, []);
 
   return { session, setSession, sessionInfo, ping };
+};
+
+export const useLoading = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.helper.loading);
+  const setLoading = (loading) => {
+    dispatch(setloading(loading));
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(setloading(false));
+    },10000);
+  }, [loading]);
+
+  return [loading, setLoading];
 };
 
 export const useToast = () => {
