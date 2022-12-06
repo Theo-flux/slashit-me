@@ -28,9 +28,9 @@ export const useLocalStorage = () => {
   const ping = async () => {
     let req = await Ping();
     if (req.success) {
-      //dispatch(setsession(req.success));
+      dispatch(setsession(req.success));
     } else {
-      //dispatch(setsession(req.success));
+      dispatch(setsession(req.success));
     }
   };
 

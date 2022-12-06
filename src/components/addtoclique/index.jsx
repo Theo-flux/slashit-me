@@ -254,7 +254,7 @@ function JoinClique() {
 
   useEffect(() => {
     if (isMailValidated) {
-      setProgress('70%');
+      setProgress(1);
     }
   }, [isMailValidated]);
 
@@ -262,9 +262,7 @@ function JoinClique() {
     return (
       <Section>
         <Div>
-          <LoaderContainer>
-            <Loader />
-          </LoaderContainer>
+          <ProgressBar loading={loading} />
         </Div>
       </Section>
     );
@@ -272,7 +270,7 @@ function JoinClique() {
   return (
     <Section>
       <PositionDiv>
-        <ProgressBar meter={progress} />
+        <ProgressBar loading={loading} />
       </PositionDiv>
       <Div>
         <Toast options={toastOptions} />
