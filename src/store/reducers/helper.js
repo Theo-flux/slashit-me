@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  loading: false,
   filterSearchPhrase: '',
   dateFilterParams: null,
   cliqueUserSelected: null,
@@ -26,6 +27,10 @@ const helperSlice = createSlice({
   name: 'helper',
   initialState,
   reducers: {
+    //Set loading
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
     //Set Filter Search Phrase
     setFilterSearchPhrase: (state, action) => {
       state.filterSearchPhrase = action.payload;
@@ -82,6 +87,7 @@ const helperSlice = createSlice({
 });
 
 export const {
+  setLoading,
   setFilterSearchPhrase,
   setCliqueUserSelected,
   setDateFilterParams,

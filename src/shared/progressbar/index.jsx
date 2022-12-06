@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Progress, Bar } from './progressStyles';
 
-export const ProgressBar = ({ bgColor, loading }) => {
+export const ProgressBar = ({ bgColor }) => {
+  const loading = useSelector((state) => state.helper.loading);
   const [meter, setMeter] = useState(1);
 
   useEffect(() => {

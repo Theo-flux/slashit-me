@@ -35,7 +35,8 @@ import {
 import statusCode from '../../api/statusCode';
 import { useDispatch, useSelector } from 'react-redux';
 import { setComputerInfo } from '../../store/reducers/auth';
-import { useLocalStorage, useToast } from '../../hooks';
+import { useLoading, useLocalStorage, useToast } from '../../hooks';
+import Layout from '../../containers/Layout';
 
 // const members = [
 //   {
@@ -87,8 +88,7 @@ function JoinClique() {
     password: '',
   });
   const [error, setError] = useState({});
-  const [progress, setProgress] = useState('0%');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useLoading();
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
   const [toastOptions, toast] = useToast();
@@ -216,7 +216,6 @@ function JoinClique() {
   async function verifyCliqueAccessToken(token) {
     setLoading(true);
     let sendReq = await VerifyCAT(token);
-    console.log(sendReq);
     if (sendReq.success) {
       setInviter(sendReq.user);
       setMembers(sendReq.cliqueActive);
@@ -252,97 +251,91 @@ function JoinClique() {
     };
   }, [router.query]);
 
-  useEffect(() => {
-    if (isMailValidated) {
-      setProgress(1);
-    }
-  }, [isMailValidated]);
 
   if (!inviter)
     return (
-      <Section>
-        <Div>
-          <ProgressBar loading={loading} />
-        </Div>
-      </Section>
+  
+        <Section>
+          <Div></Div>
+        </Section>
+
     );
 
   return (
-    <Section>
-      <PositionDiv>
-        <ProgressBar loading={loading} />
-      </PositionDiv>
-      <Div>
-        <Toast options={toastOptions} />
-        <CliqueDiv>
-          <SmallText>
-            Only join this Clique if you have a close relationship with{''}
-            {inviter?.lastname} {inviter?.firstname}
-          </SmallText>
+ 
+      <Section>
+        <PositionDiv></PositionDiv>
+        <Div>
+          <Toast options={toastOptions} />
+          <CliqueDiv>
+            <SmallText>
+              Only join this Clique if you have a close relationship with{''}
+              {inviter?.lastname} {inviter?.firstname}
+            </SmallText>
 
-          <Wrapper>
-            <StyledTitle>
-              {inviter?.lastname} {inviter?.firstname} wants you to join their
-              Clique on Slashit
-            </StyledTitle>
-            <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
+            <Wrapper>
+              <StyledTitle>
+                {inviter?.lastname} {inviter?.firstname} wants you to join their
+                Clique on Slashit
+              </StyledTitle>
+              <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
 
-            <CliqueMembers>
-              {members?.map((member, _) => {
-                const { firstname, lastname, avatar } = member;
-                return (
-                  <Member key={member._id}>
-                    <Image
-                      src={avatar}
-                      height={55}
-                      width={55}
-                      alt={`${firstname} ${lastname}`}
-                    />
-                    <Name>{`${firstname} ${lastname}`}</Name>
-                  </Member>
-                );
-              })}
-            </CliqueMembers>
-
-            {isMailValidated ? (
-              <Details>
-                {details.slice(1).map((detail, index) => {
-                  const { id, name, type, legend } = detail;
+              <CliqueMembers>
+                {members?.map((member, _) => {
+                  const { firstname, lastname, avatar } = member;
                   return (
-                    <InputContainer
-                      key={index}
-                      name={name}
-                      type={type}
-                      legend={legend}
-                      id={id}
-                      onChange={(e) => handleMemberFormOnchange(e)}
-                      error={error?.[`${name}`]}
-                    />
+                    <Member key={member._id}>
+                      <Image
+                        src={avatar}
+                        height={55}
+                        width={55}
+                        alt={`${firstname} ${lastname}`}
+                      />
+                      <Name>{`${firstname} ${lastname}`}</Name>
+                    </Member>
                   );
                 })}
+              </CliqueMembers>
 
-                <Button
-                  onClick={() => handlePasswordSubmit()}
-                  width={'100%'}
-                  bg={`var(--violet)`}
-                  type="filled"
-                >
-                  Confirm
-                </Button>
-              </Details>
-            ) : (
-              <Details>
-                <InputContainer
-                  name="email"
-                  type="email"
-                  legend="Enter your Email"
-                  id="email"
-                  onChange={(e) => handleMemberFormOnchange(e)}
-                  error={error?.email}
-                />
+              {isMailValidated ? (
+                <Details>
+                  {details.slice(1).map((detail, index) => {
+                    const { id, name, type, legend } = detail;
+                    return (
+                      <InputContainer
+                        key={index}
+                        name={name}
+                        type={type}
+                        legend={legend}
+                        id={id}
+                        onChange={(e) => handleMemberFormOnchange(e)}
+                        error={error?.[`${name}`]}
+                      />
+                    );
+                  })}
 
-                <Checker
-                  content={`
+                  <Button
+                    onClick={() => handlePasswordSubmit()}
+                    width={'100%'}
+                    bg={`var(--violet)`}
+                    type="filled"
+                  >
+                    Confirm
+                  </Button>
+                </Details>
+              ) : (
+                <Details>
+                  <InputContainer
+                    name="email"
+                    type="email"
+                    legend="Enter your Email"
+                    id="email"
+                    onChange={(e) => handleMemberFormOnchange(e)}
+                    error={error?.email}
+                  />
+
+                  <Checker
+                    content={`
                     By continuing, you agree to Slashit’s
                     terms of use and privacy policy.
                     We may send reminders about debts on your account
@@ -350,23 +343,24 @@ function JoinClique() {
                     any debts on their account. 
                     We may also charge their debts to you at anytime when they don't pay on time.
                 `}
-                />
-                <Button
-                  onClick={() => {
-                    handleEmailSubmit();
-                  }}
-                  width={'100%'}
-                  bg={`var(--violet)`}
-                  type="filled"
-                >
-                  Join now
-                </Button>
-              </Details>
-            )}
-          </Wrapper>
-        </CliqueDiv>
-      </Div>
-    </Section>
+                  />
+                  <Button
+                    onClick={() => {
+                      handleEmailSubmit();
+                    }}
+                    width={'100%'}
+                    bg={`var(--violet)`}
+                    type="filled"
+                  >
+                    Join now
+                  </Button>
+                </Details>
+              )}
+            </Wrapper>
+          </CliqueDiv>
+        </Div>
+      </Section>
+
   );
 }
 
