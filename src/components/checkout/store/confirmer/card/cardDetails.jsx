@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FetchCards,
@@ -21,12 +21,23 @@ import {
   setPreferredCard,
 } from '../../../../../store/reducers/transaction';
 import { AddCard } from '../../../../../api/transactionAPI';
-import { setAnyTab, setCardData } from '../../../../../store/reducers/helper';
+import { setCardData } from '../../../../../store/reducers/helper';
 import { Button } from '../../../../../shared';
 import { ButtonWrapper } from '../../storeStyle';
 import statusCode from '../../../../../api/statusCode';
+import { useTabs } from '../../../../../hooks';
 
 function CardDetails() {
+  const {
+    activeTab,
+    anyAction,
+    extraTab,
+    anySuccess,
+    setActiveTab,
+    setAnyAction,
+    setExtraTab,
+  } = useTabs();
+
   let toastMsg = '';
   const dispatch = useDispatch();
   const [data, setData] = useState('');
@@ -184,14 +195,13 @@ function CardDetails() {
         }
       } else {
         fetchUser();
-        dispatch(
-          setAnyTab({
-            page: 'Confirmer',
-            params: {
-              code: statusCode.OK,
-            },
-          }),
-        );
+        setActiveTab({
+          page: 'Confirmer',
+          params: {
+            code: statusCode.OK,
+          },
+        });
+
         cleanUp();
       }
     } else {
@@ -236,14 +246,13 @@ function CardDetails() {
         }
       } else {
         fetchUser();
-        dispatch(
-          setAnyTab({
-            page: 'Confirmer',
-            params: {
-              code: statusCode.OK,
-            },
-          }),
-        );
+
+        setActiveTab({
+          page: 'Confirmer',
+          params: {
+            code: statusCode.OK,
+          },
+        });
         cleanUp();
       }
     } else {
@@ -259,14 +268,12 @@ function CardDetails() {
     const msg = await AddCard(data?.initiateChargeId, OTP);
     if (msg.success) {
       fetchUser();
-      dispatch(
-        setAnyTab({
-          page: 'Confirmer',
-          params: {
-            code: statusCode.OK,
-          },
-        }),
-      );
+      setActiveTab({
+        page: 'Confirmer',
+        params: {
+          code: statusCode.OK,
+        },
+      });
       cleanUp();
     } else {
       toastMsg = msg.message || '';
@@ -287,7 +294,7 @@ function CardDetails() {
       ipAddress: computerInfo.ip,
     });
     if (register.success) {
-      dispatch(setAnyTab({ page: 'VerifyEmailNext', params: {} }));
+      setActiveTab({ page: 'VerifyEmailNext', params: {} });
     } else {
       toastMsg = register.message;
     }

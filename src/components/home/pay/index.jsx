@@ -3,13 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import statusCode from '../../../api/statusCode';
 import { FetchCards, PayAnyone } from '../../../api/transactionAPI';
-import {
-  Login,
-  SaveLoginCredentials,
-  ShopperExist,
-  VerifyEmail,
-} from '../../../api/userAPI';
+import { Login, ShopperExist, VerifyEmail } from '../../../api/userAPI';
 import { addDays } from '../../../helpers/dates';
+import { useLocalStorage, useToast } from '../../../hooks';
 import { Button, InputContainer } from '../../../shared';
 import { setEmail, setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import { setAnyAction } from '../../../store/reducers/helper';
@@ -26,7 +22,8 @@ function Pay(props) {
   let toastMsg = '';
   const [loading, setLoading] = useState(false); //Use circular loading indicator
   const [isMailValidated, setIsMailValidated] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession } = useLocalStorage();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [error, setError] = useState('');
   const [mode, setMode] = useState(''); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
@@ -109,10 +106,7 @@ function Pay(props) {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      SaveLoginCredentials(
-        JSON.stringify({ ...userInfo, token: sendReq.token }),
-      );
-      dispatch(setIsLoggedIn(true));
+      setSession({ userInfo, token: sendReq.token, session: true });
       dispatch(setUser(sendReq.user));
       let cardReq = await FetchCards((showFew = true));
       if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
@@ -121,7 +115,7 @@ function Pay(props) {
         );
       }
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
     return;
@@ -148,14 +142,6 @@ function Pay(props) {
       }
     }
   }
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
-
   function resetBox() {
     setMode('');
     dispatch(setEmail());

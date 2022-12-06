@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  FetchUserById,
-  SaveLoginCredentials,
-  VerifyEmail,
-} from '../../../api/userAPI';
+import { FetchUserById, VerifyEmail } from '../../../api/userAPI';
+import { useLocalStorage, useToast } from '../../../hooks';
 import { OtpInputContainer } from '../../../shared';
 import { setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import {
@@ -54,7 +51,8 @@ function OtpForm() {
   const [otpData, setOtpData] = useState(['']);
   const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { setSession, sessionInfo } = useLocalStorage();
 
   function handleOtpOnChange(event, index) {
     const { value } = event.target;
@@ -91,7 +89,8 @@ function OtpForm() {
       (platform = 'web'),
     );
     if (sendReq.success) {
-      SaveLoginCredentials(JSON.stringify({ token: sendReq.token }));
+      let userInfo = sessionInfo.userInfo;
+      setSession({ userInfo, token: sendReq.token, session: true });
       const userReq = await FetchUserById();
       if (userReq.success) {
         dispatch(setUser(userReq.user));
@@ -99,7 +98,7 @@ function OtpForm() {
       dispatch(setIsLoggedIn(true));
       //TODO - Link to "Sign up 11" Preparing your brand new dashboard
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
   }
@@ -112,13 +111,6 @@ function OtpForm() {
     if (otpData.length === 4) {
     }
   }, [otpData]);
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
 
   return (
     <FormContainer>

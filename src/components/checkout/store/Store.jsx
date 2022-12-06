@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setComputerInfo,
   setEmail,
-  setIsLoggedIn,
   setUser,
 } from '../../../store/reducers/auth';
 import { AmountSeparator } from '../../../helpers/numberValidation';
@@ -34,49 +33,43 @@ import {
   setOrderDetails,
   setPreferredCard,
 } from '../../../store/reducers/transaction';
-import {
-  Login,
-  SaveLoginCredentials,
-  ShopperExist,
-} from '../../../api/userAPI';
+import { Login, ShopperExist } from '../../../api/userAPI';
 import statusCode from '../../../api/statusCode';
-import {
-  setAnyAction,
-  setAnyTab,
-  setExtraTab,
-} from '../../../store/reducers/helper';
 import CardDetails from './confirmer/card/cardDetails';
 import Success from './success/Success';
 import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addDays } from '../../../helpers/dates';
-
-const extra = ['VerifyEmail', 'VerifyEmailNext', 'Card', 'Success'];
+import { useLocalStorage, useTabs } from '../../../hooks';
 
 function Store() {
   const parser = new UAParser();
   const { vendor, model, type } = parser.getDevice();
   const { name, version } = parser.getOS();
   const router = useRouter();
-  let toastMsg = '';
+
+  const {
+    activeTab,
+    anyAction,
+    extraTab,
+    anySuccess,
+    setActiveTab,
+    setAnyAction,
+    setExtraTab,
+    setAnySuccess,
+  } = useTabs();
 
   const dispatch = useDispatch();
-  const [openOrder, setOpenOrder] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const { session, } = useLocalStorage();
   const inputEmail = useSelector((state) => state.userAuth.userEmail);
-  const activeTab = useSelector((state) => state.helper.anyTab);
-  const extraTab = useSelector((state) => state.helper.extraTab);
-  const anyAction = useSelector((state) => state.helper.anyAction);
-  const anySuccess = useSelector((state) => state.helper.anySuccess);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
   const scheduleSelected = useSelector(
     (state) => state.helper.scheduleSelected,
   );
-  let platform = `${vendor} ${model}, ${type}`;
+  let platform = vendor && model && type ? `${vendor} ${model}, ${type}` : '';
   let os = `${name} ${version}`;
   let splitIn3 = (orderDetails?.amount / 3).toFixed(2);
 
@@ -133,10 +126,14 @@ function Store() {
   }, [platform, os]);
 
   useEffect(() => {
+    GetComputerIp();
+  }, []);
+
+  useEffect(() => {
     return () => {
       setLoading(false);
       dispatch(setOrderDetails());
-      dispatch(setAnyTab());
+      setActiveTab();
     };
   }, []);
 
@@ -173,64 +170,66 @@ function Store() {
     if (!activeTab) {
       //If input email
       if (inputEmail) {
-        if (isLoggedIn) {
-          dispatch(
-            setAnyTab({
-              page: 'Confirmer',
-              params: {
-                scheduleSelected,
-                schedule:
-                  scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
-              },
-            }),
-          );
+        if (session) {
+          setActiveTab({
+            page: 'Confirmer',
+            params: {
+              scheduleSelected,
+              schedule:
+                scheduleSelected == 'PayIn4' ? scheduleIn4 : scheduleIn3,
+            },
+          });
+
           return;
         } else {
-          dispatch(
-            setExtraTab({
-              page: 'CardDetails',
-            }),
-          );
+          setExtraTab({
+            page: 'CardDetails',
+          });
           return;
         }
       } else {
-        dispatch(
-          setAnyTab({
-            page: 'Orderer',
-          }),
-        );
-        dispatch(setAnyAction(true));
+        setActiveTab({
+          page: 'Orderer',
+        });
+        setAnyAction(true);
         setTimeout(() => {
-          dispatch(setAnyAction(false));
+          setAnyAction(false);
         }, 50);
         return;
       }
     }
 
-    //Navigate to Scheduler if activeTab.page is Orderer
+    //activeTab.page is Orderer
     if (activeTab?.page == 'Orderer') {
       if (inputEmail) {
-        dispatch(
-          setAnyTab({
+        if (session) {
+          setActiveTab({
             page: 'Scheduler',
-          }),
-        );
-        return;
+            params: {},
+          });
+          console.log('lala')
+          return;
+        } else {
+          setAnyAction(true);
+          setTimeout(() => {
+            setAnyAction(false);
+          }, 50);
+          console.log('lal2')
+          return;
+        }
       } else {
-        dispatch(setAnyAction(true));
+        setAnyAction(true);
         setTimeout(() => {
-          dispatch(setAnyAction(false));
+          setAnyAction(false);
         }, 50);
         return;
       }
     }
     //Navigate to Confimer if activeTab.page is Scheduler
     if (activeTab?.page == 'Scheduler') {
-      dispatch(
-        setAnyTab({
-          page: 'Confirmer',
-        }),
-      );
+      setActiveTab({
+        page: 'Confirmer',
+      });
       return;
     }
   }
@@ -239,7 +238,7 @@ function Store() {
     createOrder();
   }, [router?.query]);
 
-  console.log(router?.query, 'method');
+  console.log(inputEmail,session, 'passed store' );
 
   return (
     <StoreContainer>

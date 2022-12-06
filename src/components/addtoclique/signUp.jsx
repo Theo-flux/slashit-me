@@ -5,7 +5,6 @@ import statusCode from '../../api/statusCode';
 import {
   CliqueAccept,
   Register,
-  SaveLoginCredentials,
 } from '../../api/userAPI';
 
 function SignUp() {

@@ -9,13 +9,13 @@ const initialState = {
   userLastname: null,
   userBirthday: null,
   userPassword: null,
-  session: 'inactive',
+  session: false,
+  sessionInfo: null,
   authCode: null,
   profileUpdate: {},
   user: {
     country: null,
     avatar: null,
-    business: null,
   },
   clique: {
     cliqueReceived: [],
@@ -90,6 +90,10 @@ const authSlice = createSlice({
     setSession: (state, action) => {
       state.session = action.payload;
     },
+    //Set Session Info
+    setSessionInfo: (state, action) => {
+      state.sessionInfo = action.payload;
+    },
     //Set Computer Info
     setComputerInfo: (state, action) => {
       state.computerInfo = action.payload;
@@ -99,8 +103,8 @@ const authSlice = createSlice({
       state.isLoggedIn = action.payload;
     },
     //Set Signup info
-    setSignUpInfo :(state , action) =>  {
-      state.signUpInfo = action.payload
+    setSignUpInfo: (state, action) => {
+      state.signUpInfo = action.payload;
     },
   },
 });
@@ -119,9 +123,10 @@ export const {
   setClique,
   setPhoneVerified,
   setSession,
+  setSessionInfo,
   setComputerInfo,
   setIsLoggedIn,
-  setSignUpInfo
+  setSignUpInfo,
 } = authSlice.actions;
 
 export default authSlice.reducer;

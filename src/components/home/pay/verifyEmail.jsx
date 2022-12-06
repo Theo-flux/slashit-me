@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  FetchUserById,
-  SaveLoginCredentials,
-  VerifyEmail,
-} from '../../../api/userAPI';
+import { FetchUserById, VerifyEmail } from '../../../api/userAPI';
 import { FetchCards, PayAnyone } from '../../../api/transactionAPI';
 import statusCode from '../../../api/statusCode';
 import { setPreferredCard } from '../../../store/reducers/transaction';
 import { setIsLoggedIn, setUser } from '../../../store/reducers/auth';
+import { useLocalStorage, useToast } from '../../../hooks';
 
 function EnterEmailCode(props) {
   let toastMsg = '';
@@ -17,15 +14,9 @@ function EnterEmailCode(props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
-  const [showToast, setShowToast] = useState(false);
+  const [toastOptions, toast] = useToast();
+  const { sessionInfo } = useLocalStorage();
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
 
   async function verify() {
     setLoading(true);
@@ -37,15 +28,13 @@ function EnterEmailCode(props) {
       (platform = 'web'),
     );
     if (sendReq.success) {
-      SaveLoginCredentials(JSON.stringify({ token: sendReq.token }));
+      let userInfo = sessionInfo.userInfo;
+      setSession({ userInfo, token: sendReq.token, session: true });
 
       const userReq = await FetchUserById();
       if (userReq.success) {
         dispatch(setUser(userReq.user));
       }
-
-      dispatch(setIsLoggedIn(true));
-
       let cardReq = await FetchCards(true);
       if (cardReq.success && cardReq.result && cardReq.result.length > 0) {
         dispatch(
@@ -55,7 +44,7 @@ function EnterEmailCode(props) {
         props.setMode('');
       }
     } else {
-      toastMsg = sendReq.message;
+      toast({ text: sendReq.message, textColor: '#fff' });
     }
     setLoading(false);
   }
