@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FetchCards,
@@ -19,6 +18,7 @@ import {
 import { AddCard } from '../../../api/transactionAPI';
 import { ButtonWrapper } from '../../checkout/store/storeStyle';
 import { Button } from '../../../shared';
+import { CardForm } from '../../forms';
 
 function CardDetails(props) {
   let toastMsg = '';
@@ -305,17 +305,18 @@ function CardDetails(props) {
   }
 
   return (
-    <div>
+    <>
       {/* {Card number} */}
       {/* {Card expiry} */}
       {/* {Card cvv} */}
       {/* {if isLoggedIn, hide firstname, lastname field and hide this text "We'll use your name to create an account for you on Slashit, so be real"} */}
+
       <ButtonWrapper>
         <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
           {buttonTitle}
         </Button>
       </ButtonWrapper>
-    </div>
+    </>
   );
 }
 

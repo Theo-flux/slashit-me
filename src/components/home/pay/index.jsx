@@ -33,7 +33,7 @@ import {
   Date,
   Intsallment4,
   Aligner,
-  ChargedToRow
+  ChargedToRow,
 } from './payStyles';
 import Pin from './pin';
 import Redirect from './redirect';
@@ -127,7 +127,7 @@ function Pay(props) {
   const { setSession } = useLocalStorage();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [error, setError] = useState('');
-  const [mode, setMode] = useState(''); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
+  const [mode, setMode] = useState('SUCCESS'); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const [form, setForm] = useState({
@@ -252,12 +252,14 @@ function Pay(props) {
 
   if (mode == 'CARD_DETAILS')
     return (
-      <CardDetails
-        mode={mode}
-        setMode={setMode}
-        isLoggedIn={isLoggedIn}
-        resetBox={resetBox}
-      />
+      <PayForm>
+        <CardDetails
+          mode={mode}
+          setMode={setMode}
+          isLoggedIn={isLoggedIn}
+          resetBox={resetBox}
+        />
+      </PayForm>
     ); //CARD DETAILS UI
 
   if (mode == 'VERIFY_EMAIL')
@@ -312,12 +314,14 @@ function Pay(props) {
 
   if (mode == 'SUCCESS')
     return (
-      <Success
-        mode={mode}
-        setMode={setMode}
-        isLoggedIn={isLoggedIn}
-        resetBox={resetBox}
-      />
+      <PayForm>
+        <Success
+          mode={mode}
+          setMode={setMode}
+          isLoggedIn={isLoggedIn}
+          resetBox={resetBox}
+        />
+      </PayForm>
     ); //SUCCESS UI
 
   // const scheduleIn4 = [
@@ -403,7 +407,12 @@ function Pay(props) {
             <Row>
               <div>Charged to</div>
               <ChargedToRow>
-                <Image src={'/images/mastercard logo.svg'} height={30} width={30} alt="card" />
+                <Image
+                  src={'/images/mastercard logo.svg'}
+                  height={30}
+                  width={30}
+                  alt="card"
+                />
                 <div>••••4242</div>
                 <div> 09/2026</div>
               </ChargedToRow>
