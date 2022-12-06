@@ -47,7 +47,7 @@ const Message = styled.p`
   margin: 2rem 0;
 `;
 
-function Success(props) {
+function Success({ resetBox }) {
   const anyAction = useSelector((state) => state.helper.anyAction);
 
   return (
@@ -56,11 +56,12 @@ function Success(props) {
       {/* {TODO - Show Checkmark} */}
       {/* {TODO - Show anyAction?.message} */}
       {/* {TODO - Pay another} props.resetBox() on button click*/}
-      <IconCancel className="ri-close-fill" />
+      
+      <IconCancel onClick={() => resetBox()} className="ri-close-fill" />
       <Inner>
         <IconCheck className="ri-checkbox-circle-fill" />
-        <Message>We’ll pay NGN 8,000.00 to johnsamuel@gmail.com</Message>
-        <Button bg={`var(--violet)`} width={`100%`}>
+        <Message>{anyAction?.message}</Message>
+        <Button onClick={() => resetBox()} bg={`var(--violet)`} width={`100%`}>
           Pay another
         </Button>
       </Inner>
