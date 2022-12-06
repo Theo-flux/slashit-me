@@ -1,6 +1,10 @@
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from 'react-circular-progressbar';
 import statusCode from '../../../api/statusCode';
 import { FetchCards, PayAnyone } from '../../../api/transactionAPI';
 import { Login, ShopperExist, VerifyEmail } from '../../../api/userAPI';
@@ -12,15 +16,112 @@ import { setAnyAction } from '../../../store/reducers/helper';
 import { setPreferredCard } from '../../../store/reducers/transaction';
 import CardDetails from './cardDetails';
 import Otp from './otp';
-import { PayForm, PaySection, InfoBox, Icon, Row, Col } from './payStyles';
+import {
+  PayForm,
+  PaySection,
+  InfoBox,
+  Icon,
+  Row,
+  Col,
+  InfoBoxRow,
+  InfoText,
+  SmallBtn,
+  IntsallmentsContainer,
+  ProgressText,
+  CardContainer,
+  Amount,
+  Date,
+  Intsallment4,
+  Aligner,
+  ChargedToRow,
+} from './payStyles';
 import Pin from './pin';
 import Redirect from './redirect';
 import Success from './success';
+
+const scheduleIn4 = [
+  {
+    value: '25',
+    text: '1',
+    amount: 'NGN 2,000.00',
+    date: `Due today`,
+  },
+  {
+    value: '50',
+    text: '2',
+    amount: 'NGN 2,000.00',
+    date: `Due Sept 24`,
+  },
+  {
+    value: '75',
+    text: '3',
+    amount: 'NGN 2,000.00',
+    date: `Due Oct 8`,
+  },
+  {
+    value: '100',
+    text: '4',
+    amount: 'NGN 2,000.00',
+    date: `Due Oct 22`,
+  },
+];
+
+const Card = ({ data }) => {
+  const { value, text, amount, date } = data;
+  return (
+    <CardContainer>
+      <div>
+        <Date>{date}</Date>
+        <Amount>{amount}</Amount>
+      </div>
+
+      <div
+        style={{
+          width: '50px',
+          height: '50px',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <CircularProgressbarWithChildren
+            value={value}
+            strokeWidth={5}
+            styles={buildStyles({
+              strokeLinecap: 'round',
+              pathColor: `#1d1d1d`,
+              trailColor: 'white',
+            })}
+          >
+            <Aligner>
+              <ProgressText>
+                {text}
+                <sup>
+                  {text === '1'
+                    ? 'st'
+                    : text === '2'
+                    ? 'nd'
+                    : text === '3'
+                    ? 'rd'
+                    : 'th'}
+                </sup>
+              </ProgressText>
+            </Aligner>
+          </CircularProgressbarWithChildren>
+        </div>
+      </div>
+    </CardContainer>
+  );
+};
 
 function Pay(props) {
   const dispatch = useDispatch();
   let toastMsg = '';
   const [loading, setLoading] = useState(false); //Use circular loading indicator
+  const [showInstallments, setShowInstallments] = useState(false);
   const [isMailValidated, setIsMailValidated] = useState(false);
   const [toastOptions, toast] = useToast();
   const { setSession } = useLocalStorage();
@@ -151,12 +252,14 @@ function Pay(props) {
 
   if (mode == 'CARD_DETAILS')
     return (
-      <CardDetails
-        mode={mode}
-        setMode={setMode}
-        isLoggedIn={isLoggedIn}
-        resetBox={resetBox}
-      />
+      <PayForm>
+        <CardDetails
+          mode={mode}
+          setMode={setMode}
+          isLoggedIn={isLoggedIn}
+          resetBox={resetBox}
+        />
+      </PayForm>
     ); //CARD DETAILS UI
 
   if (mode == 'VERIFY_EMAIL')
@@ -211,32 +314,34 @@ function Pay(props) {
 
   if (mode == 'SUCCESS')
     return (
-      <Success
-        mode={mode}
-        setMode={setMode}
-        isLoggedIn={isLoggedIn}
-        resetBox={resetBox}
-      />
+      <PayForm>
+        <Success
+          mode={mode}
+          setMode={setMode}
+          isLoggedIn={isLoggedIn}
+          resetBox={resetBox}
+        />
+      </PayForm>
     ); //SUCCESS UI
 
-  const scheduleIn4 = [
-    {
-      amount: (form.amount / 4).toFixed(2),
-      date: `Due today`,
-    },
-    {
-      amount: (form.amount / 4).toFixed(2),
-      date: `Due ${addDays(14, 'MMM DD')}`,
-    },
-    {
-      amount: (form.amount / 4).toFixed(2),
-      date: `Due ${addDays(28, 'MMM DD')}`,
-    },
-    {
-      amount: (form.amount / 4).toFixed(2),
-      date: `Due ${addDays(42, 'MMM DD')}`,
-    },
-  ];
+  // const scheduleIn4 = [
+  //   {
+  //     amount: (form.amount / 4).toFixed(2),
+  //     date: `Due today`,
+  //   },
+  //   {
+  //     amount: (form.amount / 4).toFixed(2),
+  //     date: `Due ${addDays(14, 'MMM DD')}`,
+  //   },
+  //   {
+  //     amount: (form.amount / 4).toFixed(2),
+  //     date: `Due ${addDays(28, 'MMM DD')}`,
+  //   },
+  //   {
+  //     amount: (form.amount / 4).toFixed(2),
+  //     date: `Due ${addDays(42, 'MMM DD')}`,
+  //   },
+  // ];
 
   return (
     <PayForm>
@@ -269,12 +374,12 @@ function Pay(props) {
         )}
 
         {isMailValidated ? (
-          <InfoBox>
+          <InfoBoxRow>
             <Icon className="fa-solid fa-circle-info"></Icon>
-            {form?.email}
-          </InfoBox>
+            <InfoText>{form?.email}</InfoText>
+            <SmallBtn>Not you?</SmallBtn>
+          </InfoBoxRow>
         ) : (
-          //TODO -Add buton "Not you", to reset isMailValidated to false
           <InfoBox>
             <Icon className="fa-solid fa-circle-info"></Icon>
             Use your Slashit email address if you have a Slashit account
@@ -283,7 +388,7 @@ function Pay(props) {
       </PaySection>
 
       <PaySection>
-        <Row>
+        <Row onClick={() => setShowInstallments(!showInstallments)}>
           <div>How you’ll pay</div>
           <div>
             4 x installments <i className="fa-solid fa-caret-down"></i>
@@ -291,6 +396,29 @@ function Pay(props) {
         </Row>
 
         {/* {TODO - If preferredCard, show Charged to card number and expiry here} */}
+        {showInstallments && (
+          <IntsallmentsContainer>
+            <Intsallment4>
+              {scheduleIn4.map((data, index) => {
+                return <Card key={index} data={data} />;
+              })}
+            </Intsallment4>
+
+            <Row>
+              <div>Charged to</div>
+              <ChargedToRow>
+                <Image
+                  src={'/images/mastercard logo.svg'}
+                  height={30}
+                  width={30}
+                  alt="card"
+                />
+                <div>••••4242</div>
+                <div> 09/2026</div>
+              </ChargedToRow>
+            </Row>
+          </IntsallmentsContainer>
+        )}
 
         <Row>
           <div>Recipient gets within minutes</div>
