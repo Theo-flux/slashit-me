@@ -23,6 +23,10 @@ export const LoadRing = styled.div`
   position: relative;
   width: 80px;
   height: 80px;
+  /* border: 1px solid magenta; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   & div {
     box-sizing: border-box;
@@ -31,7 +35,7 @@ export const LoadRing = styled.div`
     width: 40px;
     height: 40px;
     margin: 8px;
-    border: 5px solid #fcf;
+    border: 2px solid #fcf;
     border-radius: 50%;
     animation: ${ldsring} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: var(--violet) transparent transparent transparent;

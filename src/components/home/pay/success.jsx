@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../../shared';
 
-const SuccessContainer = styled.div`
+export const SuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +11,7 @@ const SuccessContainer = styled.div`
   height: 100%;
 `;
 
-const Inner = styled.div`
+export const Inner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,9 +19,9 @@ const Inner = styled.div`
   height: 100%;
 `;
 
-const Icon = styled.i``;
+export const Icon = styled.i``;
 
-const IconCancel = styled(Icon)`
+export const IconCancel = styled(Icon)`
   align-self: flex-end;
   background-color: white;
   color: var(--silver);
@@ -36,12 +36,12 @@ const IconCancel = styled(Icon)`
     drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 `;
 
-const IconCheck = styled(Icon)`
+export const IconCheck = styled(Icon)`
   color: var(--violet);
   font-size: 7rem;
 `;
 
-const Message = styled.p`
+export const Message = styled.p`
   text-align: center;
   font-weight: 600;
   margin: 2rem 0;
@@ -52,11 +52,6 @@ function Success({ resetBox }) {
 
   return (
     <SuccessContainer>
-      {/* {TODO - Show Cancel button} props.resetBox() on button click */}
-      {/* {TODO - Show Checkmark} */}
-      {/* {TODO - Show anyAction?.message} */}
-      {/* {TODO - Pay another} props.resetBox() on button click*/}
-      
       <IconCancel onClick={() => resetBox()} className="ri-close-fill" />
       <Inner>
         <IconCheck className="ri-checkbox-circle-fill" />

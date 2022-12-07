@@ -17,14 +17,85 @@ import {
 } from '../../../store/reducers/transaction';
 import { AddCard } from '../../../api/transactionAPI';
 import { ButtonWrapper } from '../../checkout/store/storeStyle';
-import { Button } from '../../../shared';
 import { CardForm } from '../../forms';
+import {
+  CardInputContainer,
+  InputContainer,
+  Checker,
+  Button,
+} from '../../../shared';
+import {
+  Column,
+  StyledTitle,
+  StyledText,
+  CardBox,
+  CardDetails,
+  InnerBoxRow,
+  StyledImage,
+  ContentText,
+  CardNumber,
+  CardExpiry,
+} from '../../forms/formStyles';
+import {
+  PayForm,
+  Container,
+  InnerContainer,
+  IconCancel,
+  ContainerRow,
+} from './payStyles';
+import EnterEmailCode from './verifyEmail';
 
-function CardDetails(props) {
+const cardItems = [
+  {
+    id: 'card_number',
+    name: 'cardNumber',
+    type: 'text',
+    src: '/images/card_number.svg',
+    placeholder: 'xxxx xxxx xxxx xxxx',
+    legend: 'Card number',
+    maxlength: 19,
+  },
+
+  {
+    id: 'card_expiry',
+    name: 'cardExpiry',
+    type: 'text',
+    src: '/images/card_expiry.svg',
+    placeholder: '01/22',
+    legend: 'Expiry',
+    maxlength: 5,
+  },
+
+  {
+    id: 'card_cvv',
+    name: 'cardCvv',
+    type: 'text',
+    src: '/images/card_cvv.svg',
+    placeholder: '123',
+    legend: 'CVV',
+    maxlength: 3,
+  },
+];
+
+const personal_item = [
+  {
+    type: 'text',
+    legend: 'First Name',
+    id: 'first_name',
+    name: 'firstname',
+  },
+
+  {
+    type: 'text',
+    legend: 'Last Name',
+    id: 'last_name',
+    name: 'lastname',
+  },
+];
+
+function CardDetailsCmpt({ mode, setMode, resetBox }) {
   let toastMsg = '';
   const dispatch = useDispatch();
-  const mode = props.mode;
-  const setMode = props.setMode;
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -305,19 +376,102 @@ function CardDetails(props) {
   }
 
   return (
-    <>
-      {/* {Card number} */}
-      {/* {Card expiry} */}
-      {/* {Card cvv} */}
-      {/* {if isLoggedIn, hide firstname, lastname field and hide this text "We'll use your name to create an account for you on Slashit, so be real"} */}
+    <PayForm>
+      <Container>
+        <IconCancel onClick={() => resetBox()} className="ri-close-fill" />
+        {/* {Card number} */}
+        {/* {Card expiry} */}
+        {/* {Card cvv} */}
+        {/* {if isLoggedIn, hide firstname, lastname field and hide this text "We'll use your name to create an account for you on Slashit, so be real"} */}
 
-      <ButtonWrapper>
-        <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
-          {buttonTitle}
-        </Button>
-      </ButtonWrapper>
-    </>
+        {mode === 'CARD_DETAILS' && (
+          <InnerContainer>
+            <StyledTitle>Enter your card details</StyledTitle>
+            <Column>
+              {cardItems.slice(0, 1).map((item, index) => {
+                const { id, type, src, placeholder, legend, name, maxlength } =
+                  item;
+                return (
+                  <CardInputContainer
+                    key={index}
+                    name={name}
+                    id={id}
+                    type={type}
+                    src={src}
+                    placeholder={placeholder}
+                    legend={legend}
+                    maxlength={maxlength}
+                  />
+                );
+              })}
+
+              <ContainerRow>
+                {cardItems.slice(1).map((item, index) => {
+                  const {
+                    id,
+                    type,
+                    src,
+                    placeholder,
+                    legend,
+                    name,
+                    maxlength,
+                  } = item;
+                  return (
+                    <CardInputContainer
+                      key={index}
+                      name={name}
+                      id={id}
+                      type={type}
+                      src={src}
+                      placeholder={placeholder}
+                      legend={legend}
+                      maxlength={maxlength}
+                    />
+                  );
+                })}
+              </ContainerRow>
+
+              <ContainerRow>
+                {personal_item.slice(0, 2).map((reg, index) => {
+                  const { type, legend, placeholder, id, name } = reg;
+                  return (
+                    <InputContainer
+                      key={index}
+                      type={type}
+                      legend={legend}
+                      placeholder={placeholder}
+                      id={id}
+                      name={name}
+                      onChange={(e) =>
+                        dispatch(
+                          setSignUpInfo({ ...signUpInfo, [e.name]: e.event }),
+                        )
+                      }
+                    />
+                  );
+                })}
+              </ContainerRow>
+
+              <Checker
+                content={`
+                    By continuing, you agree to Slashit’s terms of use and privacy policy.
+                    We’ll send reminders about debts on your account to friends in your Clique and
+                    you’ll receive reminders about any debts on their account. We may charge debts
+                    on their account to you at anytime and charge debts on your account to them at anytime.
+                `}
+              />
+
+              <Button disabled={true} width={`100%`} bg={`var(--violet)`}>
+                Pay NGN 2000
+              </Button>
+            </Column>
+          </InnerContainer>
+        )}
+        {mode === 'VERIFY_EMAIL' && <>Verify Email</>}
+        {mode === 'VERIFY_EMAIL_NEXT' && <>Verify Email Next</>}
+      </Container>
+    </PayForm>
   );
 }
 
-export default CardDetails;
+export default CardDetailsCmpt;
