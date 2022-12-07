@@ -14,7 +14,7 @@ import { Button, InputContainer } from '../../../shared';
 import { setEmail, setIsLoggedIn, setUser } from '../../../store/reducers/auth';
 import { setAnyAction } from '../../../store/reducers/helper';
 import { setPreferredCard } from '../../../store/reducers/transaction';
-import CardDetails from './cardDetails';
+import CardDetailsCmpt from './cardDetails';
 import Otp from './otp';
 import {
   PayForm,
@@ -127,7 +127,7 @@ function Pay(props) {
   const { setSession } = useLocalStorage();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [error, setError] = useState('');
-  const [mode, setMode] = useState(''); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
+  const [mode, setMode] = useState('REDIRECT'); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const [form, setForm] = useState({
@@ -252,19 +252,17 @@ function Pay(props) {
 
   if (mode == 'CARD_DETAILS')
     return (
-      <PayForm>
-        <CardDetails
-          mode={mode}
-          setMode={setMode}
-          isLoggedIn={isLoggedIn}
-          resetBox={resetBox}
-        />
-      </PayForm>
-    ); //CARD DETAILS UI
+      <CardDetailsCmpt
+        mode={mode}
+        setMode={setMode}
+        isLoggedIn={isLoggedIn}
+        resetBox={resetBox}
+      />
+    ); //CARD DETAILS UI∆
 
   if (mode == 'VERIFY_EMAIL')
     return (
-      <CardDetails
+      <CardDetailsCmpt
         mode={mode}
         setMode={setMode}
         isLoggedIn={isLoggedIn}
@@ -274,7 +272,7 @@ function Pay(props) {
 
   if (mode == 'VERIFY_EMAIL_NEXT')
     return (
-      <CardDetails
+      <CardDetailsCmpt
         mode={mode}
         setMode={setMode}
         isLoggedIn={isLoggedIn}
@@ -355,7 +353,7 @@ function Pay(props) {
 
         <InputContainer
           legend={`Recepient mail`}
-          id={'amount-to-pay'}
+          id={'mail'}
           type={'email'}
           placeholder={'receivermail@gmail.com'}
         />

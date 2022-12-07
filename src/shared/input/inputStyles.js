@@ -27,6 +27,7 @@ export const Input = styled.input`
   width: 100%;
   outline: 0px;
   height: 100%;
+  background-color: transparent;
 
   /* &[type='date']::-webkit-datetime-edit-text,
   &[type='date']::-webkit-datetime-edit-month-field,

@@ -97,7 +97,7 @@ export const CardInputContainer = ({
       <Label htmlFor={id}>{legend}</Label>
       <BoxRow error={error}>
         <StyledImage>
-          <Image src={src} width={40} height={40} alt="card-image" />
+          <Image src={src} width={25} height={25} alt="card-image" />
         </StyledImage>
         <Input
           id={id}

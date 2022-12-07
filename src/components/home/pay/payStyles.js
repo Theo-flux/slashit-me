@@ -143,3 +143,54 @@ export const ChargedToRow = styled.div`
     margin: 0 0.35rem;
   }
 `;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 100%; */
+`;
+
+export const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const IconCancel = styled(Icon)`
+  margin: 0rem;
+  margin-bottom: 1rem;
+  align-self: flex-end;
+  background-color: white;
+  color: var(--silver);
+  font-size: 2rem;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+    drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+`;
+
+export const ContainerRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid magenta; */
+
+  & > div {
+    margin-bottom: 0rem;
+  }
+
+  @media ${device.md} {
+    flex-direction: row;
+    & > div {
+      width: 45%;
+    }
+  }
+`;
