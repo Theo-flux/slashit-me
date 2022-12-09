@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,10 +23,69 @@ import {
 } from '../../../../../store/reducers/transaction';
 import { AddCard } from '../../../../../api/transactionAPI';
 import { setCardData } from '../../../../../store/reducers/helper';
-import { Button } from '../../../../../shared';
+import {
+  CardInputContainer,
+  InputContainer,
+  Checker,
+  Button,
+} from '../../../../../shared';
+import { InnerContainer, ContainerRow } from '../../../../home/pay/payStyles';
+import { Column, StyledTitle } from '../../../../forms/formStyles';
 import { ButtonWrapper } from '../../storeStyle';
 import statusCode from '../../../../../api/statusCode';
 import { useTabs } from '../../../../../hooks';
+
+const cardItems = [
+  {
+    id: 'card_number',
+    name: 'cardNumber',
+    type: 'text',
+    src: '/images/card_number.svg',
+    placeholder: 'xxxx xxxx xxxx xxxx',
+    legend: 'Card number',
+    maxlength: 19,
+  },
+
+  {
+    id: 'card_expiry',
+    name: 'cardExpiry',
+    type: 'text',
+    src: '/images/card_expiry.svg',
+    placeholder: '01/22',
+    legend: 'Expiry',
+    maxlength: 5,
+  },
+
+  {
+    id: 'card_cvv',
+    name: 'cardCvv',
+    type: 'text',
+    src: '/images/card_cvv.svg',
+    placeholder: '123',
+    legend: 'CVV',
+    maxlength: 3,
+  },
+];
+
+const personal_item = [
+  {
+    type: 'text',
+    legend: 'First Name',
+    id: 'first_name',
+    name: 'firstname',
+  },
+
+  {
+    type: 'text',
+    legend: 'Last Name',
+    id: 'last_name',
+    name: 'lastname',
+  },
+];
+
+const Padder = styled.div`
+  padding: 1rem 2rem;
+`;
 
 function CardDetails() {
   const {
@@ -326,14 +386,83 @@ function CardDetails() {
   }
 
   return (
-    <>
-      <div>Card details</div>
+    <Padder>
+      <InnerContainer>
+        <StyledTitle>Enter your card details</StyledTitle>
+        <Column>
+          {cardItems.slice(0, 1).map((item, index) => {
+            const { id, type, src, placeholder, legend, name, maxlength } =
+              item;
+            return (
+              <CardInputContainer
+                key={index}
+                name={name}
+                id={id}
+                type={type}
+                src={src}
+                placeholder={placeholder}
+                legend={legend}
+                maxlength={maxlength}
+              />
+            );
+          })}
+
+          <ContainerRow>
+            {cardItems.slice(1).map((item, index) => {
+              const { id, type, src, placeholder, legend, name, maxlength } =
+                item;
+              return (
+                <CardInputContainer
+                  key={index}
+                  name={name}
+                  id={id}
+                  type={type}
+                  src={src}
+                  placeholder={placeholder}
+                  legend={legend}
+                  maxlength={maxlength}
+                />
+              );
+            })}
+          </ContainerRow>
+
+          <ContainerRow>
+            {personal_item.slice(0, 2).map((reg, index) => {
+              const { type, legend, placeholder, id, name } = reg;
+              return (
+                <InputContainer
+                  key={index}
+                  type={type}
+                  legend={legend}
+                  placeholder={placeholder}
+                  id={id}
+                  name={name}
+                  onChange={(e) =>
+                    dispatch(
+                      setSignUpInfo({ ...signUpInfo, [e.name]: e.event }),
+                    )
+                  }
+                />
+              );
+            })}
+          </ContainerRow>
+
+          <Checker
+            content={`
+                    By continuing, you agree to Slashit’s terms of use and privacy policy.
+                    We’ll send reminders about debts on your account to friends in your Clique and
+                    you’ll receive reminders about any debts on their account. We may charge debts
+                    on their account to you at anytime and charge debts on your account to them at anytime.
+                `}
+          />
+        </Column>
+      </InnerContainer>
       <ButtonWrapper>
         <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
           Continue
         </Button>
       </ButtonWrapper>
-    </>
+    </Padder>
   );
 }
 
