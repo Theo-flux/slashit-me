@@ -23,14 +23,14 @@ export const InfoWrapper = styled.div`
   }
 
   @media ${device.lg} {
-    width: 45%;
+    width: 42%;
 
     &:first-of-type {
       margin-bottom: 0rem;
     }
 
     &:last-of-type {
-      width: 40%;
+      width: 45%;
     }
   }
 `;
