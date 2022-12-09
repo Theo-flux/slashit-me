@@ -262,7 +262,7 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {/* {!extraTab ? (
+          {!extraTab ? (
             <>
               <Orderer />
               <Scheduler />
@@ -279,9 +279,7 @@ function Store() {
               {extraTab?.page == 'CardDetails' && <CardDetails />}
               {extraTab?.page == 'Success' && <Success />}
             </>
-          )} */}
-
-          <Success />
+          )}
         </ProcessWrapper>
 
         {/* {!extraTab && (
