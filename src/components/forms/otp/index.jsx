@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FetchUserById, VerifyEmail } from '../../../api/userAPI';
 import { useLocalStorage, useToast } from '../../../hooks';
 import { OtpInputContainer } from '../../../shared';

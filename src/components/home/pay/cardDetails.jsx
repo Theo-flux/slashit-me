@@ -4,7 +4,12 @@ import {
   FetchCards,
   GetAuthorisationAddCard,
 } from '../../../api/transactionAPI';
-import { CliqueAccept, FetchUserById, NewRegister } from '../../../api/userAPI';
+import {
+  CliqueAccept,
+  FetchUserById,
+  NewRegister,
+  VerifyEmail,
+} from '../../../api/userAPI';
 import {
   EncryptData,
   FormatCardNumber,
@@ -24,18 +29,7 @@ import {
   Checker,
   Button,
 } from '../../../shared';
-import {
-  Column,
-  StyledTitle,
-  StyledText,
-  CardBox,
-  CardDetails,
-  InnerBoxRow,
-  StyledImage,
-  ContentText,
-  CardNumber,
-  CardExpiry,
-} from '../../forms/formStyles';
+import { Column, StyledTitle } from '../../forms/formStyles';
 import {
   PayForm,
   Container,
@@ -44,6 +38,7 @@ import {
   ContainerRow,
 } from './payStyles';
 import EnterEmailCode from './verifyEmail';
+import EnterEmailCodeNext from './verifyEmailNext';
 
 const cardItems = [
   {
@@ -467,8 +462,8 @@ function CardDetailsCmpt({ mode, setMode, resetBox }) {
             </Column>
           </InnerContainer>
         )}
-        {mode === 'VERIFY_EMAIL' && <>Verify Email</>}
-        {mode === 'VERIFY_EMAIL_NEXT' && <>Verify Email Next</>}
+        {mode === 'VERIFY_EMAIL' && <EnterEmailCode />}
+        {mode === 'VERIFY_EMAIL_NEXT' && <EnterEmailCodeNext />}
       </Container>
     </PayForm>
   );

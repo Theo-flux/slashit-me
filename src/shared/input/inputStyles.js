@@ -126,7 +126,7 @@ export const BoxRow = styled.span`
 export const OtpInput = styled.input`
   width: 35px;
   height: 35px;
-  background-color: white;
+  background-color: transparent;
   border: 1px solid var(--alto);
   border-radius: 0.175rem;
   line-height: 50px;
