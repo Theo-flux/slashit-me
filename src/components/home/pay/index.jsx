@@ -127,7 +127,7 @@ function Pay(props) {
   const { setSession } = useLocalStorage();
   const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
   const [error, setError] = useState('');
-  const [mode, setMode] = useState('VERIFY_EMAIL'); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
+  const [mode, setMode] = useState(''); // VERIFY_EMAIL, VERIFY_EMAIL_NEXT, CARD_DETAILS, PIN, OTP, REDIRECT, SUCCESS
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const [form, setForm] = useState({

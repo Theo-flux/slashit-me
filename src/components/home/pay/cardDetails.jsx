@@ -374,10 +374,6 @@ function CardDetailsCmpt({ mode, setMode, resetBox }) {
     <PayForm>
       <Container>
         <IconCancel onClick={() => resetBox()} className="ri-close-fill" />
-        {/* {Card number} */}
-        {/* {Card expiry} */}
-        {/* {Card cvv} */}
-        {/* {if isLoggedIn, hide firstname, lastname field and hide this text "We'll use your name to create an account for you on Slashit, so be real"} */}
 
         {mode === 'CARD_DETAILS' && (
           <InnerContainer>

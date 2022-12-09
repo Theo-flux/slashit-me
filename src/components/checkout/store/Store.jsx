@@ -62,7 +62,7 @@ function Store() {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const { session, } = useLocalStorage();
+  const { session } = useLocalStorage();
   const inputEmail = useSelector((state) => state.userAuth.userEmail);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
@@ -207,14 +207,14 @@ function Store() {
             page: 'Scheduler',
             params: {},
           });
-          console.log('lala')
+          console.log('lala');
           return;
         } else {
           setAnyAction(true);
           setTimeout(() => {
             setAnyAction(false);
           }, 50);
-          console.log('lal2')
+          console.log('lal2');
           return;
         }
       } else {
@@ -238,7 +238,7 @@ function Store() {
     createOrder();
   }, [router?.query]);
 
-  console.log(inputEmail,session, 'passed store' );
+  console.log(inputEmail, session, 'passed store');
 
   return (
     <StoreContainer>
@@ -262,7 +262,7 @@ function Store() {
         </ProfileContainer>
 
         <ProcessWrapper>
-          {!extraTab ? (
+          {/* {!extraTab ? (
             <>
               <Orderer />
               <Scheduler />
@@ -279,17 +279,18 @@ function Store() {
               {extraTab?.page == 'CardDetails' && <CardDetails />}
               {extraTab?.page == 'Success' && <Success />}
             </>
-          )}
-          {/* <Confirmer /> */}
+          )} */}
+
+          <Success />
         </ProcessWrapper>
 
-        {!extraTab && (
+        {/* {!extraTab && (
           <ButtonWrapper>
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
           </ButtonWrapper>
-        )}
+        )} */}
       </StoreWrapper>
 
       <PlayerWrapper>

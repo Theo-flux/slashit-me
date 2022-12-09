@@ -1,7 +1,8 @@
 import React from 'react';
+import VerifyEmail from '../../orderer/otp';
 
 function VerifyEmailNext() {
-  return <div>Email code</div>;
+  return <VerifyEmail />;
 }
 
 export default VerifyEmailNext;

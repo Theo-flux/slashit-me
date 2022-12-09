@@ -52,10 +52,7 @@ import {
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
 import { Login, ShopperExist } from '../../../../api/userAPI';
-import {
-  setEmail,
-  setUser,
-} from '../../../../store/reducers/auth';
+import { setEmail, setUser } from '../../../../store/reducers/auth';
 import { FetchCards } from '../../../../api/transactionAPI';
 import {
   setCards,
@@ -93,8 +90,8 @@ function Orderer({}) {
     dispatch(setEmail());
     dispatch(setUser({ country: null, avatar: null }));
     setIsMailValidated(false);
-    setPass()
-    setSession({session: false});
+    setPass();
+    setSession({ session: false });
   }
 
   function handleOrdererOnchange(event) {
@@ -150,7 +147,7 @@ function Orderer({}) {
 
     let sendReq = await Login(userInfo);
     if (sendReq.success) {
-      setSession({ userInfo, token: sendReq.token , session: true});
+      setSession({ userInfo, token: sendReq.token, session: true });
       dispatch(setUser(sendReq.user));
       let showFew = true;
       let cardReq = await FetchCards(showFew);
@@ -167,7 +164,7 @@ function Orderer({}) {
     return;
   }
 
-  console.log(session, pass,'passed order');
+  console.log(session, pass, 'passed order');
 
   async function validateShopper() {
     setLoading(true);
@@ -306,8 +303,7 @@ function Orderer({}) {
                         </UserName>
                       </AvatarContainer>
                       <InfoBox>
-                        {/*
-                        <InfoText>{orderer?.email}</InfoText> */}
+                        <InfoText>{orderer?.email}</InfoText>
                         <Icon className="fa-solid fa-circle-info"></Icon>
                         <SmallBtn onClick={() => resetOrderer()}>
                           Log out
