@@ -300,7 +300,7 @@ export const CreatePaymentLink = async (currency, amount, sender, note) => {
     },
     body: JSON.stringify({
       query: `
-        mutation($currency: String! , $amount: Float, $sender: String!, $note: String){
+        mutation($currency: Currency! , $amount: Float!, $sender: String!, $note: String){
           NewPaymentLink(currency: $currency, amount: $amount , sender:$sender, note: $note){
               code,
               message,
@@ -324,6 +324,55 @@ export const CreatePaymentLink = async (currency, amount, sender, note) => {
         console.log(res.data);
         if (res.data.NewPaymentLink) {
           msg = res.data.NewPaymentLink;
+        }
+      }
+    });
+
+  return msg;
+};
+
+export const FechPaymentLink = async (link, ipAddress, device) => {
+  let msg;
+  /* Retrieve Token From Local Storage */
+  let token;
+  let auth = localStorage.getItem("userAuth");
+  if (auth) {
+    auth = JSON.parse(auth);
+    token = auth.token;
+  }
+
+  await fetch(API_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query: `
+     query($link: ID!, $ipAddress:String, device: String){
+       FetchPaymentLink(link: $link, ipAddress: $ipAddress, device: $device){
+              code,
+              message,
+              success,   
+              result,       
+              }
+          }`,
+      variables: {
+        link,
+        ipAddress,
+        device,
+      },
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      if (res) {
+        console.log(res.data, "fetch payment link");
+        if (res.data.FetchPaymentLink) {
+          msg = res.data.FetchPaymentLink;
         }
       }
     });

@@ -1,4 +1,13 @@
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import {
+  FormatCardNumber,
+  FormatExpirationDate,
+  setCardCvv,
+  setCardExpiry,
+  setCardNumber,
+} from '../../helpers/debitCardValidator';
 import {
   Input,
   InputCheck,
@@ -88,10 +97,28 @@ export const CardInputContainer = ({
   legend,
   name,
   value,
-  onChange,
+  //onChange,
   maxlength,
   error,
 }) => {
+  const dispatch = useDispatch();
+  const [input, setInput] = useState('');
+
+  function onChange(value) {
+    if (id == 'card_number') {
+      setInput(FormatCardNumber(value));
+      dispatch(setCardNumber(FormatCardNumber(value)));
+    }
+    if (id == 'card_expiry') {
+      setInput(FormatExpirationDate(value));
+      dispatch(setCardExpiry(FormatExpirationDate(value)));
+    }
+    if (id == 'card_cvv') {
+      setInput(value);
+      setCardCvv(value);
+    }
+  }
+
   return (
     <Box>
       <Label htmlFor={id}>{legend}</Label>
@@ -101,11 +128,11 @@ export const CardInputContainer = ({
         </StyledImage>
         <Input
           id={id}
-          value={value}
+          value={input}
           name={name}
           type={type}
           placeholder={placeholder}
-          onChange={onChange}
+          onChange={(e) => onChange(e.target.value)}
           maxLength={maxlength}
         />
       </BoxRow>
@@ -132,12 +159,12 @@ export const SelectContainer = ({ options, placeholder, id, legend }) => {
   );
 };
 
-export const Checker = ({ content }) => {
+export const Checker = ({ content, check }) => {
   return (
-    <label class="container">
+    <label className="container">
       {content}
-      <input type="checkbox" />
-      <span class="checkmark"></span>
+      <input onClick={check} type="checkbox" />
+      <span className="checkmark"></span>
     </label>
   );
 };

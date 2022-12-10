@@ -146,6 +146,7 @@ export const EncryptData = (key, text) => {
 };
 
 export const FormatExpirationDate = (string) => {
+  if (!string) return '';
   return string
     .replace(
       /[^0-9]/g,
@@ -170,6 +171,7 @@ export const FormatExpirationDate = (string) => {
 };
 
 export const FormatCardNumber = (number) => {
+  if (!number) return '';
   return number
     .replace(/\s?/g, '')
     .replace(/(\d{4})/g, '$1 ')

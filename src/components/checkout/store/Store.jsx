@@ -41,7 +41,7 @@ import VerifyEmailNext from './confirmer/card/verifyEmail';
 import VerifyEmail from './orderer/otp';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { addDays } from '../../../helpers/dates';
-import { useLocalStorage, useTabs } from '../../../hooks';
+import { useLoading, useLocalStorage, useTabs } from '../../../hooks';
 
 function Store() {
   const parser = new UAParser();
@@ -61,8 +61,8 @@ function Store() {
   } = useTabs();
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const { session } = useLocalStorage();
+  const [_, setLoading] = useLoading();
+  const { session, ping } = useLocalStorage();
   const inputEmail = useSelector((state) => state.userAuth.userEmail);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const orderDetails = useSelector((state) => state.transaction.orderDetails);
@@ -134,6 +134,9 @@ function Store() {
       setLoading(false);
       dispatch(setOrderDetails());
       setActiveTab();
+      setExtraTab();
+      setAnyAction();
+      setAnySuccess();
     };
   }, []);
 
@@ -207,14 +210,12 @@ function Store() {
             page: 'Scheduler',
             params: {},
           });
-          console.log('lala');
           return;
         } else {
           setAnyAction(true);
           setTimeout(() => {
             setAnyAction(false);
           }, 50);
-          console.log('lal2');
           return;
         }
       } else {
@@ -227,16 +228,44 @@ function Store() {
     }
     //Navigate to Confimer if activeTab.page is Scheduler
     if (activeTab?.page == 'Scheduler') {
-      setActiveTab({
-        page: 'Confirmer',
-      });
-      return;
+      // setActiveTab({
+      //   page: 'Confirmer',
+      // });
+      // return;
+      if (inputEmail) {
+        if (session) {
+          setActiveTab({
+            page: 'Confirmer',
+          });
+          return;
+        } else {
+          setExtraTab({
+            page: 'CardDetails',
+          });
+          return;
+        }
+      } else {
+        setActiveTab({
+          page: 'Orderer',
+        });
+        setAnyAction(true);
+        setTimeout(() => {
+          setAnyAction(false);
+        }, 50);
+      }
     }
   }
 
   useEffect(() => {
     createOrder();
+    ping();
   }, [router?.query]);
+
+  useEffect(() => {
+    if (!session) {
+      CtrlStore();
+    }
+  }, []);
 
   console.log(inputEmail, session, 'passed store');
 
@@ -282,13 +311,13 @@ function Store() {
           )}
         </ProcessWrapper>
 
-        {/* {!extraTab && (
+        {!extraTab && (
           <ButtonWrapper>
             <Button onClick={CtrlStore} width={`100%`}>
               Confirm
             </Button>
           </ButtonWrapper>
-        )} */}
+        )}
       </StoreWrapper>
 
       <PlayerWrapper>

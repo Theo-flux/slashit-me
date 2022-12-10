@@ -56,7 +56,7 @@ const cardItems = [
     name: 'cardExpiry',
     type: 'text',
     src: '/images/card_expiry.svg',
-    placeholder: '01/22',
+    placeholder: 'MM/YY',
     legend: 'Expiry',
     maxlength: 5,
   },
@@ -377,7 +377,7 @@ function CardDetailsCmpt({ mode, setMode, resetBox }) {
 
         {mode === 'CARD_DETAILS' && (
           <InnerContainer>
-            <StyledTitle>Enter your card details</StyledTitle>
+            <StyledTitle>{description}</StyledTitle>
             <Column>
               {cardItems.slice(0, 1).map((item, index) => {
                 const { id, type, src, placeholder, legend, name, maxlength } =
@@ -392,6 +392,8 @@ function CardDetailsCmpt({ mode, setMode, resetBox }) {
                     placeholder={placeholder}
                     legend={legend}
                     maxlength={maxlength}
+
+
                   />
                 );
               })}

@@ -7,7 +7,7 @@ const nextConfig = {
 module.exports = {
   //nextConfig,
   images: {
-    domains: ['localhost', 'slashit.s3.amazonaws.com'],
+    domains: ['localhost', 'slashit.s3.amazonaws.com', "images.pexels.com"],
   },
 };
 

@@ -52,7 +52,11 @@ import {
 import getSymbolFromCurrency from 'currency-symbol-map';
 import statusCode from '../../../../api/statusCode';
 import { Login, ShopperExist } from '../../../../api/userAPI';
-import { setEmail, setUser } from '../../../../store/reducers/auth';
+import {
+  setEmail,
+  setSignUpInfo,
+  setUser,
+} from '../../../../store/reducers/auth';
 import { FetchCards } from '../../../../api/transactionAPI';
 import {
   setCards,
@@ -75,6 +79,7 @@ function Orderer({}) {
   const [showSummary, setShowSummary] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
   const cards = useSelector((state) => state.transaction.cards);
+  const inputEmail = useSelector((state) => state.userAuth.userEmail);
   const user = useSelector((state) => state.userAuth.user);
   const [error, setError] = useState({});
   const [orderer, setOrderer] = useState({
@@ -89,7 +94,7 @@ function Orderer({}) {
     });
     dispatch(setEmail());
     dispatch(setUser({ country: null, avatar: null }));
-    setIsMailValidated(false);
+    //setIsMailValidated(false);
     setPass();
     setSession({ session: false });
   }
@@ -181,15 +186,22 @@ function Orderer({}) {
     } else {
       setPass(statusCode.NOT_FOUND);
       dispatch(setEmail(orderer.email)); //Store user email in global state
+      dispatch(setSignUpInfo({ email: orderer.email }));
     }
-    setIsMailValidated(true);
+    //setIsMailValidated(true);
     setLoading(false);
     return;
   }
 
   async function CtrlOrder() {
     setShowDetails(true); //Open User Details Form
-    isMailValidated ? handlePasswordSubmit() : handleEmailContinue();
+    pass == statusCode.OK ? handlePasswordSubmit() : handleEmailContinue();
+    pass == statusCode.NOT_FOUND &&
+      setActiveTab({
+        page: 'Scheduler',
+        params: {},
+      });
+    return;
   }
 
   useEffect(() => {
@@ -198,7 +210,7 @@ function Orderer({}) {
         CtrlOrder();
       }
     }
-  }, [anyAction, isMailValidated]);
+  }, [anyAction, pass]);
 
   return (
     <ProcessContent>
@@ -235,7 +247,7 @@ function Orderer({}) {
                 <Details>
                   {!session ? (
                     <>
-                      {!isMailValidated && !pass && (
+                      {!pass && (
                         <>
                           <InputContainer
                             id={'orderer-email'}
@@ -255,7 +267,7 @@ function Orderer({}) {
                         </>
                       )}
 
-                      {isMailValidated && pass == statusCode.OK && (
+                      {pass == statusCode.OK && (
                         <>
                           <InputContainer
                             id={'orderer-password'}
@@ -275,9 +287,9 @@ function Orderer({}) {
                         </>
                       )}
 
-                      {isMailValidated && pass == statusCode.NOT_FOUND && (
+                      {pass == statusCode.NOT_FOUND && (
                         <>
-                          <InfoMailText>{user?.email}</InfoMailText>
+                          <InfoMailText>{inputEmail}</InfoMailText>
                         </>
                       )}
                     </>
