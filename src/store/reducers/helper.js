@@ -24,6 +24,7 @@ const initialState = {
   cardNumber: '',
   cardExpiry: '',
   cardCvv: '',
+  otp: '',
 };
 
 const helperSlice = createSlice({
@@ -98,6 +99,10 @@ const helperSlice = createSlice({
     setCardCvv: (state, action) => {
       state.cardCvv = action.payload;
     },
+    //Set OTP
+    setOtp: (state, action) => {
+      state.otp = action.payload;
+    },
   },
 });
 
@@ -118,6 +123,7 @@ export const {
   setCardNumber,
   setCardExpiry,
   setCardCvv,
+  setOtp,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

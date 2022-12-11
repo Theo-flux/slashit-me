@@ -1,13 +1,17 @@
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   FormatCardNumber,
   FormatExpirationDate,
+} from '../../helpers/debitCardValidator';
+import { setFirstname, setLastname } from '../../store/reducers/auth';
+import {
   setCardCvv,
   setCardExpiry,
   setCardNumber,
-} from '../../helpers/debitCardValidator';
+} from '../../store/reducers/helper';
 import {
   Input,
   InputCheck,
@@ -32,7 +36,24 @@ export const InputContainer = ({
   prefix,
   onChange,
   error,
+  //value,
 }) => {
+  const dispatch = useDispatch();
+  const [input, setInput] = useState('');
+
+  function ONChange(value) {
+    if (id == 'first_name') {
+      setInput(value);
+      dispatch(setFirstname(value));
+      return;
+    }
+    if (id == 'last_name') {
+      setInput(value);
+      dispatch(setLastname(value));
+      return;
+    }
+  }
+
   return (
     <Box>
       <Label htmlFor={id}>{legend}</Label>
@@ -41,11 +62,19 @@ export const InputContainer = ({
         <Input
           error={error}
           id={id}
+          //value={input}
           type={type}
           name={name}
           placeholder={placeholder}
           maxLength={maxlength}
-          onChange={onChange}
+          onChange={(e) => {
+            if (id == 'first_name' || id == 'last_name') {
+              ONChange(e.target.value);
+            } else {
+              setInput(e.target.value);
+              onChange(e);
+            }
+          }}
         />
       </BoxRow>
       <Error>{error}</Error>
@@ -96,8 +125,6 @@ export const CardInputContainer = ({
   id,
   legend,
   name,
-  value,
-  //onChange,
   maxlength,
   error,
 }) => {
@@ -115,7 +142,7 @@ export const CardInputContainer = ({
     }
     if (id == 'card_cvv') {
       setInput(value);
-      setCardCvv(value);
+      dispatch(setCardCvv(value));
     }
   }
 

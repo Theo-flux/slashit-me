@@ -46,6 +46,7 @@ import {
   useToast,
 } from '../../../../../hooks';
 import { cardItems, personal_item } from '../../../../../utils/helper';
+import { v4 as uuidv4 } from 'uuid';
 
 const Padder = styled.div`
   padding: 1rem 2rem;
@@ -81,10 +82,11 @@ function CardDetails() {
   const [toastOptions, toast] = useToast();
   const [loading, setLoading] = useLoading();
   const cardNumber = useSelector((state) => state.helper.cardNumber);
-  const CVV = useSelector((state) => state.helper.cardCvv);
   const expiration = useSelector((state) => state.helper.cardExpiry);
+  const CVV = useSelector((state) => state.helper.cardCvv);
   const [mode, setMode] = useState('');
   const [buttonTitle, setbuttonTitle] = useState('Continue');
+  const [checked, setChecked] = useState(false);
 
   function cleanUp() {
     dispatch(setCardCvv(''));
@@ -102,14 +104,17 @@ function CardDetails() {
       if (
         cardNumber.length >= 16 &&
         expiration.length == 5 &&
-        CVV.length >= 3
+        CVV.length >= 3 &&
+        userFirstname &&
+        userLastname &&
+        checked
       ) {
         setdisabled(false);
       } else {
         setdisabled(true);
       }
     }
-  }, [expiration, cardNumber, CVV]);
+  }, [expiration, cardNumber, CVV, userFirstname, userLastname, checked]);
 
   useEffect(() => {
     //PIN
@@ -301,23 +306,23 @@ function CardDetails() {
       ipAddress: computerInfo.ip,
     });
     if (register.success) {
-      setActiveTab({ page: 'VerifyEmailNext', params: {} });
+      setExtraTab({ page: 'VerifyEmailNext', params: {} });
     } else {
-      toastMsg = register.message;
+      toast({ text: register.message, textColor: '#fff' });
     }
   }
 
   function btnPress() {
     if (!user.country) {
       fetchUser();
-      toast({
-        text: 'Please refresh this page',
-        textColor: '#fff',
-      });
+      // toast({
+      //   text: 'Please refresh this page',
+      //   textColor: '#fff',
+      // });
       return;
     }
 
-    if (!session) {
+    if (!session && inputEmail) {
       createAccount();
       return;
     }
@@ -335,7 +340,7 @@ function CardDetails() {
     return;
   }
 
-  console.log(cardNumber, CVV, expiration);
+  console.log(cardNumber, CVV, expiration, userFirstname, userLastname);
 
   return (
     <Padder>
@@ -409,6 +414,7 @@ function CardDetails() {
           </ContainerRow>
 
           <Checker
+            check={() => setChecked(!checked)}
             content={`
                     By continuing, you agree to Slashit’s terms of use and privacy policy.
                     We’ll send reminders about debts on your account to friends in your Clique and
@@ -419,7 +425,12 @@ function CardDetails() {
         </Column>
       </InnerContainer>
       <ButtonWrapper>
-        <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
+        <Button
+          disabled={disabled}
+          // onClick={() => btnPress()}
+          onClick={() => setExtraTab({ page: 'VerifyEmailNext' })}
+          width={`100%`}
+        >
           {buttonTitle}
         </Button>
       </ButtonWrapper>
