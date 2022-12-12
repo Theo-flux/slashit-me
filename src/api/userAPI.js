@@ -13,18 +13,18 @@ export const RemoveLoginCredentials = () => {
 export const Ping = async () => {
   let msg;
   /* Retrieve Token From Local Storage */
-  let token;
-  let auth = localStorage.getItem("userAuth");
+  let token = '000';
+  let auth = localStorage.getItem('userAuth');
   if (auth) {
     auth = JSON.parse(auth);
     token = auth.token;
   }
 
   await fetch(API_ENDPOINT, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
@@ -44,7 +44,7 @@ export const Ping = async () => {
       return res.json();
     })
     .then((res) => {
-      console.log(res, "PING!!");
+      console.log(res, 'PING!!');
       if (res.data) {
         msg = res.data.Ping;
       }
@@ -763,6 +763,22 @@ export const VerifyCAT = async (CAT) => {
                       success,      
                       message,
                       code,
+                      user{
+                        firstname
+                        lastname
+                        _id
+                        avatar
+                        username
+                        accountReputation
+                      },
+                      cliqueActive{
+                        firstname
+                        lastname
+                        _id
+                        avatar
+                        username
+                        accountReputation
+                      }
                   }
               }`,
       variables: { token: CAT },

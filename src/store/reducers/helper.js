@@ -21,6 +21,10 @@ const initialState = {
   anySuccess: '',
   extraTab: '',
   cardData: null,
+  cardNumber: '',
+  cardExpiry: '',
+  cardCvv: '',
+  otp: '',
 };
 
 const helperSlice = createSlice({
@@ -83,6 +87,22 @@ const helperSlice = createSlice({
     setCardData: (state, action) => {
       state.cardData = action.payload;
     },
+    //Set Card Number
+    setCardNumber: (state, action) => {
+      state.cardNumber = action.payload;
+    },
+    //Set Card Expiry
+    setCardExpiry: (state, action) => {
+      state.cardExpiry = action.payload;
+    },
+    //Set Card CVV
+    setCardCvv: (state, action) => {
+      state.cardCvv = action.payload;
+    },
+    //Set OTP
+    setOtp: (state, action) => {
+      state.otp = action.payload;
+    },
   },
 });
 
@@ -100,6 +120,10 @@ export const {
   setCardData,
   setExtraTab,
   setScheduleSelected,
+  setCardNumber,
+  setCardExpiry,
+  setCardCvv,
+  setOtp,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

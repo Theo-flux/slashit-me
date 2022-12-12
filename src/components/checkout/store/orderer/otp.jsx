@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Content } from '../../../forms/formStyles';
 import { OtpInputContainer } from '../../../../shared';
 import { EnvelopeCover, ProcessContent, Text } from '../storeStyle';
+import { setOtp } from '../../../../store/reducers/helper';
+import { useDispatch, useSelector } from 'react-redux';
 
 const otp_item = [
   {
@@ -42,13 +44,15 @@ const StyledText = styled(Text)`
 `;
 
 function VerifyEmail() {
+  const dispatch = useDispatch();
   const [otpData, setOtpData] = useState(['']);
-
+  const otp = useSelector((state) => state.helper.otp);
   function handleOtpOnChange(event, index) {
     const { value } = event.target;
 
     setOtpData((otpStr) => {
       otpStr[index] = value;
+      dispatch(setOtp(value));
       return otpStr;
     });
 
@@ -69,6 +73,10 @@ function VerifyEmail() {
       });
     }
   }
+
+  useEffect(() => {}, [otpData]);
+
+  console.log(otpData, otp);
 
   return (
     <ProcessContent>

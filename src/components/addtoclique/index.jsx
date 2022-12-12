@@ -92,6 +92,7 @@ function JoinClique() {
   const [inviter, setInviter] = useState('');
   const [members, setMembers] = useState();
   const [toastOptions, toast] = useToast();
+  const [checked, setChecked] = useState(false);
   const { setSession } = useLocalStorage();
   const [isMailValidated, setIsMailValidated] = useState(false);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
@@ -156,7 +157,7 @@ function JoinClique() {
     } else {
       if (sendReq.code === statusCode.NOT_FOUND) {
         toast({
-          text: "We couldn't find a user with this email, redirecting you to create an account with us!",
+          text: "We couldn't find a user with this email, redirecting you to create an account for free!",
           textColor: '#fff',
         });
         setTimeout(() => router.push('/account/create-account'), 5000);
@@ -174,6 +175,7 @@ function JoinClique() {
       platform: 'web',
       deviceId: `${computerInfo.platform} ${computerInfo.os}`,
       ipAddress: computerInfo.ip,
+      isBusiness: false
     };
     let getInfo = localStorage.getItem('userInfo');
 
@@ -187,6 +189,7 @@ function JoinClique() {
         if (join.success) {
           if (join.code == statusCode.OK) {
             //TODO - Link to "Add to Clique "Success""
+            router.push('')
           } else if (join.code == statusCode.ADD_YOUR_CARD) {
             //TODO - Link to "Add to Clique "CARD1""
           }
@@ -242,7 +245,9 @@ function JoinClique() {
   }, [platform, os]);
 
   useEffect(() => {
-    verifyCliqueAccessToken(router.query?.token);
+    if (router.query?.token) {
+      verifyCliqueAccessToken(router.query?.token);
+    }
     GetComputerIp();
     return () => {
       setLoading(false);
@@ -251,91 +256,90 @@ function JoinClique() {
     };
   }, [router.query]);
 
-
   if (!inviter)
     return (
-  
-        <Section>
-          <Div></Div>
-        </Section>
-
+      <Section>
+        <Div></Div>
+      </Section>
     );
 
   return (
- 
-      <Section>
-        <PositionDiv></PositionDiv>
-        <Div>
-          <Toast options={toastOptions} />
-          <CliqueDiv>
-            <SmallText>
-              Only join this Clique if you have a close relationship with{''}
-              {inviter?.lastname} {inviter?.firstname}
-            </SmallText>
+    <Section>
+      <PositionDiv></PositionDiv>
+      <Div>
+        <Toast options={toastOptions} />
+        <CliqueDiv>
+          <SmallText>
+            Only join this Clique if you have a close relationship with{' '}
+            {inviter?.lastname} {inviter?.firstname}
+          </SmallText>
 
-            <Wrapper>
-              <StyledTitle>
-                {inviter?.lastname} {inviter?.firstname} wants you to join their
-                Clique on Slashit
-              </StyledTitle>
-              <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
+          <Wrapper>
+            <StyledTitle>
+              {inviter?.lastname} {inviter?.firstname} wants you to join their
+              Clique on Slashit
+            </StyledTitle>
+            <StyledSubTitle>Friends already in this Clique:</StyledSubTitle>
 
-              <CliqueMembers>
-                {members?.map((member, _) => {
-                  const { firstname, lastname, avatar } = member;
+            <CliqueMembers>
+              {members?.map((member, _) => {
+                const { firstname, lastname, avatar } = member;
+                return (
+                  <Member key={member._id}>
+                    <Image
+                      src={avatar}
+                      height={50}
+                      width={50}
+                      //style={{ borderRadius: 100 }}
+                      alt={`${firstname} ${lastname}`}
+                    />
+                    <Name>{`${firstname} ${lastname}`}</Name>
+                  </Member>
+                );
+              })}
+            </CliqueMembers>
+
+            {isMailValidated ? (
+              <Details>
+                {details.slice(1).map((detail, index) => {
+                  const { id, name, type, legend } = detail;
                   return (
-                    <Member key={member._id}>
-                      <Image
-                        src={avatar}
-                        height={55}
-                        width={55}
-                        alt={`${firstname} ${lastname}`}
-                      />
-                      <Name>{`${firstname} ${lastname}`}</Name>
-                    </Member>
+                    <InputContainer
+                      key={index}
+                      name={name}
+                      type={type}
+                      legend={legend}
+                      id={id}
+                      onChange={(e) => handleMemberFormOnchange(e)}
+                      error={error?.[`${name}`]}
+                    />
                   );
                 })}
-              </CliqueMembers>
 
-              {isMailValidated ? (
-                <Details>
-                  {details.slice(1).map((detail, index) => {
-                    const { id, name, type, legend } = detail;
-                    return (
-                      <InputContainer
-                        key={index}
-                        name={name}
-                        type={type}
-                        legend={legend}
-                        id={id}
-                        onChange={(e) => handleMemberFormOnchange(e)}
-                        error={error?.[`${name}`]}
-                      />
-                    );
-                  })}
+                <Button
+                  onClick={() => handlePasswordSubmit()}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                  disabled={!memberForm.password}
+                >
+                  Confirm
+                </Button>
+              </Details>
+            ) : (
+              <Details>
+                <InputContainer
+                  name="email"
+                  type="email"
+                  legend="Enter your Email"
+                  id="email"
+                  onChange={(e) => handleMemberFormOnchange(e)}
+                  error={error?.email}
+                />
 
-                  <Button
-                    onClick={() => handlePasswordSubmit()}
-                    width={'100%'}
-                    bg={`var(--violet)`}
-                    type="filled"
-                  >
-                    Confirm
-                  </Button>
-                </Details>
-              ) : (
-                <Details>
-                  <InputContainer
-                    name="email"
-                    type="email"
-                    legend="Enter your Email"
-                    id="email"
-                    onChange={(e) => handleMemberFormOnchange(e)}
-                    error={error?.email}
-                  />
-
-                  <Checker
-                    content={`
+                <Checker
+                  check={() => setChecked(!checked)}
+                  content={`
                     By continuing, you agree to Slashit’s
                     terms of use and privacy policy.
                     We may send reminders about debts on your account
@@ -343,24 +347,24 @@ function JoinClique() {
                     any debts on their account. 
                     We may also charge their debts to you at anytime when they don't pay on time.
                 `}
-                  />
-                  <Button
-                    onClick={() => {
-                      handleEmailSubmit();
-                    }}
-                    width={'100%'}
-                    bg={`var(--violet)`}
-                    type="filled"
-                  >
-                    Join now
-                  </Button>
-                </Details>
-              )}
-            </Wrapper>
-          </CliqueDiv>
-        </Div>
-      </Section>
-
+                />
+                <Button
+                  onClick={() => {
+                    handleEmailSubmit();
+                  }}
+                  width={'100%'}
+                  bg={`var(--violet)`}
+                  type="filled"
+                  disabled={checked == false || memberForm.email == ''}
+                >
+                  Join this Clique
+                </Button>
+              </Details>
+            )}
+          </Wrapper>
+        </CliqueDiv>
+      </Div>
+    </Section>
   );
 }
 

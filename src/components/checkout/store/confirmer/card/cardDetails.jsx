@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  CheckAuthorisationAddCard,
   FetchCards,
   GetAuthorisationAddCard,
 } from '../../../../../api/transactionAPI';
@@ -16,13 +17,18 @@ import {
   FormatCardNumber,
   FormatExpirationDate,
 } from '../../../../../helpers/debitCardValidator';
-import { setUser } from '../../../../../store/reducers/auth';
+import { setSignUpInfo, setUser } from '../../../../../store/reducers/auth';
 import {
   setCards,
   setPreferredCard,
 } from '../../../../../store/reducers/transaction';
 import { AddCard } from '../../../../../api/transactionAPI';
-import { setCardData } from '../../../../../store/reducers/helper';
+import {
+  setCardData,
+  setCardCvv,
+  setCardExpiry,
+  setCardNumber,
+} from '../../../../../store/reducers/helper';
 import {
   CardInputContainer,
   InputContainer,
@@ -33,55 +39,14 @@ import { InnerContainer, ContainerRow } from '../../../../home/pay/payStyles';
 import { Column, StyledTitle } from '../../../../forms/formStyles';
 import { ButtonWrapper } from '../../storeStyle';
 import statusCode from '../../../../../api/statusCode';
-import { useTabs } from '../../../../../hooks';
-
-const cardItems = [
-  {
-    id: 'card_number',
-    name: 'cardNumber',
-    type: 'text',
-    src: '/images/card_number.svg',
-    placeholder: 'xxxx xxxx xxxx xxxx',
-    legend: 'Card number',
-    maxlength: 19,
-  },
-
-  {
-    id: 'card_expiry',
-    name: 'cardExpiry',
-    type: 'text',
-    src: '/images/card_expiry.svg',
-    placeholder: '01/22',
-    legend: 'Expiry',
-    maxlength: 5,
-  },
-
-  {
-    id: 'card_cvv',
-    name: 'cardCvv',
-    type: 'text',
-    src: '/images/card_cvv.svg',
-    placeholder: '123',
-    legend: 'CVV',
-    maxlength: 3,
-  },
-];
-
-const personal_item = [
-  {
-    type: 'text',
-    legend: 'First Name',
-    id: 'first_name',
-    name: 'firstname',
-  },
-
-  {
-    type: 'text',
-    legend: 'Last Name',
-    id: 'last_name',
-    name: 'lastname',
-  },
-];
+import {
+  useLoading,
+  useLocalStorage,
+  useTabs,
+  useToast,
+} from '../../../../../hooks';
+import { cardItems, personal_item } from '../../../../../utils/helper';
+import { v4 as uuidv4 } from 'uuid';
 
 const Padder = styled.div`
   padding: 1rem 2rem;
@@ -98,40 +63,35 @@ function CardDetails() {
     setExtraTab,
   } = useTabs();
 
-  let toastMsg = '';
   const dispatch = useDispatch();
   const [data, setData] = useState('');
   const [PIN, setPIN] = useState();
   const [OTP, setOTP] = useState();
   const [description, setDescription] = useState('Enter your card details');
   const cardData = useSelector((state) => state.helper.cardData);
-  const isLoggedIn = useSelector((state) => state.userAuth.isLoggedIn);
+  const signUpInfo = useSelector((state) => state.userAuth.signUpInfo);
+  const userFirstname = useSelector((state) => state.userAuth.userFirstname);
+  const userLastname = useSelector((state) => state.userAuth.userLastname);
   const preferredCard = useSelector((state) => state.transaction.preferredCard);
   const user = useSelector((state) => state.userAuth.user);
-  const email = useSelector((state) => state.userAuth.userEmail);
+  const inputEmail = useSelector((state) => state.userAuth.userEmail);
   let currencyShortCode = user?.currencyShortCode;
   const [disabled, setdisabled] = useState(true);
   const computerInfo = useSelector((state) => state.userAuth.computerInfo);
-  const [showToast, setShowToast] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [expiration, setExpiration] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [CVV, setCVV] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const { session, ping } = useLocalStorage();
+  const [toastOptions, toast] = useToast();
+  const [loading, setLoading] = useLoading();
+  const cardNumber = useSelector((state) => state.helper.cardNumber);
+  const expiration = useSelector((state) => state.helper.cardExpiry);
+  const CVV = useSelector((state) => state.helper.cardCvv);
   const [mode, setMode] = useState('');
-
-  useEffect(() => {
-    if (toastMsg) {
-      setShowToast(true);
-    }
-    setTimeout(() => setShowToast(false), 5000);
-  }, [toastMsg]);
+  const [buttonTitle, setbuttonTitle] = useState('Continue');
+  const [checked, setChecked] = useState(false);
 
   function cleanUp() {
-    setCVV('');
-    setCardNumber('');
-    setExpiration('');
+    dispatch(setCardCvv(''));
+    dispatch(setCardNumber(''));
+    dispatch(setCardExpiry(''));
     setLoading(false);
     setPIN('');
     setOTP('');
@@ -144,19 +104,22 @@ function CardDetails() {
       if (
         cardNumber.length >= 16 &&
         expiration.length == 5 &&
-        CVV.length >= 3
+        CVV.length >= 3 &&
+        userFirstname &&
+        userLastname &&
+        checked
       ) {
         setdisabled(false);
       } else {
         setdisabled(true);
       }
     }
-  }, [expiration, cardNumber, CVV]);
+  }, [expiration, cardNumber, CVV, userFirstname, userLastname, checked]);
 
   useEffect(() => {
     //PIN
     if (mode == 'PIN') {
-      setDescription('Enter card PIN');
+      setDescription('Enter your card PIN');
       if (PIN && PIN.length == 4) {
         setdisabled(false);
         setbuttonTitle('Confirm PIN');
@@ -176,16 +139,6 @@ function CardDetails() {
       //TODO - Open data?.meta?.authorization?.redirect in another window
     }
   }, [PIN, OTP, mode]);
-
-  function formatExpirationDate(string) {
-    setExpiration(FormatExpirationDate(string));
-    return;
-  }
-
-  function formatCardNumber(number) {
-    setCardNumber(FormatCardNumber(number));
-    return;
-  }
 
   //async functions
   async function fetchUser() {
@@ -261,7 +214,6 @@ function CardDetails() {
             code: statusCode.OK,
           },
         });
-
         cleanUp();
       }
     } else {
@@ -344,30 +296,33 @@ function CardDetails() {
 
   async function createAccount() {
     let register = await NewRegister({
-      firstname,
-      lastname,
+      firstname: userFirstname,
+      lastname: userLastname,
       country: 'NG',
-      email,
+      email: inputEmail,
       role: 'shopper',
       ipAddress: computerInfo?.ip,
       deviceId: `${computerInfo.platform} ${computerInfo.os}`,
       ipAddress: computerInfo.ip,
     });
     if (register.success) {
-      setActiveTab({ page: 'VerifyEmailNext', params: {} });
+      setExtraTab({ page: 'VerifyEmailNext', params: {} });
     } else {
-      toastMsg = register.message;
+      toast({ text: register.message, textColor: '#fff' });
     }
   }
 
   function btnPress() {
     if (!user.country) {
       fetchUser();
-      toastMsg = 'Please refresh this page';
+      // toast({
+      //   text: 'Please refresh this page',
+      //   textColor: '#fff',
+      // });
       return;
     }
 
-    if (!isLoggedIn) {
+    if (!session && inputEmail) {
       createAccount();
       return;
     }
@@ -385,14 +340,24 @@ function CardDetails() {
     return;
   }
 
+  console.log(cardNumber, CVV, expiration, userFirstname, userLastname);
+
   return (
     <Padder>
       <InnerContainer>
-        <StyledTitle>Enter your card details</StyledTitle>
+        <StyledTitle>{description}</StyledTitle>
         <Column>
           {cardItems.slice(0, 1).map((item, index) => {
-            const { id, type, src, placeholder, legend, name, maxlength } =
-              item;
+            const {
+              id,
+              type,
+              src,
+              placeholder,
+              legend,
+              name,
+              maxlength,
+              value,
+            } = item;
             return (
               <CardInputContainer
                 key={index}
@@ -400,6 +365,7 @@ function CardDetails() {
                 id={id}
                 type={type}
                 src={src}
+                value={value}
                 placeholder={placeholder}
                 legend={legend}
                 maxlength={maxlength}
@@ -448,6 +414,7 @@ function CardDetails() {
           </ContainerRow>
 
           <Checker
+            check={() => setChecked(!checked)}
             content={`
                     By continuing, you agree to Slashit’s terms of use and privacy policy.
                     We’ll send reminders about debts on your account to friends in your Clique and
@@ -458,8 +425,13 @@ function CardDetails() {
         </Column>
       </InnerContainer>
       <ButtonWrapper>
-        <Button disabled={disabled} onClick={() => btnPress()} width={`100%`}>
-          Continue
+        <Button
+          disabled={disabled}
+          // onClick={() => btnPress()}
+          onClick={() => setExtraTab({ page: 'VerifyEmailNext' })}
+          width={`100%`}
+        >
+          {buttonTitle}
         </Button>
       </ButtonWrapper>
     </Padder>
