@@ -52,7 +52,7 @@ function VerifyEmail() {
 
     setOtpData((otpStr) => {
       otpStr[index] = value;
-      dispatch(setOtp(value));
+      dispatch(setOtp(otpData.join('')));
       return otpStr;
     });
 
@@ -76,7 +76,7 @@ function VerifyEmail() {
 
   useEffect(() => {}, [otpData]);
 
-  console.log(otpData, otp);
+  // console.log('Redux: ', otp);
 
   return (
     <ProcessContent>
