@@ -59,6 +59,7 @@ function GeneratePaymentLink({ id }) {
     mail: '',
     note: '',
   });
+  const [recipient, setRecipient] = useState();
   const [errors, setErrors] = useState({});
   const [isValidated, setIsValidated] = useState(false);
   const [link, setLink] = useState('');
@@ -67,6 +68,13 @@ function GeneratePaymentLink({ id }) {
     const { name, value } = event.target;
     setPaymentDetails({ ...paymentDetails, [name]: value });
   }
+
+  function handleRecipientMailChange(event) {
+    const { value } = event.target;
+    setRecipient(value);
+  }
+
+  console.log(recipient);
 
   function handleGetPaymentLinkSubmit(paymentDetails) {
     const res = paymentDetailsValidator(paymentDetails);
@@ -138,7 +146,7 @@ function GeneratePaymentLink({ id }) {
 
   return (
     <GenerateLinkForm>
-      {isValidated === false && (
+      {isValidated === true && (
         <LinkSection id={id}>
           {paymentItem.map((item, index) => {
             const { name, id, legend, placeholder, type, prefix } = item;
@@ -176,7 +184,7 @@ function GeneratePaymentLink({ id }) {
         </LinkSection>
       )}
 
-      {isValidated === true && (
+      {isValidated === false && (
         <LinkSection>
           <Row>
             <p></p>
@@ -201,9 +209,10 @@ function GeneratePaymentLink({ id }) {
             Send link to cutomers’ email
             <MailContainer>
               <MailInput
-                name={'receiver-mail'}
+                name={'recipient-mail'}
                 type={'email'}
                 placeholder={`Customer's Email`}
+                onChange={(e) => handleRecipientMailChange(e)}
               />
               <ArrowIcon
                 //onClick={() =>} //TODO - Validate receiver field and shareLink()
