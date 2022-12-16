@@ -361,7 +361,6 @@ function Pay(props) {
         />
 
         {isLoggedIn ? (
-          /*TODO - Show user.avatar, user.firstname, user.lastname*/
           <ProfileContainer>
             <ProfileImageContainer>
               <Image
