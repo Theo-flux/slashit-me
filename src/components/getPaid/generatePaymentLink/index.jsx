@@ -75,8 +75,6 @@ function GeneratePaymentLink({ id }) {
     setRecipient({ ...recipient, [name]: value });
   }
 
-  console.log(recipient);
-
   function handleGetPaymentLinkSubmit(paymentDetails) {
     const res = paymentDetailsValidator(paymentDetails);
     console.log(res);
