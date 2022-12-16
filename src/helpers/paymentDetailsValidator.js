@@ -19,3 +19,16 @@ export const paymentDetailsValidator = (paymentDetails) => {
 
   return response;
 };
+
+export const recipientValidator = (recipient) => {
+  //Response format
+  const response = {};
+
+  if (!recipient?.recipientMail) {
+    response.recipientMail = 'Pls provide an email';
+  } else {
+    response.recipientMail = '';
+  }
+
+  return response;
+};
