@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button, InputContainer } from '../../../shared';
 import {
   GenerateLinkForm,
@@ -63,7 +63,7 @@ function GeneratePaymentLink({ id }) {
   const [recipient, setRecipient] = useState({ recipientMail: '' });
   const [errors, setErrors] = useState({});
   const [isValidated, setIsValidated] = useState(false);
-  const [link, setLink] = useState('');
+  const [link, setLink] = useState('this link');
 
   function handlePaymentDetailsChange(event) {
     const { name, value } = event.target;
@@ -133,13 +133,6 @@ function GeneratePaymentLink({ id }) {
     });
   }
 
-  async function copyLink() {
-    try {
-    } catch (err) {
-      // console.error('Failed to copy: ', err);
-    }
-  }
-
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
@@ -150,6 +143,23 @@ function GeneratePaymentLink({ id }) {
   useEffect(() => {
     return () => resetBox();
   }, []);
+
+  let copyBtn = useRef(null);
+
+  async function copyLink() {
+    // console.log(acctEl.current.textContent);
+
+    try {
+      await navigator.clipboard.writeText(link);
+      copyBtn.current.textContent = 'copied!';
+      // console.log('Content copied to clipboard');
+      setTimeout(() => {
+        copyBtn.current.textContent = 'copy';
+      }, 3000);
+    } catch (err) {
+      // console.error('Failed to copy: ', err);
+    }
+  }
 
   return (
     <GenerateLinkForm>
@@ -205,6 +215,7 @@ function GeneratePaymentLink({ id }) {
               Copy and share link now to collect your money with Slashit
             </LinkInfo>
             <Button
+              ref={copyBtn}
               onClick={() => copyLink()}
               width={`100%`}
               bg={`var(--violet)`}
