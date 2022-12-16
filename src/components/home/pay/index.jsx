@@ -34,6 +34,9 @@ import {
   Intsallment4,
   Aligner,
   ChargedToRow,
+  ProfileContainer,
+  ProfileImageContainer,
+  ProfileName,
 } from './payStyles';
 import Pin from './pin';
 import Redirect from './redirect';
@@ -231,7 +234,6 @@ function Pay(props) {
       (source = 'Card'),
     );
     if (pay.success) {
-      //TODO - Open Pay anyone 8 -success
       dispatch(setAnyAction({ success: pay.success, message: pay.message }));
       setMode('SUCCESS');
     } else {
@@ -359,29 +361,40 @@ function Pay(props) {
         />
 
         {isLoggedIn ? (
-          {
-            /*TODO - Show user.avatar, user.firstname, user.lastname*/
-          }
+          <ProfileContainer>
+            <ProfileImageContainer>
+              <Image
+                src={user.avatar}
+                height={50}
+                width={50}
+                alt={'user-avatar'}
+              />
+            </ProfileImageContainer>
+            <ProfileName>
+              {user.firstname} {user.lastname}
+            </ProfileName>
+          </ProfileContainer>
         ) : (
-          <InputContainer
-            legend={`Your mail`}
-            id={'your-mail'}
-            type={'email'}
-            placeholder={'youremail@gmail.com'}
-          />
+          <div>
+            <InputContainer
+              legend={`Your mail`}
+              id={'your-mail'}
+              type={'email'}
+              placeholder={'youremail@gmail.com'}
+            />
+            <InfoBox>
+              <Icon className="fa-solid fa-circle-info"></Icon>
+              Use your Slashit email address if you have a Slashit account
+            </InfoBox>
+          </div>
         )}
 
-        {isMailValidated ? (
+        {isMailValidated && (
           <InfoBoxRow>
             <Icon className="fa-solid fa-circle-info"></Icon>
             <InfoText>{form?.email}</InfoText>
             <SmallBtn>Not you?</SmallBtn>
           </InfoBoxRow>
-        ) : (
-          <InfoBox>
-            <Icon className="fa-solid fa-circle-info"></Icon>
-            Use your Slashit email address if you have a Slashit account
-          </InfoBox>
         )}
       </PaySection>
 
@@ -393,7 +406,6 @@ function Pay(props) {
           </div>
         </Row>
 
-        {/* {TODO - If preferredCard, show Charged to card number and expiry here} */}
         {showInstallments && (
           <IntsallmentsContainer>
             <Intsallment4>

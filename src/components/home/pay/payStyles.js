@@ -194,3 +194,24 @@ export const ContainerRow = styled.div`
     }
   }
 `;
+
+export const ProfileContainer = styled.div`
+  margin: 2.5rem 0;
+  display: flex;
+  width: fit-content;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ProfileImageContainer = styled.div`
+  /* border: 1px solid magenta; */
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  overflow: hidden;
+`;
+
+export const ProfileName = styled.p`
+  margin-left: 1rem;
+  font-weight: 600;
+`;
