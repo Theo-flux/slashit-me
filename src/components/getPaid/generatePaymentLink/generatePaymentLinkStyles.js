@@ -106,8 +106,9 @@ export const MailContainer = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
-  border: 1px solid var(--alto);
   border-radius: 0.375rem;
+  ${(props) =>
+    props.error ? `border: 1px solid red;` : ` border: 1px solid var(--alto);`}
 `;
 
 export const MailInput = styled.input`
@@ -123,4 +124,10 @@ export const ArrowIcon = styled.i`
   font-size: 2.5rem;
   margin: 0rem 0.8rem;
   color: var(--gray);
+`;
+
+export const Error = styled.small`
+  margin-top: 1rem;
+  width: fit-content;
+  color: red;
 `;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button, InputContainer } from '../../../shared';
 import {
   GenerateLinkForm,
@@ -10,13 +10,14 @@ import {
   ArrowIcon,
   MailInput,
   MailContainer,
+  Error,
   Row,
   Col,
   Center,
   LinkMessage,
   LinkInfo,
 } from './generatePaymentLinkStyles';
-import { paymentDetailsValidator } from '../../../helpers';
+import { paymentDetailsValidator, recipientValidator } from '../../../helpers';
 import {
   CreatePaymentLink,
   SharePaymentLink,
@@ -59,13 +60,19 @@ function GeneratePaymentLink({ id }) {
     mail: '',
     note: '',
   });
+  const [recipient, setRecipient] = useState({ recipientMail: '' });
   const [errors, setErrors] = useState({});
   const [isValidated, setIsValidated] = useState(false);
-  const [link, setLink] = useState('');
+  const [link, setLink] = useState('this link');
 
   function handlePaymentDetailsChange(event) {
     const { name, value } = event.target;
     setPaymentDetails({ ...paymentDetails, [name]: value });
+  }
+
+  function handleRecipientMailChange(event) {
+    const { name, value } = event.target;
+    setRecipient({ ...recipient, [name]: value });
   }
 
   function handleGetPaymentLinkSubmit(paymentDetails) {
@@ -78,6 +85,17 @@ function GeneratePaymentLink({ id }) {
       //setErrors({});
       //Create payment link when there are no form errors //amount and mail are present
       createLink();
+    }
+  }
+
+  function handleRecipientSubmit(recipient) {
+    const res = recipientValidator(recipient);
+
+    if (res.recipientMail) {
+      setErrors(res);
+    } else {
+      setErrors({});
+      shareLink();
     }
   }
 
@@ -98,10 +116,7 @@ function GeneratePaymentLink({ id }) {
   }
 
   async function shareLink() {
-    let sendReq = await SharePaymentLink(
-      //TODO - receiver email
-      link,
-    );
+    let sendReq = await SharePaymentLink(recipient.recipientMail, link);
     if (sendReq.success) {
       toastMsg = 'Payment link has been sent';
     } else {
@@ -118,13 +133,6 @@ function GeneratePaymentLink({ id }) {
     });
   }
 
-  async function copyLink() {
-    try {
-    } catch (err) {
-      // console.error('Failed to copy: ', err);
-    }
-  }
-
   useEffect(() => {
     if (toastMsg) {
       setShowToast(true);
@@ -135,6 +143,23 @@ function GeneratePaymentLink({ id }) {
   useEffect(() => {
     return () => resetBox();
   }, []);
+
+  let copyBtn = useRef(null);
+
+  async function copyLink() {
+    // console.log(acctEl.current.textContent);
+
+    try {
+      await navigator.clipboard.writeText(link);
+      copyBtn.current.textContent = 'copied!';
+      // console.log('Content copied to clipboard');
+      setTimeout(() => {
+        copyBtn.current.textContent = 'copy';
+      }, 3000);
+    } catch (err) {
+      // console.error('Failed to copy: ', err);
+    }
+  }
 
   return (
     <GenerateLinkForm>
@@ -190,6 +215,7 @@ function GeneratePaymentLink({ id }) {
               Copy and share link now to collect your money with Slashit
             </LinkInfo>
             <Button
+              ref={copyBtn}
               onClick={() => copyLink()}
               width={`100%`}
               bg={`var(--violet)`}
@@ -199,17 +225,19 @@ function GeneratePaymentLink({ id }) {
             </Button>
             <LinkInfo>or</LinkInfo>
             Send link to cutomers’ email
-            <MailContainer>
+            <MailContainer error={errors.recipientMail}>
               <MailInput
-                name={'receiver-mail'}
+                name={'recipientMail'}
                 type={'email'}
                 placeholder={`Customer's Email`}
+                onChange={(e) => handleRecipientMailChange(e)}
               />
               <ArrowIcon
-                //onClick={() =>} //TODO - Validate receiver field and shareLink()
+                onClick={() => handleRecipientSubmit(recipient)}
                 className={'ri-arrow-right-circle-fill'}
               />
             </MailContainer>
+            <Error>{errors?.recipientMail}</Error>
           </Center>
         </LinkSection>
       )}
