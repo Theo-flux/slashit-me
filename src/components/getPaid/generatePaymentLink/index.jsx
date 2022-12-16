@@ -163,7 +163,7 @@ function GeneratePaymentLink({ id }) {
 
   return (
     <GenerateLinkForm>
-      {isValidated === true && (
+      {isValidated === false && (
         <LinkSection id={id}>
           {paymentItem.map((item, index) => {
             const { name, id, legend, placeholder, type, prefix } = item;
@@ -201,7 +201,7 @@ function GeneratePaymentLink({ id }) {
         </LinkSection>
       )}
 
-      {isValidated === false && (
+      {isValidated === true && (
         <LinkSection>
           <Row>
             <p></p>
